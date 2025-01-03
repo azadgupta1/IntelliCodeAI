@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import authRoutes from "./routes/authRoutes.js";
+import protectedRoute from "./routes/protectedRoutes.js";
+import fileRoute from "./routes/fileRoutes.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -8,13 +10,13 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.json());
-
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
 
 
-
 app.use("/auth", authRoutes);
+app.use("/protected", protectedRoute);
+app.use("/files", fileRoute);
 
 
 
