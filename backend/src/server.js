@@ -4,6 +4,7 @@ import authRoutes from "./routes/authRoutes.js";
 import protectedRoute from "./routes/protectedRoutes.js";
 import fileRoute from "./routes/fileRoutes.js";
 import analysisRoutes from "./routes/analysisRoutes.js";
+import githubRoutes from "./routes/githubRoutes.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use("/protected", protectedRoute);
 app.use("/files", fileRoute);
 app.use("/analysis", analysisRoutes);
 
+app.use('/github', githubRoutes);
 
 
 app.get('/', (req, res) =>{
