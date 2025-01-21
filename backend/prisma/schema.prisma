@@ -58,7 +58,7 @@ model GithubRepo {
   id         Int       @id @default(autoincrement())
   userId     Int
   repoName   String
-  repoUrl    String
+  repoUrl    String    @unique
   createdAt  DateTime  @default(now())
   user       User      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
 }
