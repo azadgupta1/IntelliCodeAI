@@ -12,7 +12,4 @@ router.get("/repos/:owner/:repo/commits/:commitSha", authenticate, fetchCommitDe
 router.get("/repos/:owner/:repo/commits/:commitSha/file/:filePath", authenticate, fetchFileContent);
 
 
-// GitHub Webhook Route (Receives commit events)
-router.post("/webhook", express.json({ type: "application/json" }), handleGitHubWebhook);
-
 export default router;

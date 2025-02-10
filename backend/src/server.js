@@ -1,10 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
+
 import authRoutes from "./routes/authRoutes.js";
 import protectedRoute from "./routes/protectedRoutes.js";
 import fileRoute from "./routes/fileRoutes.js";
 import analysisRoutes from "./routes/analysisRoutes.js";
 import githubRoutes from "./routes/githubRoutes.js";
+import webhookRoutes from "./routes/webhookRoutes.js";
+
+import githubAnalysisRoutes from "./routes/githubAnalysisRoutes.js";
+
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +27,8 @@ app.use("/files", fileRoute);
 app.use("/analysis", analysisRoutes);
 
 app.use('/github', githubRoutes);
+app.use('/webhooks', webhookRoutes);
+app.use('/githubAnalysis', githubAnalysisRoutes);
 
 
 app.get('/', (req, res) =>{

@@ -7,17 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model User {
-//   id         Int       @id @default(autoincrement())
-//   username   String    @unique
-//   email      String    @unique
-//   githubId   String?   @unique
-//   createdAt  DateTime  @default(now())
-//   updatedAt  DateTime  @updatedAt
-//   files      File[]    // One-to-many relation with File
-//   analysis   Analysis[] // One-to-many relation with Analysis
-//   githubRepos GithubRepo[] // One-to-many relation with GithubRepo
-// }
 
 model User {
   id                Int       @id @default(autoincrement())
