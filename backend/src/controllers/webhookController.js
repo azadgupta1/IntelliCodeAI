@@ -1,59 +1,71 @@
 import prisma from "../config/db.js";
+import analyzeCode from "../utils/aiAnalysis.js";
 import axios from "axios";
-import analyzeCode from "../utils/aiAnalysis.js"; // AI Analysis function
 
 export const handleGitHubWebhook = async (req, res) => {
   try {
-    const event = req.headers["x-github-event"]; // Check event type
+    const event = req.headers["x-github-event"];
     if (event !== "push") {
-      return res.status(200).json({ message: "Event ignored. Only 'push' events are processed." });
+      return res.status(400).json({ message: "Unhandled event type" });
     }
 
-    const payload = req.body; // Webhook payload
-    const commits = payload.commits || [];
+    const { repository, head_commit } = req.body;
+    if (!repository || !head_commit) {
+      return res.status(400).json({ message: "Invalid payload" });
+    }
 
-    for (const commit of commits) {
-      const { id: commitHash, added, modified } = commit;
+    const { id: commitHash, author } = head_commit;
+    const modifiedFiles = head_commit.modified || [];
 
-      const filesToAnalyze = [...added, ...modified]; // Only analyze new/modified files
+    console.log(`Received commit ${commitHash} from ${repository.full_name}`);
 
-      for (const filePath of filesToAnalyze) {
-        try {
-          const fileContent = await fetchGitHubFileContent(payload.repository, commitHash, filePath);
-          const analysisResult = await analyzeCode(fileContent);
+    // ✅ Fix: Use correct username field from GitHub webhook (`author.username`)
+    const user = await prisma.user.findFirst({ where: { username: author.username } });
 
-          // Save analysis in the database
-          await prisma.analysis.create({
-            data: {
-              filePath,
-              result: analysisResult,
-              commitHash,
-              userId: payload.sender.id, // GitHub user who made the commit
-            },
-          });
-        } catch (err) {
-          console.error(`Error analyzing ${filePath}:`, err);
-        }
+    // ✅ Fix: Check `githubAccessToken` instead of `accessToken`
+    if (!user || !user.githubAccessToken) {
+      console.error("User not found or missing GitHub token:", user);
+      return res.status(401).json({ message: "User GitHub token not found" });
+    }
+
+    const githubToken = user.githubAccessToken;
+    const analysisResults = [];
+
+    for (const filePath of modifiedFiles) {
+      try {
+        const encodedFilePath = encodeURIComponent(filePath);
+        const contentsUrl = `https://api.github.com/repos/${repository.full_name}/contents/${encodedFilePath}?ref=${commitHash}`;
+
+        const response = await axios.get(contentsUrl, {
+          headers: { Authorization: `Bearer ${githubToken}` },
+        });
+
+        const fileContent = Buffer.from(response.data.content, "base64").toString("utf-8");
+        const analysisResult = await analyzeCode(fileContent);
+
+        // ✅ Fix: `filePath` field doesn't exist in the `Analysis` model. Use `fileId`.
+        const analysis = await prisma.analysis.create({
+          data: {
+            result: analysisResult,
+            commitHash,
+            userId: user.id,
+            file: { create: { filename: filePath, fileUrl: contentsUrl, userId: user.id } }, // Create associated File
+          },
+        });
+
+        analysisResults.push(analysis);
+      } catch (error) {
+        console.error(`Error analyzing ${filePath}:`, error.response?.data || error.message);
       }
     }
 
-    res.status(200).json({ message: "Webhook received and processed successfully." });
-  } catch (error) {
-    console.error("Webhook Processing Error:", error);
-    res.status(500).json({ message: "Error processing webhook.", error: error.message });
-  }
-};
-
-// Fetch file content from GitHub
-const fetchGitHubFileContent = async (repo, commitSha, filePath) => {
-  try {
-    const response = await axios.get(`https://api.github.com/repos/${repo.full_name}/contents/${filePath}?ref=${commitSha}`, {
-      headers: { Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}` },
+    res.status(200).json({
+      message: "Webhook processed",
+      commit: commitHash,
+      analyzedFiles: analysisResults,
     });
-
-    return Buffer.from(response.data.content, "base64").toString("utf-8");
   } catch (error) {
-    console.error(`Error fetching file content for ${filePath}:`, error);
-    throw error;
+    console.error("Webhook handling error:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
