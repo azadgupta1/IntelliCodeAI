@@ -85,6 +85,9 @@ export const analyzeFile = async (req, res) => {
 // Analyze a GitHub file manually
 export const analyzeGithubFile = async (req, res) => {
   try {
+    console.log("Request Data:", req.body);
+
+
       const { owner, repo, commitSha, filePath } = req.body;
       const userId = req.user.id;
 
