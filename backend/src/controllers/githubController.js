@@ -76,7 +76,7 @@ export const fetchCommitDetails = async (req, res) => {
   }
 };
 
-export const fetchFileContent = async (req, res) => {
+export const fetchFileContent = async (req, res, returnData = false) => {
   try {
     const { owner, repo, commitSha, filePath } = req.params;
     const githubToken = req.user.accessToken;
@@ -94,6 +94,10 @@ export const fetchFileContent = async (req, res) => {
 
     const fileContent = Buffer.from(response.data.content, "base64").toString("utf-8");
 
+    if (returnData) {
+      return { message: "File content fetched successfully", fileContent };
+    }
+
     res.status(200).json({
       message: "File content fetched successfully",
       fileContent,
@@ -106,3 +110,38 @@ export const fetchFileContent = async (req, res) => {
     });
   }
 };
+
+
+// export const fetchFileContent = async (req, res) => {
+//   try {
+//     const { owner, repo, commitSha, filePath } = req.params;
+//     const githubToken = req.user.accessToken;
+
+//     if (!githubToken) {
+//       return res.status(401).json({ message: "GitHub access token is missing" });
+//     }
+
+//     const encodedFilePath = encodeURIComponent(filePath);
+//     const contentsUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodedFilePath}?ref=${commitSha}`;
+
+//     const response = await axios.get(contentsUrl, {
+//       headers: { Authorization: `Bearer ${githubToken}` },
+//     });
+
+//     const fileContent = Buffer.from(response.data.content, "base64").toString("utf-8");
+
+//     res.status(200).json({
+//       message: "File content fetched successfully",
+//       fileContent,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching file content:", error);
+//     res.status(500).json({
+//       message: "Failed to fetch file content",
+//       error: error.response?.data?.message || error.message,
+//     });
+//   }
+// };
+
+
+
