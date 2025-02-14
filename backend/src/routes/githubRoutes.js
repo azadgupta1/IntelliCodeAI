@@ -10,7 +10,6 @@ router.get("/repos", authenticate, fetchUserRepos);
 router.get("/repos/:owner/:repo/commits/:commitSha", authenticate, fetchCommitDetails);
 
 router.get("/repos/:owner/:repo/commits/:commitSha/file/:filePath", authenticate, fetchFileContent);
-// router.get("/repos/:owner/:repo/commits/:commitSha/file/*", authenticate, fetchFileContent);
 
 
 
