@@ -1,12 +1,9 @@
-import express from 'express';
-import { handleGitHubWebhook } from '../controllers/webhookController.js';
-import { authenticate } from '../middlewares/authMiddleware.js';
+import express from "express";
+import { handleGitHubWebhook } from "../controllers/webhookController.js";
 
 const router = express.Router();
 
-
-
-router.post("/github/webhook", authenticate, handleGitHubWebhook);
-
+// Webhook endpoint for GitHub commit events
+router.post("/github", handleGitHubWebhook);
 
 export default router;
