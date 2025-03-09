@@ -26,7 +26,7 @@ model File {
   id          Int       @id @default(autoincrement())
   userId      Int
   filename    String
-  fileUrl     String    // URL or file path to the uploaded code
+  fileUrl     String    @unique// URL or file path to the uploaded code
   uploadedAt  DateTime  @default(now())
   analysis    Analysis? @relation // Optional relation with Analysis
   user        User      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
@@ -50,4 +50,5 @@ model GithubRepo {
   repoUrl    String    @unique
   createdAt  DateTime  @default(now())
   user       User      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+  @@unique([repoName, userId])
 }
