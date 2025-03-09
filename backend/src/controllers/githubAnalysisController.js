@@ -1,20 +1,25 @@
+
 // import { fetchFileContent } from "./githubController.js";
 // import analyzeCode from "../utils/aiAnalysis.js";
 
 // export const analyzeGithubFile = async (req, res) => {
 //   try {
-//     // Extract parameters from request
 //     const { owner, repo, commitSha, filePath } = req.params;
 
-//     // Call fetchFileContent to get the file content
-//     const fileResponse = await fetchFileContent(req, res, true); // Passing `true` to return data instead of sending response
+//     // Fetch file content
+//     const fileResponse = await fetchFileContent(req, res, true); // Ensure this returns content
 
 //     if (!fileResponse || !fileResponse.fileContent) {
+//       console.error("File fetch failed:", fileResponse);
 //       return res.status(400).json({ message: "Failed to fetch file content for analysis" });
 //     }
 
-//     // Call AI analysis function
+//     console.log("Fetched File Content:", fileResponse.fileContent); // ✅ Debug file content
+
+//     // Call AI analysis
 //     const analysisResult = await analyzeCode(fileResponse.fileContent);
+
+//     console.log("AI Analysis Result:", analysisResult); // ✅ Debug AI response
 
 //     res.status(200).json({
 //       message: "File analyzed successfully",
@@ -31,37 +36,35 @@
 
 import { fetchFileContent } from "./githubController.js";
 import analyzeCode from "../utils/aiAnalysis.js";
+import prisma from "../config/db.js";
 
-export const analyzeGithubFile = async (req, res) => {
+export const analyzeGithubFile = async ({ owner, repo, commitSha, filePath, userId }) => {
   try {
-    const { owner, repo, commitSha, filePath } = req.params;
-
-    // Fetch file content
-    const fileResponse = await fetchFileContent(req, res, true); // Ensure this returns content
-
+    // ✅ Fetch file content from GitHub
+    const fileResponse = await fetchFileContent({ owner, repo, commitSha, filePath, userId }, true);
     if (!fileResponse || !fileResponse.fileContent) {
       console.error("File fetch failed:", fileResponse);
-      return res.status(400).json({ message: "Failed to fetch file content for analysis" });
+      return { success: false, message: "Failed to fetch file content for analysis" };
     }
 
-    console.log("Fetched File Content:", fileResponse.fileContent); // ✅ Debug file content
-
-    // Call AI analysis
+    // ✅ Analyze code with AI
     const analysisResult = await analyzeCode(fileResponse.fileContent);
+    console.log("AI Analysis Result:", analysisResult);
 
-    console.log("AI Analysis Result:", analysisResult); // ✅ Debug AI response
-
-    res.status(200).json({
-      message: "File analyzed successfully",
-      analysisResult,
+    // ✅ Store analysis result in DB
+    await prisma.analysis.create({
+      data: {
+        userId,
+        commitHash: commitSha,
+        filePath,
+        result: analysisResult,
+        createdAt: new Date(),
+      },
     });
+
+    return { success: true, analysisResult };
   } catch (error) {
     console.error("Error analyzing GitHub file:", error);
-    res.status(500).json({
-      message: "Failed to analyze GitHub file",
-      error: error.message,
-    });
+    return { success: false, message: "Failed to analyze GitHub file", error: error.message };
   }
 };
-
-// hello
