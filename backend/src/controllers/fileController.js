@@ -14,9 +14,9 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage }).single("file");
 
+
 export const uploadFile = async (req, res) => {
   try {
-    const userId = req.user.id; // Authenticated user's ID
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
@@ -24,9 +24,9 @@ export const uploadFile = async (req, res) => {
     const { filename } = req.file;
     const fileUrl = `/uploads/${filename}`; // Adjust if needed based on hosting
 
+    // Save file without userId
     const file = await prisma.file.create({
       data: {
-        userId,
         filename,
         fileUrl,
       },
@@ -44,3 +44,40 @@ export const uploadFile = async (req, res) => {
     });
   }
 };
+
+
+
+
+
+
+
+// export const uploadFile = async (req, res) => {
+//   try {
+//     const userId = req.user.id; // Authenticated user's ID
+//     if (!req.file) {
+//       return res.status(400).json({ message: "No file uploaded" });
+//     }
+
+//     const { filename } = req.file;
+//     const fileUrl = `/uploads/${filename}`; // Adjust if needed based on hosting
+
+//     const file = await prisma.file.create({
+//       data: {
+//         userId,
+//         filename,
+//         fileUrl,
+//       },
+//     });
+
+//     res.status(201).json({
+//       message: "File uploaded successfully",
+//       file,
+//     });
+//   } catch (error) {
+//     console.error("File Upload Error:", error);
+//     res.status(500).json({
+//       message: "Failed to upload file",
+//       error: error.message,
+//     });
+//   }
+// };
