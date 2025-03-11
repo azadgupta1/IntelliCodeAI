@@ -4,6 +4,6 @@ import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/upload", authenticate, upload, uploadFile);
+router.post("/upload", upload, uploadFile);
 
 export default router;

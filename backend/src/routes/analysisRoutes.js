@@ -6,7 +6,7 @@ import { getAnalysisHistory, getAnalysisById } from "../controllers/analysisHist
 const router = express.Router();
 
 // Route to analyze a file by its ID
-router.post("/analyze/:fileId", authenticate, analyzeFile);
+router.post("/analyze/:fileId", analyzeFile);
 
 // Fetch all past analyses
 router.get("/history", authenticate, getAnalysisHistory);
