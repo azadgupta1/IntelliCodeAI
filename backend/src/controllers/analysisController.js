@@ -81,6 +81,9 @@
 //   }
 // };
 
+// ------------------------------            ///       -------------------
+
+
 import path from "path";
 import fs from "fs";
 import prisma from "../config/db.js";
@@ -135,9 +138,9 @@ export const analyzeFile = async (req, res) => {
     const analysis = await prisma.analysis.create({
       data: {
         fileId: file.id,
-        userId: file.userId, // Fix: Include userId
+        userId: file.userId || null, // Allow null userId for anonymous uploads
         result: analysisResult,
-        commitHash: "N/A", // Fix: Avoid referencing undefined field
+        commitHash: "N/A", // No Git integration for now
       },
     });
 
@@ -151,6 +154,78 @@ export const analyzeFile = async (req, res) => {
     res.status(500).json({ message: "Failed to analyze file", error: error.message });
   }
 };
+
+
+// import path from "path";
+// import fs from "fs";
+// import prisma from "../config/db.js";
+// import analyzeCode from "../utils/aiAnalysis.js";
+
+// export const analyzeFile = async (req, res) => {
+//   try {
+//     const { fileId } = req.params;
+//     const numericFileId = parseInt(fileId, 10);
+
+//     if (isNaN(numericFileId)) {
+//       return res.status(400).json({ message: "Invalid file ID" });
+//     }
+
+//     const file = await prisma.file.findUnique({
+//       where: { id: numericFileId },
+//     });
+
+//     if (!file) {
+//       return res.status(404).json({ message: "File not found in the database" });
+//     }
+
+//     const filePath = path.resolve("uploads", file.filename);
+//     if (!fs.existsSync(filePath)) {
+//       return res.status(404).json({ message: "File not found on the server" });
+//     }
+
+//     console.log("Analyzing file:", filePath);
+//     const code = fs.readFileSync(filePath, "utf-8");
+
+//     let analysisResult;
+//     try {
+//       analysisResult = await analyzeCode(code);
+//       console.log("AI analysis result:", analysisResult);
+//     } catch (error) {
+//       console.error("AI analysis failed:", error);
+//       return res.status(500).json({ message: "Failed to analyze code with AI", error: error.message });
+//     }
+
+//     const existingAnalysis = await prisma.analysis.findUnique({
+//       where: { fileId: file.id },
+//     });
+
+//     if (existingAnalysis) {
+//       return res.status(200).json({
+//         message: "Analysis already exists for this file",
+//         analysis: existingAnalysis,
+//         result: existingAnalysis.result,
+//       });
+//     }
+
+//     const analysis = await prisma.analysis.create({
+//       data: {
+//         fileId: file.id,
+//         userId: file.userId, // Fix: Include userId
+//         result: analysisResult,
+//         commitHash: "N/A", // Fix: Avoid referencing undefined field
+//       },
+//     });
+
+//     res.status(200).json({
+//       message: "File analyzed successfully",
+//       analysis,
+//       result: analysisResult,
+//     });
+//   } catch (error) {
+//     console.error("Analysis Error:", error);
+//     res.status(500).json({ message: "Failed to analyze file", error: error.message });
+//   }
+// };
 
 
 

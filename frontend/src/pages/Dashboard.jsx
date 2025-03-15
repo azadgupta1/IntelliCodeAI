@@ -5,19 +5,28 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    // Get the token from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
 
     if (token) {
-      localStorage.setItem("authToken", token); // Store JWT token
-      navigate("/dashboard", { replace: true }); // Remove token from URL
+      // Store the token in localStorage
+      localStorage.setItem("token", token);
+      // Clear the URL to keep it clean
+      window.history.replaceState({}, document.title, "/dashboard");
+    } else {
+      // Check if already logged in
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) {
+        navigate("/"); // Redirect to home if no token found
+      }
     }
   }, [navigate]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Welcome to Dashboard</h1>
-      <p>You're logged in with GitHub OAuth.</p>
+    <div>
+      <h1>Welcome to the Dashboard</h1>
+      <p>Your login was successful!</p>
     </div>
   );
 };
