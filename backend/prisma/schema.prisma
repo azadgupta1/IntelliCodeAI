@@ -1,3 +1,58 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+
+// model User {
+//   id                Int       @id @default(autoincrement())
+//   username          String    @unique
+//   email             String    @unique
+//   githubId          String?   @unique
+//   githubAccessToken String?   // Field to store the GitHub access token
+//   createdAt         DateTime  @default(now())
+//   updatedAt         DateTime  @updatedAt
+//   files             File[]    // One-to-many relation with File
+//   analysis          Analysis[] // One-to-many relation with Analysis
+//   githubRepos       GithubRepo[] // One-to-many relation with GithubRepo
+// }
+
+
+// model File {
+//   id          Int       @id @default(autoincrement())
+//   userId      Int?
+//   filename    String
+//   fileUrl     String    @unique// URL or file path to the uploaded code
+//   uploadedAt  DateTime  @default(now())
+//   analysis    Analysis? @relation // Optional relation with Analysis
+//   user        User?      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+// }
+
+// model Analysis {
+//   id          Int       @id @default(autoincrement())
+//   fileId      Int      @unique  // One-to-one relation with File
+//   result      Json     // AI analysis result (stored as JSON)
+//   commitHash  String   // Git commit hash related to the analysis
+//   createdAt   DateTime @default(now())
+//   file        File     @relation(fields: [fileId], references: [id]) // Relation to File
+//   userId      Int      // Foreign key linking to User
+//   user        User     @relation(fields: [userId], references: [id]) // Relation to User
+// }
+
+// model GithubRepo {
+//   id         Int       @id @default(autoincrement())
+//   userId     Int
+//   repoName   String
+//   repoUrl    String    @unique
+//   createdAt  DateTime  @default(now())
+//   user       User      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+//   @@unique([repoName, userId])
+// }
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,41 +62,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id                Int       @id @default(autoincrement())
-  username          String    @unique
-  email             String    @unique
-  githubId          String?   @unique
-  githubAccessToken String?   // Field to store the GitHub access token
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  files             File[]    // One-to-many relation with File
-  analysis          Analysis[] // One-to-many relation with Analysis
-  githubRepos       GithubRepo[] // One-to-many relation with GithubRepo
+  id                Int          @id @default(autoincrement())
+  username          String       @unique
+  email             String       @unique
+  githubId          String?      @unique
+  githubAccessToken String?      
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  files             File[]        // One-to-many relation with File
+  analysis          Analysis[]    // One-to-many relation with Analysis
+  githubRepos       GithubRepo[]  // One-to-many relation with GithubRepo
 }
 
-
 model File {
-  id          Int       @id @default(autoincrement())
-  userId      Int?
-  filename    String
-  fileUrl     String    @unique// URL or file path to the uploaded code
-  uploadedAt  DateTime  @default(now())
-  analysis    Analysis? @relation // Optional relation with Analysis
-  user        User?      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+  id         Int       @id @default(autoincrement())
+  userId     Int?      // Optional, allows anonymous uploads
+  filename   String
+  fileUrl    String    @unique
+  uploadedAt DateTime  @default(now())
+
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analysis   Analysis? @relation(name: "FileToAnalysis")
 }
 
 model Analysis {
-  id          Int       @id @default(autoincrement())
-  fileId      Int      @unique  // One-to-one relation with File
-  result      Json     // AI analysis result (stored as JSON)
-  commitHash  String   // Git commit hash related to the analysis
-  createdAt   DateTime @default(now())
-  file        File     @relation(fields: [fileId], references: [id]) // Relation to File
-  userId      Int      // Foreign key linking to User
-  user        User     @relation(fields: [userId], references: [id]) // Relation to User
+  id         Int      @id @default(autoincrement())
+  fileId     Int      @unique  
+  result     Json     
+  commitHash String   
+  createdAt  DateTime @default(now())
+
+  file       File     @relation(name: "FileToAnalysis", fields: [fileId], references: [id], onDelete: Cascade)
+  userId     Int?     // Allow anonymous analysis
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
 
 model GithubRepo {
   id         Int       @id @default(autoincrement())
@@ -49,6 +106,8 @@ model GithubRepo {
   repoName   String
   repoUrl    String    @unique
   createdAt  DateTime  @default(now())
-  user       User      @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([repoName, userId])
 }
