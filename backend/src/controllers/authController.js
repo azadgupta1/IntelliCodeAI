@@ -54,8 +54,10 @@ export const githubCallback = async (req, res) => {
       create: { githubId: user.id.toString(), username: user.login, email: userEmail, githubAccessToken: accessToken },
     });
 
-    // Generate a JWT token
-    const token = generateToken({ id: dbUser.id, username: dbUser.username });
+    // Generate a JWT token with accessToken
+    const token = generateToken({ id: dbUser.id, username: dbUser.username }, accessToken);
+
+    console.log("Final JWT Sent to Frontend:", token); // Debugging log
 
     // Redirect frontend with token
     res.redirect(`${process.env.FRONTEND_URL}/github-success?token=${token}`);

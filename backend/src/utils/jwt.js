@@ -13,9 +13,20 @@ export const generateToken = (userData, accessToken) => {
   );
 };
 
+// export const verifyToken = (token) => {
+//   try {
+//     return jwt.verify(token, process.env.JWT_SECRET);
+//   } catch (error) {
+//     throw new Error("Invalid or expired token");
+//   }
+// };
+
+
 export const verifyToken = (token) => {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Verified Token:", decoded); // Debugging log
+    return decoded;
   } catch (error) {
     throw new Error("Invalid or expired token");
   }

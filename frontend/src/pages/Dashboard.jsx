@@ -1,68 +1,98 @@
-// import React, { useEffect, useState } from 'react';
-// import { useNavigate, useLocation } from 'react-router-dom';
-// import axios from 'axios';
-// import { useCookies } from 'react-cookie';
+// import React from 'react'
 
-// const Dashboard = () => {
-//     const navigate = useNavigate();
-//     const location = useLocation();
-//     const [cookies, setCookie, removeCookie] = useCookies(['token']);
-//     const [userData, setUserData] = useState(null);
+// function Dashboard() {
+//   return (
+//     <div>Dashboard</div>
+//   )
+// }
 
-//     useEffect(() => {
-//         const tokenFromQuery = new URLSearchParams(location.search).get('token');
-//         const storedToken = cookies.token || tokenFromQuery;
+// export default Dashboard
 
-//         if (!storedToken) {
-//             navigate('/login');
-//             return;
-//         }
 
-//         if (tokenFromQuery) {
-//             setCookie('token', tokenFromQuery, { path: '/' });
-//             window.history.replaceState({}, document.title, "/dashboard");
-//         }
+// import React, { useState, useEffect } from "react";
+// import RepositoryList from "../components/Github/RepositoryList";
+// import { fetchUserRepos } from "../services/githubServices";
 
-//         const fetchUserData = async () => {
-//           try {
-//               const response = await axios.get('/protected/user', {
-//                   headers: { Authorization: `Bearer ${storedToken}` },
-//               });
-//               console.log('Response:', response); // Add this line
-//               setUserData(response.data.user);
-//           } catch (error) {
-//               console.error('Failed to fetch user data:', error); // Keep this line
-//               console.log("error response", error.response); //add this line.
-//               removeCookie('token', { path: '/' });
-//               navigate('/login');
-//           }
-//       };
+// function Dashboard() {
+//   const [repositories, setRepositories] = useState([]);
+//   const [loading, setLoading] = useState(true);
 
-//         fetchUserData();
-//     }, [navigate, location.search, cookies.token, setCookie, removeCookie]);
+//   useEffect(() => {
+//     const loadRepos = async () => {
+//       try {
+//         const fetchedRepos = await fetchUserRepos();
+//         setRepositories(fetchedRepos);
+//       } catch (error) {
+//         console.error("Failed to load repositories:", error.message);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+//     loadRepos();
+//   }, []);
 
-//     if (!userData) {
-//         return <div>Loading...</div>;
-//     }
+//   const handleManualAnalyze = (repo) => {
+//     console.log("Manual analysis for:", repo.repoName);
+//     // Add manual analysis logic here
+//   };
 
-//     return (
-//         <div className="p-4">
-//             <h1 className="text-2xl font-bold">Dashboard</h1>
-//             <p>Welcome, {userData.username}!</p>
-//             {/* Add your dashboard content here */}
-//         </div>
-//     );
-// };
+//   const handleAutoAnalyze = (repo) => {
+//     console.log("Auto analysis enabled for:", repo.repoName);
+//     // Add auto-analysis logic here
+//   };
+
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
+
+//   return (
+//     <div className="p-5">
+//       <h1 className="text-3xl font-bold mb-4">My GitHub Repositories</h1>
+//       <RepositoryList
+//         repositories={repositories}
+//         onManualAnalyze={handleManualAnalyze}
+//         onAutoAnalyze={handleAutoAnalyze}
+//       />
+//     </div>
+//   );
+// }
 
 // export default Dashboard;
 
+import React, { useState, useEffect } from "react";
+import AnalysisHistory from "../components/Github/AnalysisHistory";
+import UserRepositories from "../components/UserRepositories";
+// import GitHubAnalysis from "./GithubAnalysis";
 
-import React from 'react'
+const Dashboard = () => {
+  const [token, setToken] = useState(null);
 
-function Dashboard() {
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token"); // Ensure the key matches your storage
+    console.log("Stored Token:", storedToken); // Debugging
+
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
   return (
-    <div>Dashboard</div>
-  )
-}
+    <div className="p-6">
+      <div>
+        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+        {token ? (
+          <AnalysisHistory token={token} />
+        ) : (
+          <p className="text-red-500">Please log in with GitHub.</p>
+        )}
+      </div>
 
-export default Dashboard
+      <div>
+          <UserRepositories token={token} />
+      </div>
+    </div>
+    
+  );
+};
+
+export default Dashboard;
