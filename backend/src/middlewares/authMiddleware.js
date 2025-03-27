@@ -11,10 +11,28 @@ export const authenticate = (req, res, next) => {
   const token = authHeader.split(" ")[1];
   try {
     const user = verifyToken(token);
-    console.log("Decoded User:", user); // Log decoded user info to debug
-    req.user = user; // Attach user info to request
+    console.log("Decoded User:", user); // Debugging log
+    req.user = user; // Ensure accessToken is included
     next();
   } catch (error) {
     res.status(401).json({ message: "Unauthorized", error: error.message });
   }
 };
+
+
+// export const authenticate = (req, res, next) => {
+//   const authHeader = req.headers.authorization;
+//   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//     return res.status(401).json({ message: "Unauthorized" });
+//   }
+
+//   const token = authHeader.split(" ")[1];
+//   try {
+//     const user = verifyToken(token);
+//     console.log("Decoded User:", user); // Log decoded user info to debug
+//     req.user = user; // Attach user info to request
+//     next();
+//   } catch (error) {
+//     res.status(401).json({ message: "Unauthorized", error: error.message });
+//   }
+// };
