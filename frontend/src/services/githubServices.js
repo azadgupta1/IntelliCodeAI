@@ -36,6 +36,22 @@ import axios from "axios";
 
 const API_BASE_URL =  "http://localhost:3000";
 
+
+export const fetchRepoFiles = async (owner, repo) => {
+  const response = await axios.get(`${API_BASE_URL}/repos/${owner}/${repo}/files`, {
+    withCredentials: true, // Ensures cookies/session are sent
+  });
+  return response.data.files;
+};
+
+// Analyze a specific file
+export const analyzeGithubFile = async (owner, repo, filePath) => {
+  const response = await axios.get(`${API_BASE_URL}/github/analyze/file/${owner}/${repo}/main/${filePath}`, {
+    withCredentials: true,
+  });
+  return response.data.analysisResult;
+};
+
 export const fetchAnalysisHistory = async (token) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/analysis/history`, {
@@ -61,6 +77,9 @@ export const fetchAnalysisById = async (id, token) => {
     return { success: false, message: "Failed to fetch analysis details" };
   }
 };
+
+
+
 
 
 
