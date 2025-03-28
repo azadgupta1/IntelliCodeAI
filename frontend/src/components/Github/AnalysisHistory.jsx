@@ -48,7 +48,9 @@ const AnalysisHistory = ({ token }) => {
             onClick={() => handleAnalysisClick(analysis.id)}
             className="p-3 bg-white shadow-md rounded cursor-pointer hover:bg-gray-200"
           >
-            <p className="font-semibold">{analysis.file.filename}</p>
+            {/* <p className="font-semibold">{analysis.file.filename}</p> */}
+            <p className="font-semibold">{analysis.file ? analysis.file.filename : "No file associated"}</p>
+
             <p className="text-sm text-gray-500">Analyzed on {new Date(analysis.createdAt).toLocaleString()}</p>
           </li>
         ))}
@@ -57,9 +59,12 @@ const AnalysisHistory = ({ token }) => {
       {selectedAnalysis && (
         <div className="mt-6 p-4 bg-white shadow-md rounded">
           <h3 className="text-lg font-semibold">Analysis Details</h3>
-          <p><strong>File:</strong> {selectedAnalysis.file.filename}</p>
+          {/* <p><strong>File:</strong> {selectedAnalysis.file.filename}</p> */}
+          <p><strong>File:</strong> {selectedAnalysis.file ? selectedAnalysis.file.filename : "No file associated"}</p>
+
           <p><strong>Commit Hash:</strong> {selectedAnalysis.commitHash}</p>
           <p><strong>Result:</strong> {JSON.stringify(selectedAnalysis.result, null, 2)}</p>
+
         </div>
       )}
     </div>

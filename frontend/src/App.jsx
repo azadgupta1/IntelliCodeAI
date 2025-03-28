@@ -75,10 +75,42 @@
 // export default App;
 
 
+// import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+// import GithubSuccess from "./pages/GithubSuccess";
+// import Home from "./pages/Home";
+// import Dashboard from "./pages/Dashboard";
+// import { useEffect, useState } from "react";
+
+// // Auth utility to check if user is authenticated
+// const isAuthenticated = () => !!localStorage.getItem("token");
+
+// // Protected Route component
+// const ProtectedRoute = ({ element }) => {
+//   return isAuthenticated() ? element : <Navigate to="/" />;
+// };
+
+// function App() {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/github-success" element={<GithubSuccess />} />
+//         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+//       </Routes>
+//     </Router>
+//   );
+// }
+
+// export default App;
+
+
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import GithubSuccess from "./pages/GithubSuccess";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import GithubFileAnalysis from "./pages/GithubFileAnalysis"; // ✅ Import analysis page
+import AutoAnalysisStatus from "./pages/AutoAnalysisStatus";
 import { useEffect, useState } from "react";
 
 // Auth utility to check if user is authenticated
@@ -96,6 +128,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/github-success" element={<GithubSuccess />} />
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        
+        {/* ✅ Add Route for Analysis Page */}
+        <Route path="/github/:owner/:repo/analyze" element={<ProtectedRoute element={<GithubFileAnalysis />} />} />
+        <Route path="/auto-analysis-status" element={<AutoAnalysisStatus />} />
       </Routes>
     </Router>
   );
