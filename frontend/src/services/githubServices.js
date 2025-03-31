@@ -140,3 +140,45 @@ export const analyzeFile = async (owner, repo, commitSha, filePath) => {
     return null;
   }
 };
+
+
+// const API_URL = "http://localhost:3000"; // Backend URL
+
+// ✅ Fetch repositories with auto-analysis enabled
+export const fetchAutoAnalysisRepos = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/github/auto-analysis-repos`, {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching auto-analysis repositories:", error);
+    return { success: false, message: "Failed to fetch repositories" };
+  }
+};
+
+
+
+export const fetchRepoAnalysisHistory = async (owner, repo) => {
+  try {
+    const token = localStorage.getItem("token"); // Ensure token exists
+    if (!token) {
+      console.error("No token found in localStorage.");
+      return { success: false, message: "Unauthorized request" };
+    }
+
+    const response = await axios.get(
+      `http://localhost:3000/github/repo/${owner}/${repo}/analysis-history`,
+      {
+        headers: { Authorization: `Bearer ${token}` }, // ✅ Ensure Authorization header is sent
+        // Remove withCredentials if backend does not support cookies
+        // withCredentials: true, 
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching repo analysis history:", error.response?.data || error.message);
+    return { success: false, message: "Failed to fetch analysis history" };
+  }
+};

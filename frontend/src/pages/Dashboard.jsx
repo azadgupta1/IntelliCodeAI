@@ -62,6 +62,7 @@
 import React, { useState, useEffect } from "react";
 import AnalysisHistory from "../components/Github/AnalysisHistory";
 import UserRepositories from "../components/UserRepositories";
+import Header from "../components/Header";
 // import GitHubAnalysis from "./GithubAnalysis";
 
 const Dashboard = () => {
@@ -78,6 +79,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
+      <Header /> 
       <div>
         <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
         {token ? (
