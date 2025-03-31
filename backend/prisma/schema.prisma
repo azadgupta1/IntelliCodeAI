@@ -70,6 +70,8 @@ model User {
   githubAccessToken String?      
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
+  avatarUrl         String?
+  bio               String?
 
   files             File[]        // One-to-many relation with File
   analysis          Analysis[]    // One-to-many relation with Analysis
@@ -97,6 +99,9 @@ model Analysis {
   file       File?     @relation(name: "FileToAnalysis", fields: [fileId], references: [id], onDelete: Cascade)
   userId     Int?     // Allow anonymous analysis
   user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // ✅ New relation: An analysis belongs to a repo
+  githubRepoId Int?
+  githubRepo   GithubRepo? @relation(name: "RepoToAnalysis", fields: [githubRepoId], references: [id], onDelete: Cascade)
 }
 
 
@@ -109,6 +114,9 @@ model GithubRepo {
   ownerName  String
   webhookId   String? // Store GitHub Webhook ID if auto-analysis is enabled
   autoAnalyze Boolean @default(false)
+
+  analyses    Analysis[] @relation(name: "RepoToAnalysis") 
+
 
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
