@@ -1,40 +1,110 @@
-// // src/services/githubServices.js
-// import axios from "axios";
+import axios from "axios";
 
-// const api = axios.create({
-//   baseURL: "http://localhost:3000", // Adjust the backend URL if needed
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
+const API_BASE_URL =  "http://localhost:3000";
 
-// // Fetch User Repositories
-// export const fetchUserRepos = async () => {
+
+// Fetch AI-fixed code
+// export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
 //   try {
-//     // Get the token from localStorage (assuming you store it after login)
-//     const token = localStorage.getItem("accessToken");
+//     const res = await axios.get(`${API_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//       withCredentials: true,
+//     });
+//     return { success: true, fixedCode: res.data.fixedCode };
+//   } catch (err) {
+//     return { success: false };
+//   }
+// };
 
-//     if (!token) {
-//       throw new Error("GitHub access token is missing");
-//     }
+export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
+  try {
+    const url = `${API_BASE_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`;
+    console.log("🌐 fetchAIFixedCode URL:", url);
 
-//     const response = await api.get("/github/repos", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
+    const res = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
+
+    console.log("🧠 Backend AI Fixed Code Response:", res.data);
+
+    return { success: true, 
+            fixedCode: res.data.fixed,
+            originalCode: res.data.original,
+          };
+    
+  } catch (err) {
+    console.error("❌ fetchAIFixedCode error:", err.response?.data || err.message);
+    return { success: false };
+  }
+};
+
+
+// Commit the AI fix
+// export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, fixedCode, token) => {
+//   try {
+//     const res = await axios.post(`${API_URL}/api/fix/commit-fixed-code`, {
+//       owner,
+//       repo,
+//       commitSha,
+//       filePath,
+//       fixedCode,
+//     }, {
+//       headers: { Authorization: `Bearer ${token}` },
+//       withCredentials: true,
 //     });
 
-//     return response.data.repositories;
-//   } catch (error) {
-//     console.error("Error fetching user repositories:", error.response?.data || error.message);
-//     throw error;
+//     return { success: true, data: res.data };
+//   } catch (err) {
+//     return { success: false };
 //   }
 // };
 
 
-import axios from "axios";
+export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, fixedCode, token) => {
+  console.log('🚀 Calling commit API with:', {
+    owner,
+    repo,
+    commitSha,
+    filePath,
+    hasCode: !!fixedCode,
+    hasToken: !!token,
+  });
 
-const API_BASE_URL =  "http://localhost:3000";
+  try {
+    const res = await axios.post(`${API_URL}/api/fix/commit-fixed-code`, {
+      owner,
+      repo,
+      filePath,
+      fixedCode,
+    }, {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
+
+    console.log('✅ Commit API Success:', res.data);
+
+    return { success: true, data: res.data };
+  } catch (err) {
+    console.error('❌ Commit API Error:', err.response?.data || err.message);
+    return { success: false, error: err.response?.data || err.message };
+  }
+};
+
+
+export const fetchGithubRepoById = async (repoId, token) => {
+  try {
+    const res = await axios.get(`${API_URL}/github/repos/id/${repoId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
+    return { success: true, data: res.data.repo };
+  } catch (error) {
+    return { success: false, message: "Failed to fetch repo info" };
+  }
+};
+
+
 
 
 export const fetchRepoFiles = async (owner, repo) => {
