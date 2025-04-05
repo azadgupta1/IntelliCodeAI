@@ -1,7 +1,7 @@
 import express from "express";
 import { fetchUserRepos, fetchCommitDetails, fetchFileContent, fetchRepoFiles, 
     githubFileAnalysis, enableAutoAnalysisController, getAutoAnalysisStatusController,
-    getAutoAnalysisRepos, getRepoAnalysisHistory, disableAutoAnalysisController } from "../controllers/githubController.js";
+    getAutoAnalysisRepos, getRepoAnalysisHistory, disableAutoAnalysisController, getRepoById } from "../controllers/githubController.js";
 import { handleGitHubWebhook } from "../controllers/webhookController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
@@ -29,6 +29,10 @@ router.get("/auto-analysis-repos", authenticate, getAutoAnalysisRepos);
 
 // ✅ Fetch analysis history of a specific repo (Renamed to avoid conflicts)
 router.get("/repo/:owner/:repo/analysis-history", authenticate, getRepoAnalysisHistory);
+
+
+router.get("/repos/id/:repoId", authenticate, getRepoById);
+
 
 
 export default router;

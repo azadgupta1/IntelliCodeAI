@@ -541,3 +541,24 @@ export const fetchRepoFiles = async (req, res) => {
     });
   }
 };
+
+
+
+export const getRepoById = async (req, res) => {
+  const { repoId } = req.params;
+
+  try {
+    const repo = await prisma.githubRepo.findUnique({
+      where: { id: parseInt(repoId) },
+    });
+
+    if (!repo) {
+      return res.status(404).json({ message: "Repository not found" });
+    }
+
+    return res.json({ repo });
+  } catch (error) {
+    console.error("Error fetching repo by ID:", error);
+    return res.status(500).json({ message: "Failed to fetch repository" });
+  }
+};
