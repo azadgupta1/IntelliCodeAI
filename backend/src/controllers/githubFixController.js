@@ -145,52 +145,6 @@ export const generateFixedCode = async (req, res) => {
   }
 };
 
-// export const commitFixedCode = async (req, res) => {
-//   try {
-//     const { owner, repo, filePath, fixedCode } = req.body;
-//     const user = req.user; // Verified token
-
-//     const octokit = new Octokit({ auth: user.accessToken });
-
-//     // 1. Fetch the file to get its SHA
-//     const { data: fileData } = await octokit.request(
-//       'GET /repos/{owner}/{repo}/contents/{path}',
-//       {
-//         owner,
-//         repo,
-//         path: filePath,
-//       }
-//     );
-
-//     const fileSha = fileData.sha;
-
-//     // 2. Encode the fixed code to base64
-//     const encodedContent = Buffer.from(fixedCode).toString('base64');
-
-//     // 3. Update (commit) the file
-//     await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-//       owner,
-//       repo,
-//       path: filePath,
-//       message: `AI fix applied via IntelliCodeAI: ${filePath}`,
-//       content: encodedContent,
-//       sha: fileSha, // ✅ required!
-//     });
-
-//     return res.status(200).json({
-//       success: true,
-//       message: 'AI fixed code committed successfully!',
-//     });
-//   } catch (error) {
-//     console.error('❌ Error committing fixed code:', error);
-//     return res.status(500).json({
-//       success: false,
-//       message: 'Commit failed',
-//       error: error.message || 'Something went wrong',
-//     });
-//   }
-// };
-
 
 export const commitFixedCode = async (req, res) => {
   try {
