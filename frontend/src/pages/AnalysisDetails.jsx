@@ -522,7 +522,7 @@ const AnalysisDetails = () => {
   if (!analysis) return <p className="text-center">No analysis details found.</p>;
 
   return (
-    <div className="p-6 bg-white dark:bg-gray-900 text-black dark:text-white shadow-md rounded-lg max-w-6xl mx-auto mt-8">
+    <div className="p-6 bg-white dark:bg-gray-900 text-blue dark:text-white shadow-md rounded-lg max-w-6xl mx-auto mt-8">
       <h2 className="text-2xl font-semibold mb-4">Analysis Details</h2>
 
       <p>

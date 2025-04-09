@@ -59,41 +59,113 @@
 
 // export default Dashboard;
 
+// import React, { useState, useEffect } from "react";
+// import AnalysisHistory from "../components/Github/AnalysisHistory";
+// import UserRepositories from "../components/UserRepositories";
+// import Header from "../components/Header";
+// // import GitHubAnalysis from "./GithubAnalysis";
+
+// const Dashboard = () => {
+//   const [token, setToken] = useState(null);
+
+//   useEffect(() => {
+//     const storedToken = localStorage.getItem("token"); // Ensure the key matches your storage
+//     console.log("Stored Token:", storedToken); // Debugging
+
+//     if (storedToken) {
+//       setToken(storedToken);
+//     }
+//   }, []);
+
+//   return (
+//     <div className="p-6">
+//       <Header /> 
+//       <div>
+//         <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+//         {token ? (
+//           <AnalysisHistory token={token} />
+//         ) : (
+//           <p className="text-red-500">Please log in with GitHub.</p>
+//         )}
+//       </div>
+
+//       <div>
+//           <UserRepositories token={token} />
+//       </div>
+//     </div>
+    
+//   );
+// };
+
+// export default Dashboard;
+
+
+// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import AnalysisHistory from "../components/Github/AnalysisHistory";
 import UserRepositories from "../components/UserRepositories";
+import AutoAnalysisStatus from "./AutoAnalysisStatus";
 import Header from "../components/Header";
-// import GitHubAnalysis from "./GithubAnalysis";
+import { FaHistory, FaFolderOpen, FaRobot } from "react-icons/fa";
 
 const Dashboard = () => {
   const [token, setToken] = useState(null);
+  const [activeTab, setActiveTab] = useState("analysis");
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token"); // Ensure the key matches your storage
-    console.log("Stored Token:", storedToken); // Debugging
-
-    if (storedToken) {
-      setToken(storedToken);
-    }
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) setToken(storedToken);
   }, []);
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case "analysis":
+        return <AnalysisHistory token={token} />;
+      case "repos":
+        return <UserRepositories token={token} />;
+      case "auto":
+        return <AutoAnalysisStatus token={token} />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="p-6">
-      <Header /> 
-      <div>
-        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-        {token ? (
-          <AnalysisHistory token={token} />
-        ) : (
-          <p className="text-red-500">Please log in with GitHub.</p>
-        )}
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900 text-black">
+      {/* Sidebar */}
+      <div className="w-20 sm:w-56 bg-gray-800 text-white flex flex-col items-center sm:items-start py-6">
+        <h2 className="text-lg font-bold px-4 hidden sm:block mb-6">IntelliCodeAI</h2>
+        <button
+          className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-700 ${activeTab === "analysis" ? "bg-gray-700" : ""}`}
+          onClick={() => setActiveTab("analysis")}
+        >
+          <FaHistory /> <span className="hidden sm:inline">Analysis History</span>
+        </button>
+        <button
+          className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-700 ${activeTab === "repos" ? "bg-gray-700" : ""}`}
+          onClick={() => setActiveTab("repos")}
+        >
+          <FaFolderOpen /> <span className="hidden sm:inline">Repositories</span>
+        </button>
+        <button
+          className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-700 ${activeTab === "auto" ? "bg-gray-700" : ""}`}
+          onClick={() => setActiveTab("auto")}
+        >
+          <FaRobot /> <span className="hidden sm:inline">Auto Analysis</span>
+        </button>
       </div>
 
-      <div>
-          <UserRepositories token={token} />
+      {/* Main Content */}
+      <div className="flex-1 p-6 overflow-y-auto">
+        <Header />
+        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        {!token ? (
+          <p className="text-red-500">Please log in with GitHub.</p>
+        ) : (
+          renderContent()
+        )}
       </div>
     </div>
-    
   );
 };
 
