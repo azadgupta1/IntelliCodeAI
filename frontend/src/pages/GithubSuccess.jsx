@@ -9,7 +9,7 @@ const GithubSuccess = () => {
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
-      navigate("/dashboard");
+      navigate("/organisations");
     } else {
       navigate("/login");
     }

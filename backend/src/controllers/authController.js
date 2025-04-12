@@ -121,8 +121,8 @@ export const githubCallback = async (req, res) => {
     // Save or update user in the database
     const dbUser = await prisma.user.upsert({
       where: { githubId: user.id.toString() },
-      update: { username: user.login, email: userEmail, githubAccessToken: accessToken },
-      create: { githubId: user.id.toString(), username: user.login, email: userEmail, githubAccessToken: accessToken },
+      update: { username: user.login, email: userEmail, githubAccessToken: accessToken, avatarUrl: user.avatar_url, },
+      create: { githubId: user.id.toString(), username: user.login, email: userEmail, githubAccessToken: accessToken, avatarUrl: user.avatar_url, },
     });
 
     // Generate a JWT token with accessToken
