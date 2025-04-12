@@ -23,24 +23,24 @@
 //   export default HowItWorks;
   
 
-const HowItWorks = () => {
-  return (
-    <section className="py-20 bg-gray-900 text-white text-center">
-      <h2 className="text-4xl font-bold mb-10 text-indigo-400">⚡ How It Works</h2>
-      <div className="space-y-8">
-        {[
-          { step: "1️⃣", text: "Upload file → AI checks bugs & improvements" },
-          { step: "2️⃣", text: "Connect GitHub → Analyze commits automatically" },
-          { step: "3️⃣", text: "View AI insights & suggestions" }
-        ].map((item, index) => (
-          <div key={index} className="flex justify-center items-center gap-6 animate-slide-in">
-            <span className="text-4xl text-indigo-400">{item.step}</span>
-            <p className="text-lg text-gray-300">{item.text}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
+// const HowItWorks = () => {
+//   return (
+//     <section className="py-20 bg-gray-900 text-white text-center">
+//       <h2 className="text-4xl font-bold mb-10 text-indigo-400">⚡ How It Works</h2>
+//       <div className="space-y-8">
+//         {[
+//           { step: "1️⃣", text: "Upload file → AI checks bugs & improvements" },
+//           { step: "2️⃣", text: "Connect GitHub → Analyze commits automatically" },
+//           { step: "3️⃣", text: "View AI insights & suggestions" }
+//         ].map((item, index) => (
+//           <div key={index} className="flex justify-center items-center gap-6 animate-slide-in">
+//             <span className="text-4xl text-indigo-400">{item.step}</span>
+//             <p className="text-lg text-gray-300">{item.text}</p>
+//           </div>
+//         ))}
+//       </div>
+//     </section>
+//   );
+// };
 
-export default HowItWorks;
+// export default HowItWorks;
