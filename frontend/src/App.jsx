@@ -23,6 +23,9 @@ import Policies from "./pages/Policies";
 import Security from "./pages/Security";
 import Settings from "./pages/Settings";
 import Overview from "./pages/Overview";
+import AnalysisHistory from "./components/Github/AnalysisHistory";
+import RepoAnalysisPage from "./pages/RepoAnalysisPage";
+import RepositoryLayout from "./layouts/RepositoryLayout";
 
 // Auth utility
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -51,6 +54,15 @@ function App() {
         <Route path="/" element={<HeaderLayout />}>
           <Route path="organisations" element={<ProtectedRoute element={<Organisations />} />} />
           <Route path="github-dashboard" element={<ProtectedRoute element={<GithubDashboard />} />} />
+          <Route path="repositories/:owner/:repo" element={<RepositoryLayout />} >
+              <Route index element={<Overview />} /> {/* <-- default route */}
+              <Route path="overview" element={<Overview />} />
+               {/* <Route path="commits" element={<Commits />} />
+               <Route path="files" element={<Files />} /> */}
+               <Route path="issues" element={<RepoAnalysisPage />} />
+               {/* <Route path="pulls" element={<Pulls />} /> */}
+               <Route path="settings" element={<Settings />} />
+          </Route>
 
           <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} />}>
             <Route index element={<Overview />} />
@@ -58,6 +70,7 @@ function App() {
             <Route path="policies" element={<Policies />} />
             <Route path="security" element={<Security />} />
             <Route path="settings" element={<Settings />} />
+            
           </Route>
         </Route>
 
@@ -66,6 +79,8 @@ function App() {
         <Route path="/auto-analysis-status" element={<ProtectedRoute element={<AutoAnalysisStatus />} />} />
         <Route path="/profile" element={<ProtectedRoute element={<UserProfile />} />} />
         <Route path="/analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} />
+        <Route path="/analysis-history" element={<ProtectedRoute element={<AnalysisHistory />} />} />
+
       </Routes>
     </Router>
   );
