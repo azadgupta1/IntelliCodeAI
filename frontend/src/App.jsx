@@ -26,6 +26,10 @@ import Overview from "./pages/Overview";
 import AnalysisHistory from "./components/Github/AnalysisHistory";
 import RepoAnalysisPage from "./pages/RepoAnalysisPage";
 import RepositoryLayout from "./layouts/RepositoryLayout";
+import UserRepositories from "./components/UserRepositories";
+import RepoFiles from "./components/Github/RepoFiles";
+import CommitsPage from "./pages/CommitPage";
+import Pulls from "./pages/Pulls";
 
 // Auth utility
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -57,10 +61,10 @@ function App() {
           <Route path="repositories/:owner/:repo" element={<RepositoryLayout />} >
               <Route index element={<Overview />} /> {/* <-- default route */}
               <Route path="overview" element={<Overview />} />
-               {/* <Route path="commits" element={<Commits />} />
-               <Route path="files" element={<Files />} /> */}
+               <Route path="commits" element={<CommitsPage />} />
+               <Route path="files" element={<GithubFileAnalysis />} />
                <Route path="issues" element={<RepoAnalysisPage />} />
-               {/* <Route path="pulls" element={<Pulls />} /> */}
+               <Route path="pulls" element={<Pulls />} />
                <Route path="settings" element={<Settings />} />
           </Route>
 
@@ -80,7 +84,7 @@ function App() {
         <Route path="/profile" element={<ProtectedRoute element={<UserProfile />} />} />
         <Route path="/analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} />
         <Route path="/analysis-history" element={<ProtectedRoute element={<AnalysisHistory />} />} />
-
+        <Route path="/analyze-manually" element={<UserRepositories />} />
       </Routes>
     </Router>
   );
