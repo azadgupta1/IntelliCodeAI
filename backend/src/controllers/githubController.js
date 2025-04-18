@@ -562,3 +562,78 @@ export const getRepoById = async (req, res) => {
     return res.status(500).json({ message: "Failed to fetch repository" });
   }
 };
+
+
+export const fetchRepoCommits = async (req, res) => {
+  try {
+    const { owner, repo } = req.params;
+    const githubToken = req.user.accessToken;
+
+    if (!githubToken) {
+      return res.status(401).json({ message: "GitHub access token is missing" });
+    }
+
+    const commitsUrl = `https://api.github.com/repos/${owner}/${repo}/commits`;
+
+    const response = await axios.get(commitsUrl, {
+      headers: { Authorization: `Bearer ${githubToken}` },
+    });
+
+    const commits = response.data;
+
+    res.status(200).json({
+      message: "Commits fetched successfully",
+      commits,
+    });
+  } catch (error) {
+    console.error("Error fetching commits:", error);
+    res.status(500).json({
+      message: "Failed to fetch commits",
+      error: error.response?.data?.message || error.message,
+    });
+  }
+};
+
+
+
+export const fetchPullRequests = async (req, res) => {
+  try {
+    const { owner, repo } = req.params;
+    const githubToken = req.user.accessToken;
+
+    if (!githubToken) {
+      return res.status(401).json({ message: "GitHub access token is missing" });
+    }
+
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls?state=all`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${githubToken}` },
+    });
+
+    const pullRequests = response.data.map(pr => ({
+      id: pr.id,
+      number: pr.number,
+      title: pr.title,
+      state: pr.state,
+      created_at: pr.created_at,
+      updated_at: pr.updated_at,
+      merged_at: pr.merged_at,
+      user: {
+        login: pr.user.login,
+        avatar_url: pr.user.avatar_url,
+      },
+      html_url: pr.html_url,
+    }));
+
+    res.status(200).json({
+      message: "Pull requests fetched successfully",
+      pullRequests,
+    });
+  } catch (error) {
+    console.error("Error fetching pull requests:", error);
+    res.status(500).json({
+      message: "Failed to fetch pull requests",
+      error: error.response?.data?.message || error.message,
+    });
+  }
+};
