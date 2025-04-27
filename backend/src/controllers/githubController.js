@@ -637,3 +637,37 @@ export const fetchPullRequests = async (req, res) => {
     });
   }
 };
+
+
+
+
+// inside githubController.js
+// const prisma = require('../prismaClient'); // or wherever your Prisma instance is
+
+export const getRepoErrors = async (req, res) => {
+  try {
+    const { ownerName, repo } = req.params;
+
+    const repoData = await prisma.GithubRepo.findFirst({
+      where: {
+        ownerName,
+        repoName: repo,
+      },
+      select: {
+        errorCount: true, // assuming you have this field
+      },
+    });
+
+    console.log(repoData);
+
+    if (!repoData) {
+      return res.status(404).json({ success: false, message: "Repository not found" });
+    }
+
+    res.json({ success: true, errorCount: repoData.errorCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
