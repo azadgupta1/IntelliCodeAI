@@ -30,6 +30,7 @@ import UserRepositories from "./components/UserRepositories";
 import RepoFiles from "./components/Github/RepoFiles";
 import CommitsPage from "./pages/CommitPage";
 import Pulls from "./pages/Pulls";
+import RepoOverview from "./pages/RepoOverview";
 
 // Auth utility
 const isAuthenticated = () => !!localStorage.getItem("token");
@@ -59,8 +60,8 @@ function App() {
           <Route path="organisations" element={<ProtectedRoute element={<Organisations />} />} />
           <Route path="github-dashboard" element={<ProtectedRoute element={<GithubDashboard />} />} />
           <Route path="repositories/:owner/:repo" element={<RepositoryLayout />} >
-              <Route index element={<Overview />} /> {/* <-- default route */}
-              <Route path="overview" element={<Overview />} />
+              <Route index element={<RepoOverview />} /> {/* <-- default route */}
+              <Route path="repooverview" element={<RepoOverview />} />
                <Route path="commits" element={<CommitsPage />} />
                <Route path="files" element={<GithubFileAnalysis />} />
                <Route path="issues" element={<RepoAnalysisPage />} />

@@ -252,3 +252,28 @@ export const fetchRepoAnalysisHistory = async (owner, repo) => {
     return { success: false, message: "Failed to fetch analysis history" };
   }
 };
+
+
+
+export const fetchRepoErrors = async (owner, repo) =>{
+    try{
+      const token = localStorage.getItem("token");
+      if(!token){
+        console.error("No token found in the localStorage");
+        return { success: false, message: "Unauthorised request"};
+      }
+
+      const respone = await axios.get(
+        `http://localhost:3000/github/errors/${owner}/${repo}`,
+        {
+            headers: {Authorization: `Bearer ${token}`},
+        }
+      );
+
+      return respone.data;
+
+    }catch(error){
+      console.error("Error fetching repo errors: ", error.response?.data || error.data);
+      return { success: false, message: "Failed to fetch repo errors"};
+    }
+};

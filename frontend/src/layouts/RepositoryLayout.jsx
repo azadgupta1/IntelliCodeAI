@@ -15,7 +15,7 @@ const RepositoryLayout = () => {
   const navigate = useNavigate();
 
   const menu = [
-    { label: "Overview", path: "overview", icon: <FaTachometerAlt size={20} /> },
+    { label: "RepoOverview", path: "repooverview", icon: <FaTachometerAlt size={20} /> },
     { label: "Commits", path: "commits", icon: <FaCodeBranch size={20} /> },
     { label: "Files", path: "files", icon: <FaFileAlt size={20} /> },
     { label: "Issues", path: "issues", icon: <FaExclamationCircle size={20} /> },

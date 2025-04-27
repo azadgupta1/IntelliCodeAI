@@ -646,6 +646,22 @@ export const handleGitHubWebhook = async (req, res) => {
         const analysisResult = await analyzeCode(fileContent);
         console.log(`🔄 AI API Response:`, analysisResult);
 
+        const numErrors = analysisResult.errors?.length || 0;
+
+        if (numErrors > 0) {
+          console.log(`➕ Adding ${numErrors} errors to repo: ${repo.repoName}`);
+
+          // Update the errorCount in the repo
+          await prisma.githubRepo.update({
+            where: { id: repo.id },
+            data: {
+              errorCount: {
+                increment: numErrors, // 🆕 Increment errorCount
+              },
+            },
+          });
+        }
+
         // Ensure file exists in the database and get fileId
         const dbFile = await prisma.file.upsert({
           where: { fileUrl },
