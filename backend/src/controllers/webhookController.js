@@ -647,6 +647,13 @@ export const handleGitHubWebhook = async (req, res) => {
         console.log(`🔄 AI API Response:`, analysisResult);
 
         const numErrors = analysisResult.errors?.length || 0;
+        const numSuggestions = analysisResult.suggestions?.length || 0;
+        const numOptimizations = analysisResult.optimizations?.length || 0;
+
+        console.log("Errors COUNT IS ------------------", numErrors);
+        console.log("Suggestion COUNT IS ------------------", numSuggestions);
+        console.log("Optimization COUNT IS -----------", numOptimizations);
+
 
         if (numErrors > 0) {
           console.log(`➕ Adding ${numErrors} errors to repo: ${repo.repoName}`);
@@ -679,6 +686,9 @@ export const handleGitHubWebhook = async (req, res) => {
             commitHash: commitSha,
             result: analysisResult,
             githubRepoId: repo.id, // ✅ Storing repo's GitHub ID
+            errorCnt: numErrors,
+            suggestionCnt: numSuggestions,
+            optimizationCnt: numOptimizations,
           },
         });
 

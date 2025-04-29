@@ -232,6 +232,9 @@ export const analyzeFile = async (req, res) => {
 // Analyze a GitHub file manually
 export const analyzeGithubFile = async (req, res) => {
   try {
+
+
+    console.log("CHECK   -------------------------      CHECK");
     console.log("Request Data:", req.body);
 
 
@@ -250,17 +253,42 @@ export const analyzeGithubFile = async (req, res) => {
       }
 
       // Perform AI analysis using OpenRouter API
-      const analysisResult = await analyzeCode(fileContent);
+      const analysisCount = await analyzeCode(fileContent);
+
+      // const analysisCount = JSON.parse(analysisResult);
+
+
+      console.log("CHECK 1: ", analysisCount);
+
+        const errorCount = analysisCount.errors ? analysisCount.errors.length : 0;
+        const suggestionCount = analysisCount.suggestions ? analysisCount.suggestions.length : 0;
+        const optimizationCount = analysisCount.optimizations ? analysisCount.optimizations.length : 0;
+
+        // You can store it in a variable if needed:
+
+        console.log("Error Count IS HERE",errorCount);
+        const analysisSummary = {
+          errorCount,
+          suggestionCount,
+          optimizationCount
+        };
+
+        console.log(analysisSummary);
+
+
 
       // Save analysis result in DB
       const analysis = await prisma.analysis.create({
           data: {
               userId,
               fileId: null, // Since it's from GitHub, no direct fileId
-              result: analysisResult,
+              result: analysisCount,
               commitHash: commitSha,
+              errorCnt: analysisSummary.errorCount,
           },
       });
+
+      console.log(analysis);
 
       res.json({ message: "Analysis completed", analysis });
   } catch (error) {
