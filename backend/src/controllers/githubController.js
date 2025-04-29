@@ -26,6 +26,36 @@ export const getAutoAnalysisRepos = async (req, res) => {
 
 
 
+// export const getRepoAnalysisHistory = async (req, res) => {
+//   try {
+//     const { owner, repo } = req.params;
+//     const userId = req.user.id; // Authenticated user
+
+//     console.log(`📌 Fetching analysis for repo: ${repo}, owner: ${owner}, userId: ${userId}`);
+
+//     // Find the repo owned by the user
+//     const githubRepo = await prisma.githubRepo.findFirst({
+//       where: { ownerName: owner, repoName: repo, userId },
+//       include: { analyses: { include: { file: true } } }, // ✅ Ensure files are included
+//     });
+
+//     if (!githubRepo) {
+//       console.warn(`🚫 Repository ${repo} not found or not owned by user ${userId}`);
+//       return res.status(404).json({ success: false, message: "Repository not found or not owned by user" });
+//     }
+
+//     console.log("✅ Found analysis data:", githubRepo.analyses);
+//     // console.log("✅ Analysis Result Example:", githubRepo.analyses[0]?.result);
+
+//     res.json({ success: true, analyses: githubRepo.analyses });
+
+//   } catch (error) {
+//     console.error("❌ Error fetching repo analysis history:", error.message);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
+
+
 export const getRepoAnalysisHistory = async (req, res) => {
   try {
     const { owner, repo } = req.params;
@@ -33,10 +63,9 @@ export const getRepoAnalysisHistory = async (req, res) => {
 
     console.log(`📌 Fetching analysis for repo: ${repo}, owner: ${owner}, userId: ${userId}`);
 
-    // Find the repo owned by the user
     const githubRepo = await prisma.githubRepo.findFirst({
       where: { ownerName: owner, repoName: repo, userId },
-      include: { analyses: { include: { file: true } } }, // ✅ Ensure files are included
+      include: { analyses: { include: { file: true } } }, 
     });
 
     if (!githubRepo) {
@@ -44,14 +73,28 @@ export const getRepoAnalysisHistory = async (req, res) => {
       return res.status(404).json({ success: false, message: "Repository not found or not owned by user" });
     }
 
-    console.log("✅ Found analysis data:", githubRepo.analyses);
-    res.json({ success: true, analyses: githubRepo.analyses });
+    // Map over analyses and add count fields
+    const modifiedAnalyses = githubRepo.analyses.map((analysis) => {
+      const result = analysis.result || { errors: [], suggestions: [], optimizations: [] };
+
+      return {
+        ...analysis,
+        errorCount: result.errors?.length || 0,
+        suggestionCount: result.suggestions?.length || 0,
+        optimizationCount: result.optimizations?.length || 0,
+      };
+    });
+
+    console.log("✅ Modified analyses with counts:", modifiedAnalyses);
+
+    res.json({ success: true, analyses: modifiedAnalyses });
 
   } catch (error) {
     console.error("❌ Error fetching repo analysis history:", error.message);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
 
 
 

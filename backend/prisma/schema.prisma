@@ -49,6 +49,10 @@ model Analysis {
   // ✅ New relation: An analysis belongs to a repo
   githubRepoId Int?
   githubRepo   GithubRepo? @relation(name: "RepoToAnalysis", fields: [githubRepoId], references: [id], onDelete: Cascade)
+
+  errorCnt   Int       @default(0)
+  suggestionCnt Int     @default(0)
+  optimizationCnt  Int @default(0)
 }
 
 
