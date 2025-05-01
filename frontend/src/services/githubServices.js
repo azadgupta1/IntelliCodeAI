@@ -61,7 +61,7 @@ export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) 
 // };
 
 
-export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, fixedCode, token) => {
+export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, fixedCode, token, numErrors, githubRepoId) => {
   console.log('🚀 Calling commit API with:', {
     owner,
     repo,
@@ -77,6 +77,8 @@ export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, 
       repo,
       filePath,
       fixedCode,
+      githubRepoId,         
+      fixedErrorCount: numErrors,
     }, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
@@ -276,4 +278,29 @@ export const fetchRepoErrors = async (owner, repo) =>{
       console.error("Error fetching repo errors: ", error.response?.data || error.data);
       return { success: false, message: "Failed to fetch repo errors"};
     }
+};
+
+
+
+
+
+export const ignoreAnalysis = async (owner, repo, analysisId, token) => {
+  const response = await fetch(`${API_BASE_URL}/analysis/ignored-analysis`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      owner,
+      repo,
+      analysisId,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to ignore analysis");
+  }
+
+  return await response.json();
 };
