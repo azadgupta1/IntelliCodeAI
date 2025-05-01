@@ -20,6 +20,66 @@ export const getAnalysisHistory = async (req, res) => {
   }
 };
 
+// export const commitAnalysis = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const analysis = await prisma.analysis.findUnique({ where: { id } });
+
+//     if (!analysis) {
+//       return res.status(404).json({ success: false, message: "Analysis not found." });
+//     }
+
+//     if (analysis.isCommitted) {
+//       return res.status(200).json({ success: true, alreadyCommitted: true });
+//     }
+
+//     await prisma.analysis.update({
+//       where: { id },
+//       data: { isCommitted: true },
+//     });
+
+//     res.json({ success: true, alreadyCommitted: false });
+//   } catch (error) {
+//     console.error("Error committing analysis:", error);
+//     res.status(500).json({ success: false, message: "Failed to commit analysis" });
+//   }
+// };
+
+export const commitAnalysis = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const numericId = parseInt(id, 10);
+
+    if (isNaN(numericId)) {
+      return res.status(400).json({ success: false, message: "Invalid analysis ID" });
+    }
+
+    const analysis = await prisma.analysis.findUnique({
+      where: { id: numericId },
+    });
+
+    if (!analysis) {
+      return res.status(404).json({ success: false, message: "Analysis not found." });
+    }
+
+    if (analysis.isCommited) {
+      return res.status(200).json({ success: true, alreadyCommitted: true });
+    }
+
+    await prisma.analysis.update({
+      where: { id: numericId },
+      data: { isCommited: true },
+    });
+
+    res.json({ success: true, alreadyCommitted: false });
+  } catch (error) {
+    console.error("Error committing analysis:", error);
+    res.status(500).json({ success: false, message: "Failed to commit analysis" });
+  }
+};
+
+
 
 // export const getAnalysisHistory = async (req, res) => {
 //   try {

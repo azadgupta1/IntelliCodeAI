@@ -26,6 +26,54 @@ const HeroSection = () => {
 
 export default HeroSection;
 
+// import React from "react";
+
+// const HeroSection = () => {
+//   return (
+//     <section className="relative min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden text-white">
+//       <div className="absolute w-full h-full perspective-3d">
+//         {/* Dev Branch */}
+//         <div className="absolute left-10 top-1/2 transform -translate-y-1/2 z-10">
+//           <div className="bg-blue-600 p-4 rounded-xl shadow-lg transform rotate-y-[-20deg]">
+//             <h2 className="text-lg font-semibold">dev branch</h2>
+//             <div className="mt-2 text-sm text-blue-200">commits & code...</div>
+//           </div>
+//           {/* Flow line to IntelliCodeAI */}
+//           <div className="w-48 h-2 bg-gradient-to-r from-blue-600 to-purple-600 mt-4 rounded-full animate-flow-left"></div>
+//         </div>
+
+//         {/* IntelliCodeAI center */}
+//         <div className="relative z-20 flex flex-col items-center justify-center transform scale-110">
+//           <div className="bg-gradient-to-br from-purple-700 via-indigo-800 to-purple-900 p-8 rounded-3xl shadow-2xl border border-white/10 text-center transform rotate-y-0">
+//             <h1 className="text-3xl font-bold">IntelliCode<span className="text-pink-400">AI</span></h1>
+//             <p className="mt-2 text-sm text-purple-200">Analyzing & reviewing code...</p>
+//           </div>
+//         </div>
+
+//         {/* Flow to main branch */}
+//         <div className="absolute right-10 top-1/2 transform -translate-y-1/2 z-10 text-right">
+//           <div className="w-48 h-2 bg-gradient-to-l from-green-400 to-purple-600 mb-4 rounded-full animate-flow-right"></div>
+//           <div className="bg-green-600 p-4 rounded-xl shadow-lg transform rotate-y-[20deg]">
+//             <h2 className="text-lg font-semibold">main branch</h2>
+//             <div className="mt-2 text-sm text-green-200">production ready 🚀</div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Optional title overlay */}
+//       <div className="absolute top-10 text-center w-full z-30">
+//         <h1 className="text-4xl font-bold tracking-tight">
+//           Transform Your Code Flow with <span className="text-pink-500">IntelliCodeAI</span>
+//         </h1>
+//         <p className="mt-2 text-gray-400">Where code meets intelligence.</p>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default HeroSection;
+
+
 
 
 

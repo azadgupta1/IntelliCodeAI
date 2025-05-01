@@ -137,6 +137,43 @@ export const fetchAnalysisHistory = async (token) => {
   }
 };
 
+// export const markAsCommitted = async (analysisId, token) => {
+//   try {
+//     const res = await fetch(`${API_BASE_URL}/analysis/${analysisId}/commit`, {
+//       method: "PATCH",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+
+//     return await res.json();
+//   } catch (error) {
+//     console.error("Error marking analysis as committed:", error);
+//     return { success: false };
+//   }
+// };
+
+export const markAsCommitted = async (analysisId, token) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/analysis/${parseInt(analysisId, 10)}/commit`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error marking analysis as committed:", error);
+    return { success: false };
+  }
+};
+
+
+
+
 export const fetchAnalysisById = async (id, token) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/analysis/${id}`, {

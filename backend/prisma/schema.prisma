@@ -55,6 +55,7 @@ model Analysis {
   optimizationCnt  Int @default(0)
 
   ignored      Boolean  @default(false)
+  isCommited   Boolean    @default(false)
 }
 
 
