@@ -1,5 +1,3 @@
-
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); // Ensure API key is set
@@ -10,27 +8,7 @@ async function analyzeCode(code, filePath) {
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    // Improved prompt to enforce structured JSON output
-    // const prompt = `
-    // Analyze the following code:
-    // - Identify critical errors and debugging issues.
-    // - Suggest performance optimizations.
-    // - Recommend best practices & improvements.
-
-    // Code:
-    // \`\`\`
-    // ${code}
-    // \`\`\`
-
-    // Return the response in **JSON format** with three keys:
-    // {
-    //   "errors": ["List major issues found"],
-    //   "optimizations": ["List performance improvements"],
-    //   "suggestions": ["List best practice recommendations"]
-    // }
-    // Ensure the response is **strictly formatted JSON**.
-    // `;
-
+    
     const prompt = `
         You are a senior AI code reviewer. Analyze the code below and provide structured feedback.
 
@@ -94,3 +72,40 @@ async function analyzeCode(code, filePath) {
 }
 
 export default analyzeCode;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Improved prompt to enforce structured JSON output
+    // const prompt = `
+    // Analyze the following code:
+    // - Identify critical errors and debugging issues.
+    // - Suggest performance optimizations.
+    // - Recommend best practices & improvements.
+
+    // Code:
+    // \`\`\`
+    // ${code}
+    // \`\`\`
+
+    // Return the response in **JSON format** with three keys:
+    // {
+    //   "errors": ["List major issues found"],
+    //   "optimizations": ["List performance improvements"],
+    //   "suggestions": ["List best practice recommendations"]
+    // }
+    // Ensure the response is **strictly formatted JSON**.
+    // `;

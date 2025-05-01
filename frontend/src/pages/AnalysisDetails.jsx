@@ -1,180 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import {
-//   fetchAnalysisById,
-//   fetchGithubRepoById,
-//   fetchAIFixedCode,
-//   commitFixedCodeToGitHub,
-// } from "../services/githubServices";
-// import CodeEditor from "../components/CodeEditor";
-
-// const AnalysisDetails = () => {
-//   const { id } = useParams();
-//   const [analysis, setAnalysis] = useState(null);
-//   const [repo, setRepo] = useState(null);
-//   const [fixedCode, setFixedCode] = useState("");
-//   const [originalCode, setOriginalCode] = useState("");
-//   const [loading, setLoading] = useState(true);
-//   const [fixLoading, setFixLoading] = useState(false);
-//   const [commitMessage, setCommitMessage] = useState("Apply AI fix");
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     const fetchDetails = async () => {
-//       try {
-//         setLoading(true);
-//         const token = localStorage.getItem("token");
-//         if (!token) {
-//           setError("User not authenticated");
-//           setLoading(false);
-//           return;
-//         }
-
-//         const result = await fetchAnalysisById(id, token);
-//         console.log("🔍 Analysis result:", result);
-
-//         if (!result.success) {
-//           setError(result.message);
-//           setLoading(false);
-//           return;
-//         }
-
-//         setAnalysis(result.data);
-
-//         const repoInfo = await fetchGithubRepoById(result.data.githubRepoId, token);
-//         console.log("📦 GitHub Repo Info:", repoInfo);
-
-//         if (!repoInfo.success) {
-//           setError(repoInfo.message);
-//           setLoading(false);
-//           return;
-//         }
-
-//         setRepo(repoInfo.data);
-
-//         // Only try fetching fix if file is available
-//         if (result.data.file) {
-//           const repoName = repoInfo.data.repoName;
-//           const repoUrl = repoInfo.data.repoUrl;
-//           const owner = repoUrl.split("github.com/")[1]?.split("/")[0];
-//           const commitSha = result.data.commitHash;
-//           const filePath = result.data.file.filename;
-
-//           console.log("🚀 Fetching AI Fix with:", {
-//             owner,
-//             repoName,
-//             commitSha,
-//             filePath,
-//           });
-
-//           const fixResult = await fetchAIFixedCode(owner, repoName, commitSha, filePath, token);
-//           console.log("✅ AI Fix Result:", fixResult);
-
-//           if (fixResult.success) {
-//             setFixedCode(fixResult.fixedCode);
-//             setOriginalCode(fixResult.originalCode); // ✅ Use AI response original
-//           } else {
-//             setError("Failed to fetch AI fixed code");
-//           }
-//         } else {
-//           console.warn("⚠️ No file associated with analysis");
-//         }
-
-//         setLoading(false);
-//       } catch (err) {
-//         console.error("❌ Error fetching analysis details:", err);
-//         setError("An unexpected error occurred.");
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchDetails();
-//   }, [id]);
-
-//   const handleCommitFix = async () => {
-//     if (!repo || !analysis || !fixedCode || !analysis.file) return;
-
-//     const token = localStorage.getItem("token");
-//     setFixLoading(true);
-
-//     const repoName = repo.repoName;
-//     const repoUrl = repo.repoUrl;
-//     const owner = repoUrl.split("github.com/")[1]?.split("/")[0];
-//     const filePath = analysis.file.filename;
-//     const commitSha = analysis.commitHash;
-
-//     console.log("🛠️ Commit Info:", {
-//       owner,
-//       repo: repoName,
-//       commitSha,
-//       filePath,
-//     });
-
-//     const commitResult = await commitFixedCodeToGitHub(
-//       owner,
-//       repoName,
-//       commitSha,
-//       filePath,
-//       fixedCode,
-//       token
-//     );
-
-//     if (commitResult.success) {
-//       alert("✅ AI fix committed successfully!");
-//     } else {
-//       console.error("❌ Commit failed:", commitResult);
-//       alert("❌ Failed to commit fix.");
-//     }
-
-//     setFixLoading(false);
-//   };
-
-//   if (loading) return <p className="text-center">Loading analysis details...</p>;
-//   if (error) return <p className="text-red-500 text-center">{error}</p>;
-//   if (!analysis) return <p className="text-center">No analysis details found.</p>;
-
-//   return (
-//     <div className="p-6 bg-white dark:bg-gray-900 text-blue dark:text-white shadow-md rounded-lg max-w-6xl mx-auto mt-8">
-//       <h2 className="text-2xl font-semibold mb-4">Analysis Details</h2>
-
-//       <p>
-//         <strong>Commit Hash:</strong> {analysis.commitHash}
-//       </p>
-//       <p>
-//         <strong>File:</strong>{" "}
-//         {analysis.file ? analysis.file.filename : "No file associated"}
-//       </p>
-
-//       <h3 className="mt-4 font-semibold">Analysis Results:</h3>
-//       <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md overflow-auto text-sm">
-//         {JSON.stringify(analysis.result, null, 2)}
-//       </pre>
-
-//       {analysis.file && fixedCode && (
-//         <div className="mt-6">
-//           <h3 className="text-lg font-bold mb-2">Original Code</h3>
-//           <CodeEditor code={originalCode} readOnly />
-
-//           <h3 className="text-lg font-bold mt-6 mb-2">AI Suggested Fix</h3>
-//           <CodeEditor code={fixedCode} readOnly />
-
-//           <button
-//             onClick={handleCommitFix}
-//             className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-//             disabled={fixLoading}
-//           >
-//             {fixLoading ? "Committing..." : "Commit AI Fix"}
-//           </button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default AnalysisDetails;
-
-
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -184,6 +7,14 @@ import {
   commitFixedCodeToGitHub,
 } from "../services/githubServices";
 import CodeEditor from "../components/CodeEditor";
+import DiffViewer from "../components/DiffViewer";
+
+const getLineContext = (code, line, context = 3) => {
+  const lines = code.split("\n");
+  const start = Math.max(0, line - context - 1);
+  const end = Math.min(lines.length, line + context);
+  return lines.slice(start, end).join("\n");
+};
 
 const AnalysisDetails = () => {
   const { id } = useParams();
@@ -196,6 +27,8 @@ const AnalysisDetails = () => {
   const [commitMessage, setCommitMessage] = useState("Apply AI fix");
   const [error, setError] = useState("");
 
+
+
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -206,34 +39,36 @@ const AnalysisDetails = () => {
           setLoading(false);
           return;
         }
-
+  
         const result = await fetchAnalysisById(id, token);
+  
+        console.log("RESULT DATA IS --- ", result);
         if (!result.success) {
           setError(result.message);
           setLoading(false);
           return;
         }
-
+  
         setAnalysis(result.data);
         const repoInfo = await fetchGithubRepoById(result.data.githubRepoId, token);
-
+  
         if (!repoInfo.success) {
           setError(repoInfo.message);
           setLoading(false);
           return;
         }
-
+  
         setRepo(repoInfo.data);
-
+  
         if (result.data.file) {
           const repoName = repoInfo.data.repoName;
           const repoUrl = repoInfo.data.repoUrl;
           const owner = repoUrl.split("github.com/")[1]?.split("/")[0];
           const commitSha = result.data.commitHash;
           const filePath = result.data.file.filename;
-
+  
           const fixResult = await fetchAIFixedCode(owner, repoName, commitSha, filePath, token);
-
+  
           if (fixResult.success) {
             setFixedCode(fixResult.fixedCode);
             setOriginalCode(fixResult.originalCode);
@@ -241,7 +76,7 @@ const AnalysisDetails = () => {
             setError("Failed to fetch AI fixed code");
           }
         }
-
+  
         setLoading(false);
       } catch (err) {
         console.error("❌ Error fetching analysis details:", err);
@@ -249,57 +84,171 @@ const AnalysisDetails = () => {
         setLoading(false);
       }
     };
-
+  
     fetchDetails();
   }, [id]);
+  
+  const numErrors = analysis?.result?.errors?.length || 0;
 
+  
+  console.log("DECREMENT ---------", analysis?.result?.errors?.length);
+  
   const handleCommitFix = async () => {
     if (!repo || !analysis || !fixedCode || !analysis.file) return;
-
+  
     const token = localStorage.getItem("token");
     setFixLoading(true);
-
+  
     const repoName = repo.repoName;
     const repoUrl = repo.repoUrl;
     const owner = repoUrl.split("github.com/")[1]?.split("/")[0];
     const filePath = analysis.file.filename;
     const commitSha = analysis.commitHash;
 
+    const githubRepoId = analysis.githubRepoId;
+  
     const commitResult = await commitFixedCodeToGitHub(
       owner,
       repoName,
       commitSha,
       filePath,
       fixedCode,
-      token
+      token,
+      numErrors,
+      githubRepoId,
     );
-
+  
     if (commitResult.success) {
       alert("✅ AI fix committed successfully!");
     } else {
       alert("❌ Failed to commit fix.");
     }
-
+  
     setFixLoading(false);
   };
-
-  if (loading) return <p className="text-center text-white">Loading analysis details...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!analysis) return <p className="text-center text-white">No analysis details found.</p>;
+  
+  if (loading) return <div className="text-center py-10 text-white">Loading analysis details...</div>;
+  if (error) return <div className="text-center py-10 text-red-400">{error}</div>;
+  if (!analysis) return <div className="text-center py-10 text-white">No analysis found.</div>;
 
   const result = analysis.result || {};
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-12 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold mb-4">🧠 Analysis Summary</h2>
-      <div className="mb-6">
-        <p><strong>Commit:</strong> {analysis.commitHash}</p>
-        <p><strong>File:</strong> {analysis.file?.filename || "N/A"}</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-[#1e1e1e] text-white px-4 py-12">
+      <div className="max-w-6xl mx-auto space-y-10">
+        <div className="border border-zinc-800 rounded-2xl p-6 bg-zinc-900 shadow-md">
+          <h1 className="text-3xl font-bold mb-4">🧠 Analysis Summary</h1>
+          <p><span className="font-medium text-zinc-400">Commit:</span> {analysis.commitHash}</p>
+          <p><span className="font-medium text-zinc-400">File:</span> {analysis.file?.filename || "N/A"}</p>
+        </div>
 
-      <div className="space-y-8">
-        {/* Errors */}
-        {result.errors?.length > 0 && (
+        {/* Result Sections */}
+        <div className="space-y-8">
+          {result.errors?.length > 0 && (
+            <div>
+              <h2 className="text-2xl text-red-400 font-semibold mb-4">🛑 Critical Errors</h2>
+              {result.errors.map((err, idx) => (
+                <DiffViewer
+                  key={idx}
+                  oldValue={getLineContext(originalCode, err.line || 1)}
+                  newValue={getLineContext(fixedCode, err.line || 1)}
+                  title={`❌ ${err.message} (Line ${err.line || 1})`}
+                />
+              ))}
+            </div>
+          )}
+
+          {result.suggestions?.length > 0 && (
+            <div>
+              <h2 className="text-2xl text-yellow-300 font-semibold mb-4">💡 Suggestions</h2>
+              {result.suggestions.map((sugg, idx) => (
+                <DiffViewer
+                  key={idx}
+                  oldValue={getLineContext(originalCode, sugg.line || 1)}
+                  newValue={getLineContext(fixedCode, sugg.line || 1)}
+                  title={`💡 ${sugg.message} (Line ${sugg.line || 1})`}
+                />
+              ))}
+            </div>
+          )}
+
+          {result.optimizations?.length > 0 && (
+            <div>
+              <h2 className="text-2xl text-green-400 font-semibold mb-4">🚀 Optimizations</h2>
+              {result.optimizations.map((opt, idx) => (
+                <DiffViewer
+                  key={idx}
+                  oldValue={getLineContext(originalCode, opt.line || 1)}
+                  newValue={getLineContext(fixedCode, opt.line || 1)}
+                  title={`🚀 ${opt.message} (Line ${opt.line || 1})`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Code Comparison */}
+        {fixedCode && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-md p-6">
+            <h2 className="text-2xl font-bold mb-6">🧪 AI Fix Preview</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-red-400 mb-2">🔧 Original Code</h3>
+                <CodeEditor code={originalCode} readOnly />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-green-400 mb-2">🤖 AI Suggested Fix</h3>
+                <CodeEditor code={fixedCode} readOnly />
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <button
+                onClick={handleCommitFix}
+                disabled={fixLoading}
+                className={`inline-flex items-center gap-2 text-white text-lg font-semibold px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 transition-all shadow-lg hover:shadow-xl hover:scale-105 ${
+                  fixLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                {fixLoading ? "⏳ Committing..." : "♊ Commit AI Fix to GitHub"}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AnalysisDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ {/* Errors */}
+        {/* {result.errors?.length > 0 && (
           <div>
             <h3 className="text-red-400 text-2xl font-bold mb-2">🛑 Critical Errors</h3>
             <div className="space-y-3">
@@ -316,10 +265,14 @@ const AnalysisDetails = () => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
-        {/* Suggestions */}
-        {result.suggestions?.length > 0 && (
+
+
+
+
+{/* Suggestions */}
+        {/* {result.suggestions?.length > 0 && (
           <div>
             <h3 className="text-yellow-300 text-2xl font-bold mb-2">💡 Suggestions</h3>
             <div className="space-y-3">
@@ -331,10 +284,11 @@ const AnalysisDetails = () => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
-        {/* Optimizations */}
-        {result.optimizations?.length > 0 && (
+
+ {/* Optimizations */}
+        {/* {result.optimizations?.length > 0 && (
           <div>
             <h3 className="text-green-400 text-2xl font-bold mb-2">🚀 Optimizations</h3>
             <div className="space-y-3">
@@ -346,53 +300,4 @@ const AnalysisDetails = () => {
               ))}
             </div>
           </div>
-        )}
-      </div>
-
-      {/* Code Editor Section */}
-{/* Code Comparison Section */}
-{fixedCode && (
-  <div className="mt-12">
-    <h3 className="text-2xl font-semibold mb-6 text-white">🧪 AI Fix Preview</h3>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Original Code */}
-      <div className="bg-zinc-900 border border-zinc-700 rounded-xl shadow-lg p-4">
-        <h4 className="text-lg font-medium text-red-400 mb-2">🔧 Original Code</h4>
-        <CodeEditor code={originalCode} readOnly />
-      </div>
-
-      {/* AI Fixed Code */}
-      <div className="bg-zinc-900 border border-zinc-700 rounded-xl shadow-lg p-4">
-        <h4 className="text-lg font-medium text-green-400 mb-2">🤖 AI Suggested Fix</h4>
-        <CodeEditor code={fixedCode} readOnly />
-      </div>
-    </div>
-
-    {/* Commit Button */}
-    <div className="text-center mt-10">
-    <button
-  onClick={handleCommitFix}
-  disabled={fixLoading}
-  className={`relative overflow-hidden transition-all duration-300 transform bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 hover:from-indigo-700 hover:to-pink-600 text-white text-lg font-bold py-3 px-8 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 ${
-    fixLoading ? "opacity-60 cursor-not-allowed" : ""
-  }`}
->
-  {/* Glowing Star / Sparkle */}
-  <span className="absolute top-1 left-1/2 w-4 h-4 bg-white rounded-full opacity-75 animate-ping"></span>
-  <span className="absolute top-1 left-1/2 w-1 h-1 bg-white rounded-full"></span>
-
-  {/* Gemini Icon (optional emoji or SVG) */}
-  <span className="mr-2">♊</span>
-  {fixLoading ? "⏳ Committing Fix..." : "Commit AI Fix to GitHub"}
-</button>
-
-    </div>
-  </div>
-)}
-
-    </div>
-  );
-};
-
-export default AnalysisDetails;
-
+        )} */}
