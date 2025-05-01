@@ -2,13 +2,15 @@ import express from "express";
 import { fetchUserRepos, fetchCommitDetails, fetchFileContent, fetchRepoFiles, 
     githubFileAnalysis, enableAutoAnalysisController, getAutoAnalysisStatusController,
     getAutoAnalysisRepos, getRepoAnalysisHistory, disableAutoAnalysisController, getRepoById, fetchRepoCommits, 
-    fetchPullRequests, getRepoErrors} from "../controllers/githubController.js";
+    fetchPullRequests, getRepoErrors, fetchAnalyzedRepos} from "../controllers/githubController.js";
 import { handleGitHubWebhook } from "../controllers/webhookController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.get("/repos", authenticate, fetchUserRepos);
+
+router.get("/repos/fetchLatest", authenticate, fetchAnalyzedRepos);
 
 router.get("/repos/:owner/:repo/commits/:commitSha", authenticate, fetchCommitDetails);
 
