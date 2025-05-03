@@ -145,6 +145,141 @@ import fixCode from "../utils/aiFixCode.js"; // ✅ Use AI fix utility
 //   }
 // };
 
+// export const generateFixedCode = async (req, res) => {
+//   const { owner, repo, commitSha, filePath } = req.params;
+//   const userId = req.user?.id;
+
+//   try {
+//     const user = await prisma.user.findUnique({ where: { id: userId } });
+
+//     if (!user?.githubAccessToken) {
+//       return res.status(401).json({ success: false, message: "GitHub token missing" });
+//     }
+
+//     const octokit = new Octokit({ auth: user.githubAccessToken });
+
+//     const { data: fileContentData } = await octokit.request(
+//       `GET /repos/${owner}/${repo}/contents/${filePath}?ref=${commitSha}`
+//     );
+
+//     const content = Buffer.from(fileContentData.content, "base64").toString("utf8");
+
+//     // 🟡 Fetch corresponding analysis result from DB
+//     const analysis = await prisma.analysis.findFirst({
+//       where: {
+//         file: {
+//           filename: filePath,
+//         },
+//         commitHash: commitSha,
+//         githubRepo: {
+//           repoName: repo,
+//           userId: userId,
+//         },
+//       },
+//       select: {
+//         result: true,
+//       },
+//     });
+
+//     const analysisResult = analysis?.result || "No analysis available.";
+
+//     console.log(analysisResult);
+
+
+//     console.log("IT is WORKing");
+
+//     // ✅ Pass analysisResult to fixCode
+//     const fixedCode = await fixCode(content, filePath, analysisResult);
+
+//     if (!fixedCode) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "AI did not return fixed code.",
+//       });
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "AI-fixed code generated successfully",
+//       original: content,
+//       fixed: fixedCode,
+//     });
+//   } catch (error) {
+//     console.error("❌ generateFixedCode Error:", error);
+//     return res.status(500).json({ success: false, message: "Failed to generate fixed code" });
+//   }
+// };
+
+
+// export const generateFixedCode = async (req, res) => {
+//   const { owner, repo, commitSha, filePath } = req.params;
+//   const userId = req.user?.id;
+
+//   try {
+//     const user = await prisma.user.findUnique({ where: { id: userId } });
+
+//     if (!user?.githubAccessToken) {
+//       return res.status(401).json({ success: false, message: "GitHub token missing" });
+//     }
+
+//     const octokit = new Octokit({ auth: user.githubAccessToken });
+
+//     const { data: fileContentData } = await octokit.request(
+//       `GET /repos/${owner}/${repo}/contents/${filePath}?ref=${commitSha}`
+//     );
+
+//     const content = Buffer.from(fileContentData.content, "base64").toString("utf8");
+
+//     // Fetch the corresponding analysis record
+//     const existingAnalysis = await prisma.analysis.findFirst({
+//       where: {
+//         file: { filename: filePath },
+//         commitHash: commitSha,
+//         githubRepo: {
+//           repoName: repo,
+//           userId: userId,
+//         },
+//       },
+//     });
+
+//     if (!existingAnalysis) {
+//       return res.status(404).json({ success: false, message: "Analysis not found" });
+//     }
+
+//     const analysisResult = existingAnalysis.result || "No analysis available.";
+
+//     const fixedCode = await fixCode(content, filePath, analysisResult);
+
+//     if (!fixedCode) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "AI did not return fixed code.",
+//       });
+//     }
+
+//     // Update the analysis record with original and fixed code
+//     await prisma.analysis.update({
+//       where: { id: existingAnalysis.id },
+//       data: {
+//         originalCode: content,
+//         fixedCode: fixedCode,
+//       },
+//     });
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "AI-fixed code generated and saved successfully",
+//       original: content,
+//       fixed: fixedCode,
+//     });
+//   } catch (error) {
+//     console.error("❌ generateFixedCode Error:", error);
+//     return res.status(500).json({ success: false, message: "Failed to generate fixed code" });
+//   }
+// };
+
+
+
 export const generateFixedCode = async (req, res) => {
   const { owner, repo, commitSha, filePath } = req.params;
   const userId = req.user?.id;
@@ -156,6 +291,32 @@ export const generateFixedCode = async (req, res) => {
       return res.status(401).json({ success: false, message: "GitHub token missing" });
     }
 
+    // Find the matching analysis
+    const existingAnalysis = await prisma.analysis.findFirst({
+      where: {
+        file: { filename: filePath },
+        commitHash: commitSha,
+        githubRepo: {
+          repoName: repo,
+          userId: userId,
+        },
+      },
+    });
+
+    if (!existingAnalysis) {
+      return res.status(404).json({ success: false, message: "Analysis not found" });
+    }
+
+    // ✅ Return existing codes if they already exist
+    if (existingAnalysis.originalCode && existingAnalysis.fixedCode) {
+      return res.status(200).json({
+        success: true,
+        message: "AI-fixed code fetched from database",
+        original: existingAnalysis.originalCode,
+        fixed: existingAnalysis.fixedCode,
+      });
+    }
+
     const octokit = new Octokit({ auth: user.githubAccessToken });
 
     const { data: fileContentData } = await octokit.request(
@@ -164,31 +325,8 @@ export const generateFixedCode = async (req, res) => {
 
     const content = Buffer.from(fileContentData.content, "base64").toString("utf8");
 
-    // 🟡 Fetch corresponding analysis result from DB
-    const analysis = await prisma.analysis.findFirst({
-      where: {
-        file: {
-          filename: filePath,
-        },
-        commitHash: commitSha,
-        githubRepo: {
-          repoName: repo,
-          userId: userId,
-        },
-      },
-      select: {
-        result: true,
-      },
-    });
+    const analysisResult = existingAnalysis.result || "No analysis available.";
 
-    const analysisResult = analysis?.result || "No analysis available.";
-
-    console.log(analysisResult);
-
-
-    console.log("IT is WORKing");
-
-    // ✅ Pass analysisResult to fixCode
     const fixedCode = await fixCode(content, filePath, analysisResult);
 
     if (!fixedCode) {
@@ -198,9 +336,18 @@ export const generateFixedCode = async (req, res) => {
       });
     }
 
+    // Store original and fixed code only if they weren't stored before
+    await prisma.analysis.update({
+      where: { id: existingAnalysis.id },
+      data: {
+        originalCode: content,
+        fixedCode: fixedCode,
+      },
+    });
+
     return res.status(200).json({
       success: true,
-      message: "AI-fixed code generated successfully",
+      message: "AI-fixed code generated and saved successfully",
       original: content,
       fixed: fixedCode,
     });
@@ -209,6 +356,10 @@ export const generateFixedCode = async (req, res) => {
     return res.status(500).json({ success: false, message: "Failed to generate fixed code" });
   }
 };
+
+
+
+
 
 
 

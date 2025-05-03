@@ -86,6 +86,8 @@ const Organisations = () => {
       if (!token) return;
 
       const response = await fetchUserProfile(token);
+
+      console.log(response);
       if (response.success) {
         setProfile(response.user);
       }
@@ -108,7 +110,8 @@ const Organisations = () => {
 
         {profile && (
           <div
-            onClick={() => navigate("/dashboard")}
+            // onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(`/dashboard/${profile.username}`)}
             className="cursor-pointer w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
           >
             <div className="flex items-center space-x-4">
