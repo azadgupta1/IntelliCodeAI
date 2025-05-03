@@ -16,28 +16,69 @@ const API_BASE_URL =  "http://localhost:3000";
 //   }
 // };
 
+// export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
+//   try {
+//     const url = `${API_BASE_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`;
+//     console.log("🌐 fetchAIFixedCode URL:", url);
+
+//     const res = await axios.get(url, {
+//       headers: { Authorization: `Bearer ${token}` },
+//       withCredentials: true,
+//     });
+
+//     console.log("🧠 Backend AI Fixed Code Response:", res.data);
+
+//     return { success: true, 
+//             fixedCode: res.data.fixed,
+//             originalCode: res.data.original,
+//           };
+    
+//   } catch (err) {
+//     console.error("❌ fetchAIFixedCode error:", err.response?.data || err.message);
+//     return { success: false };
+//   }
+// };
+
+
+// import axios from 'axios';
+// import { API_BASE_URL } from '../config'; // Adjust path as needed
+
 export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
   try {
-    const url = `${API_BASE_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`;
+    const encodedPath = encodeURIComponent(filePath);
+    const url = `${API_BASE_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodedPath}`;
     console.log("🌐 fetchAIFixedCode URL:", url);
 
-    const res = await axios.get(url, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     });
 
-    console.log("🧠 Backend AI Fixed Code Response:", res.data);
+    const { original, fixed } = response.data;
 
-    return { success: true, 
-            fixedCode: res.data.fixed,
-            originalCode: res.data.original,
-          };
-    
-  } catch (err) {
-    console.error("❌ fetchAIFixedCode error:", err.response?.data || err.message);
-    return { success: false };
+    if (!original || !fixed) {
+      throw new Error("Incomplete AI code response");
+    }
+
+    console.log("🧠 Backend AI Fixed Code Response:", response.data);
+
+    return {
+      success: true,
+      originalCode: original,
+      fixedCode: fixed,
+    };
+
+  } catch (error) {
+    console.error("❌ fetchAIFixedCode error:", error.response?.data || error.message);
+    return {
+      success: false,
+      error: error.response?.data?.message || "Failed to fetch AI-fixed code",
+    };
   }
 };
+
 
 
 // Commit the AI fix

@@ -2,7 +2,9 @@
 
 import axios from "axios";
 import prisma from "../config/db.js";
-import aiCodeAnalysis from "../utils/aiAnalysis.js"; // Import AI analysis function
+// import aiCodeAnalysis from "../utils/aiAnalysis.js"; // Import AI analysis function
+import analyzeCode from "../utils/aiAnalysis.js";
+
 
 import { enableAutoAnalysis } from "../services/githubService.js";
 
@@ -283,6 +285,7 @@ export const disableAutoAnalysisController = async (req, res) => {
   }
 };
 
+import fixCode from "../utils/aiFixCode.js";
 
 export const githubFileAnalysis = async (req, res) => {
   try {
@@ -362,6 +365,8 @@ export const githubFileAnalysis = async (req, res) => {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       fileContent = fileResponse.data;
+
+      console.log("File CODE is ---", fileContent);
       console.log("✅ File fetched successfully.");
     } catch (error) {
       console.error("❌ Error fetching file:", error.response?.data || error.message);
@@ -373,11 +378,23 @@ export const githubFileAnalysis = async (req, res) => {
 
     // 🟢 Step 4: Analyze file content
     console.log("🧠 Running AI Code Analysis...");
-    const analysisResult = await aiCodeAnalysis(fileContent, filePath);
-    console.log("✅ AI Analysis completed.");
+    const analysisResult = await analyzeCode(fileContent, filePath);
+    console.log("HERE IS the AI Analysis completed.");
+
+    const fixedCodeRes = await fixCode(fileContent, analysisResult);
+
+    console.log("Here is the FIXED code --: ",fixedCodeRes);
 
     // Debug Log: Check analysis result
     console.log("📊 AI Analysis Result:", JSON.stringify(analysisResult, null, 2));
+
+        const numErrors = analysisResult.errors?.length || 0;
+        const numSuggestions = analysisResult.suggestions?.length || 0;
+        const numOptimizations = analysisResult.optimizations?.length || 0;
+
+        console.log("Errors COUNT IS ------------------", numErrors);
+        console.log("Suggestion COUNT IS ------------------", numSuggestions);
+        console.log("Optimization COUNT IS -----------", numOptimizations);
 
     // 🟢 Step 5: Store analysis in database with correct `githubRepoId`
     try {
@@ -388,7 +405,13 @@ export const githubFileAnalysis = async (req, res) => {
           fileId: null, // No `File` entry for GitHub files
           githubRepoId, // ✅ Now correctly stored!
           result: analysisResult,
+          filePath,
           commitHash: commitSha,
+          errorCnt: numErrors,
+          suggestionCnt: numSuggestions,
+          optimizationCnt: numOptimizations,
+          originalCode: fileContent,
+          fixedCode: fixedCodeRes,
         },
       });
 
@@ -417,6 +440,71 @@ export const githubFileAnalysis = async (req, res) => {
 
 
 
+// export const fetchUserRepos = async (req, res) => {
+//   console.log("Incoming Headers:", req.headers);
+//   console.log("Decoded User:", req.user);
+
+//   try {
+//     const accessToken = req.user.accessToken;
+//     if (!accessToken) {
+//       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
+//     }
+
+//     const githubApiUrl = "https://api.github.com/user/repos";
+//     const response = await axios.get(githubApiUrl, {
+//       headers: { Authorization: `Bearer ${accessToken}` },
+//     });
+
+//     console.log("GitHub Repositories Response:", response.data);
+//     const repositories = response.data;
+
+//     const savedRepos = await Promise.all(
+//       repositories.map(async (repo) => {
+//         console.log(`Saving repository: ${repo.name}`);
+
+//         return prisma.githubRepo.upsert({
+//           where: { repoUrl: repo.html_url },
+//           update: {}, // No update needed for now
+//           create: {
+//             userId: req.user.id,
+//             repoName: repo.name,
+//             repoUrl: repo.html_url,
+//             ownerName: repo.owner.login,
+//             autoAnalyze: false, // Default to false if it's a new repo
+//           },
+//         });
+//       })
+//     );
+
+//     // Fetch updated repos from the database (including autoAnalyze)
+//     const updatedRepos = await prisma.githubRepo.findMany({
+//       where: { userId: req.user.id },
+//       select: {
+//         id: true,
+//         userId: true,
+//         repoName: true,
+//         repoUrl: true,
+//         ownerName: true,
+//         autoAnalyze: true, // Ensure this is included
+//         createdAt: true,
+//         errorCount: true,
+//       },
+//     });
+
+//     res.status(200).json({
+//       message: "Repositories fetched and saved successfully",
+//       repositories: updatedRepos,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching repositories:", error.message);
+//     res.status(500).json({
+//       message: "Failed to fetch repositories",
+//       error: error.response?.data?.message || error.message,
+//     });
+//   }
+// };
+
+
 export const fetchUserRepos = async (req, res) => {
   console.log("Incoming Headers:", req.headers);
   console.log("Decoded User:", req.user);
@@ -427,33 +515,56 @@ export const fetchUserRepos = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
     }
 
-    const githubApiUrl = "https://api.github.com/user/repos";
+    const githubApiUrl = "https://api.github.com/user/repos?per_page=100";
     const response = await axios.get(githubApiUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    console.log("GitHub Repositories Response:", response.data);
     const repositories = response.data;
+    const savedRepos = [];
 
-    const savedRepos = await Promise.all(
-      repositories.map(async (repo) => {
-        console.log(`Saving repository: ${repo.name}`);
+    for (const repo of repositories) {
+      console.log(`Saving repository: ${repo.name}`);
+      let lastCommitDate = null;
 
-        return prisma.githubRepo.upsert({
-          where: { repoUrl: repo.html_url },
-          update: {}, // No update needed for now
+      try {
+        const commitsUrl = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits`;
+        const commitsResponse = await axios.get(commitsUrl, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        lastCommitDate = commitsResponse.data[0]?.commit?.committer?.date;
+      } catch (commitErr) {
+        console.warn(`Error fetching commits for repo ${repo.name}:`, commitErr.message);
+      }
+
+      try {
+        const savedRepo = await prisma.githubRepo.upsert({
+          where: {
+            repoName_userId: {
+              repoName: repo.name,
+              userId: req.user.id,
+            },
+          },
+          update: {
+            lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+          },
           create: {
             userId: req.user.id,
             repoName: repo.name,
             repoUrl: repo.html_url,
             ownerName: repo.owner.login,
-            autoAnalyze: false, // Default to false if it's a new repo
+            autoAnalyze: false,
+            lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
           },
         });
-      })
-    );
 
-    // Fetch updated repos from the database (including autoAnalyze)
+        savedRepos.push(savedRepo);
+      } catch (dbErr) {
+        console.error(`DB error for repo ${repo.name}:`, dbErr.message);
+      }
+    }
+
     const updatedRepos = await prisma.githubRepo.findMany({
       where: { userId: req.user.id },
       select: {
@@ -462,8 +573,10 @@ export const fetchUserRepos = async (req, res) => {
         repoName: true,
         repoUrl: true,
         ownerName: true,
-        autoAnalyze: true, // Ensure this is included
+        autoAnalyze: true,
         createdAt: true,
+        errorCount: true,
+        lastCommitAt: true,
       },
     });
 
@@ -479,7 +592,6 @@ export const fetchUserRepos = async (req, res) => {
     });
   }
 };
-
 
 // export const fetchAnalyzedRepos = async (req, res) => {
 //   console.log("Incoming Headers:", req.headers);
@@ -699,6 +811,42 @@ export const fetchFileContent = async (req, res) => {
 };
 
 
+// export const fetchRepoFiles = async (req, res) => {
+//   try {
+//     const { owner, repo } = req.params;
+//     const githubToken = req.user.accessToken;
+
+//     if (!githubToken) {
+//       return res.status(401).json({ message: "GitHub access token is missing" });
+//     }
+
+//     const url = `https://api.github.com/repos/${owner}/${repo}/git/trees/main?recursive=1`;
+//     const response = await axios.get(url, {
+//       headers: { Authorization: `Bearer ${githubToken}` },
+//     });
+
+//     if (!response.data.tree) {
+//       return res.status(400).json({ message: "No files found in the repository" });
+//     }
+
+//     // Filter only files (exclude directories)
+//     const files = response.data.tree
+//       .filter((item) => item.type === "blob")
+//       .map((file) => file.path);
+
+//     res.status(200).json({
+//       message: "Repository files fetched successfully",
+//       files,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching repository files:", error);
+//     res.status(500).json({
+//       message: "Failed to fetch repository files",
+//       error: error.response?.data?.message || error.message,
+//     });
+//   }
+// };
+
 export const fetchRepoFiles = async (req, res) => {
   try {
     const { owner, repo } = req.params;
@@ -717,9 +865,12 @@ export const fetchRepoFiles = async (req, res) => {
       return res.status(400).json({ message: "No files found in the repository" });
     }
 
-    // Filter only files (exclude directories)
+    // Filter only files (blobs), and exclude anything inside node_modules
     const files = response.data.tree
-      .filter((item) => item.type === "blob")
+      .filter(
+        (item) =>
+          item.type === "blob" && !item.path.startsWith("node_modules/")
+      )
       .map((file) => file.path);
 
     res.status(200).json({
@@ -789,6 +940,368 @@ export const fetchRepoCommits = async (req, res) => {
 
 
 
+
+
+
+
+// inside githubController.js
+// const prisma = require('../prismaClient'); // or wherever your Prisma instance is
+
+export const getRepoErrors = async (req, res) => {
+  try {
+    const { ownerName, repo } = req.params;
+
+    const repoData = await prisma.GithubRepo.findFirst({
+      where: {
+        ownerName,
+        repoName: repo,
+      },
+      select: {
+        errorCount: true, // assuming you have this field
+      },
+    });
+
+    console.log(repoData);
+
+    if (!repoData) {
+      return res.status(404).json({ success: false, message: "Repository not found" });
+    }
+
+    res.json({ success: true, errorCount: repoData.errorCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+// import { prisma } from "../config/prismaClient.js";
+// import axios from "axios";
+
+export const syncRepoMetadata = async (req, res) => {
+  const { owner, repo } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const token = req.user.accessToken; // assumes accessToken is stored in JWT and set via auth middleware
+
+    // Fetch repo details from GitHub
+    const repoRes = await axios.get(`https://api.github.com/repos/${owner}/${repo}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const defaultBranch = repoRes.data.default_branch;
+
+    // Fetch branches list
+    const branchesRes = await axios.get(`https://api.github.com/repos/${owner}/${repo}/branches`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const branchNames = branchesRes.data.map((b) => b.name);
+    const now = new Date();
+
+    const updatedRepo = await prisma.githubRepo.update({
+      where: {
+        repoName_userId: {
+          repoName: repo,
+          userId,
+        },
+      },
+      data: {
+        defaultBranch,
+        branches: branchNames,
+        lastSyncedAt: now,
+      },
+    });
+
+    return res.status(200).json(updatedRepo);
+  } catch (err) {
+    console.error("Sync failed:", err.response?.data || err.message);
+    return res.status(500).json({ error: "Failed to sync repository metadata" });
+  }
+};
+
+
+
+
+
+
+export const getRepoSettings = async (req, res) => {
+  const { owner, repo } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const repoData = await prisma.githubRepo.findFirst({
+      where: {
+        userId,
+        ownerName: owner,
+        repoName: repo,
+      },
+      select: {
+        repoName: true,
+        ownerName: true,
+        defaultBranch: true,
+        branches: true,
+        lastSyncedAt: true,
+        autoAnalyze: true,
+      },
+    });
+
+    if (!repoData) {
+      return res.status(404).json({ error: 'Repository not found' });
+    }
+
+    res.json(repoData);
+  } catch (error) {
+    console.error('Error fetching repo settings:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+
+export const deleteGithubRepo = async (req, res) => {
+  const { owner, repoName } = req.params;
+  const userId = req.user.id;
+  const githubToken = req.user.accessToken; // ✅ Use user's token
+
+  try {
+    const repo = await prisma.githubRepo.findFirst({
+      where: {
+        ownerName: owner,
+        repoName,
+        userId,
+      },
+    });
+
+    if (!repo) {
+      return res.status(404).json({ error: "Repository not found." });
+    }
+
+    // 🔌 Try to delete the GitHub webhook if it exists
+    if (repo.autoAnalyze && repo.webhookId) {
+      try {
+        await axios.delete(
+          `https://api.github.com/repos/${owner}/${repoName}/hooks/${repo.webhookId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${githubToken}`, // ✅ Fix here
+              Accept: "application/vnd.github+json",
+            },
+          }
+        );
+        console.log("✅ Webhook deleted.");
+      } catch (err) {
+        console.error("❌ Failed to delete webhook:", err.response?.data || err.message);
+        // Continue anyway — webhook deletion failure shouldn't block repo cleanup
+      }
+    }
+
+    // ⚙️ Clean the repo: reset settings & delete analyses
+    await prisma.analysis.deleteMany({
+      where: {
+        githubRepoId: repo.id,
+      },
+    });
+
+    await prisma.githubRepo.update({
+      where: {
+        id: repo.id,
+      },
+      data: {
+        autoAnalyze: false,
+        errorCount: 0,
+        webhookId: null,
+        lastSyncedAt: null,
+      },
+    });
+
+    res.json({ message: "Repository reset: analyses deleted, auto-analysis disabled." });
+  } catch (error) {
+    console.error("❌ Error deleting repo info:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+
+
+
+// export const deleteGithubRepo = async (req, res) => {
+//   const { owner, repoName } = req.params;
+//   const userId = req.user.id;
+
+//   try {
+//     const repo = await prisma.githubRepo.findFirst({
+//       where: {
+//         ownerName: owner,
+//         repoName,
+//         userId,
+//       },
+//     });
+
+//     if (!repo) {
+//       return res.status(404).json({ error: "Repository not found." });
+//     }
+
+//     // 🔌 Try to delete the GitHub webhook if it exists
+//     if (repo.autoAnalyze && repo.webhookId) {
+//       try {
+//         await axios.delete(
+//           `https://api.github.com/repos/${owner}/${repoName}/hooks/${repo.webhookId}`,
+//           {
+//             headers: {
+//               Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+//               Accept: "application/vnd.github+json",
+//             },
+//           }
+//         );
+//         console.log("✅ Webhook deleted.");
+//       } catch (err) {
+//         console.error("❌ Failed to delete webhook:", err.response?.data || err.message);
+//         // Continue anyway — webhook deletion failure shouldn't block repo cleanup
+//       }
+//     }
+
+//     // ⚙️ Clean the repo: reset settings & delete analyses
+//     await prisma.analysis.deleteMany({
+//       where: {
+//         githubRepoId: repo.id,
+//       },
+//     });
+
+//     await prisma.githubRepo.update({
+//       where: {
+//         id: repo.id,
+//       },
+//       data: {
+//         autoAnalyze: false,
+//         errorCount: 0,
+//         webhookId: null,
+//         lastSyncedAt: null,
+//       },
+//     });
+
+//     res.json({ message: "Repository reset: analyses deleted, auto-analysis disabled." });
+//   } catch (error) {
+//     console.error("❌ Error deleting repo info:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
+
+
+
+export const deleteAccount = async (req, res) => {
+  const userId = req.user.id;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    // 🔍 Fetch user GitHub token and ID
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        githubAccessToken: true,
+        githubId: true,
+      },
+    });
+
+    if (user?.githubAccessToken) {
+      try {
+        const response = await axios.delete(
+          `https://api.github.com/applications/${process.env.GITHUB_CLIENT_ID}/token`,
+          {
+            auth: {
+              username: process.env.GITHUB_CLIENT_ID,
+              password: process.env.GITHUB_CLIENT_SECRET,
+            },
+            data: {
+              access_token: user.githubAccessToken,
+            },
+          }
+        );
+    
+        if (response.status === 204) {
+          console.log("✅ GitHub token revoked successfully (204 No Content)");
+        } else {
+          console.warn("⚠️ Unexpected response from GitHub:", response.status, response.data);
+        }
+      } catch (err) {
+        console.error("❌ Failed to revoke GitHub token:", err.response?.data || err.message);
+      }
+    }
+    
+
+    // 🧹 Clean up GitHub webhooks
+    const reposWithWebhooks = await prisma.githubRepo.findMany({
+      where: {
+        userId,
+        autoAnalyze: true,
+        webhookId: { not: null },
+      },
+    });
+
+    for (const repo of reposWithWebhooks) {
+      try {
+        await axios.delete(
+          `https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/hooks/${repo.webhookId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+              Accept: "application/vnd.github+json",
+            },
+          }
+        );
+        console.log(`✅ Webhook deleted for ${repo.repoName}`);
+      } catch (err) {
+        console.error(
+          `❌ Failed to delete webhook for ${repo.repoName}:`,
+          err.response?.data || err.message
+        );
+        // Continue deleting account anyway
+      }
+    }
+
+    // 🗑️ Delete user and cascade to related models
+    await prisma.user.delete({
+      where: { id: userId },
+    });
+
+    res.json({ message: "✅ Account, GitHub access, and related data deleted successfully." });
+  } catch (error) {
+    console.error("❌ Error deleting account:", error);
+    res.status(500).json({ error: "Failed to delete account." });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const fetchPullRequests = async (req, res) => {
   try {
     const { owner, repo } = req.params;
@@ -830,37 +1343,3 @@ export const fetchPullRequests = async (req, res) => {
     });
   }
 };
-
-
-
-
-// inside githubController.js
-// const prisma = require('../prismaClient'); // or wherever your Prisma instance is
-
-export const getRepoErrors = async (req, res) => {
-  try {
-    const { ownerName, repo } = req.params;
-
-    const repoData = await prisma.GithubRepo.findFirst({
-      where: {
-        ownerName,
-        repoName: repo,
-      },
-      select: {
-        errorCount: true, // assuming you have this field
-      },
-    });
-
-    console.log(repoData);
-
-    if (!repoData) {
-      return res.status(404).json({ success: false, message: "Repository not found" });
-    }
-
-    res.json({ success: true, errorCount: repoData.errorCount });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-};
-

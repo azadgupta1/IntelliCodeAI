@@ -1,58 +1,59 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import RepoTable from "../components/RepoTable";
 import EnabledRepoList from "../components/EnabledRepoList";
 import { fetchAutoAnalysisRepos } from "../services/githubServices";
 
+const fetchRepos = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No token found");
+
+  const response = await axios.get("http://localhost:3000/github/repos", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  console.log(response);
+
+  console.log(response.data.repositories);
+
+  return response.data.repositories || [];
+};
+
 const Repositories = () => {
-  const [repos, setRepos] = useState([]);
-  const [filteredRepos, setFilteredRepos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
   const [showManageBox, setShowManageBox] = useState(false);
   const [enabledRepos, setEnabledRepos] = useState([]);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchRepos = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/github/repos", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+  // ⏳ Use React Query for repo fetching and caching
+  const {
+    data: repos = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["repos"],
+    queryFn: fetchRepos,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
+  
 
-        const repoList = response.data.repositories || [];
-        setRepos(repoList);
-        setFilteredRepos(repoList);
-      } catch (err) {
-        setError("Failed to load repositories.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // 🧠 Local filtering
+  const filteredRepos = repos.filter((repo) => {
+    const matchesSearch = repo.repoName.toLowerCase().includes(searchTerm.toLowerCase());
 
-    fetchRepos();
-  }, []);
+    if (filter === "enabled") return repo.autoAnalyze && matchesSearch;
+    if (filter === "disabled") return !repo.autoAnalyze && matchesSearch;
 
-  useEffect(() => {
-    let updated = repos.filter((repo) =>
-      repo.repoName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return matchesSearch;
+  });
 
-    if (filter === "enabled") {
-      updated = updated.filter((repo) => repo.autoAnalyze);
-    } else if (filter === "disabled") {
-      updated = updated.filter((repo) => !repo.autoAnalyze);
-    }
-
-    setFilteredRepos(updated);
-  }, [searchTerm, filter, repos]);
-
+  // 🔄 Fetch enabled repos once
   useEffect(() => {
     const fetchEnabled = async () => {
       const token = localStorage.getItem("token");
@@ -76,11 +77,9 @@ const Repositories = () => {
 
       alert(response.data.message);
 
-      setRepos((prev) =>
-        prev.map((r) =>
-          r.repoName === repo.repoName ? { ...r, autoAnalyze: !r.autoAnalyze } : r
-        )
-      );
+      // Update manually since we aren’t using mutation here
+      // (Optional: you can use `useMutation` + `queryClient.invalidateQueries(['repos'])`)
+      window.location.reload(); // or better: use queryClient.setQueryData to update cache manually
     } catch (err) {
       console.error("Toggle error:", err);
     }
@@ -90,11 +89,11 @@ const Repositories = () => {
     navigate(`/repositories/${owner}/${repo}`);
   };
 
-  if (loading) return <div className="p-4">Loading repositories...</div>;
-  if (error) return <div className="text-red-500 p-4">{error}</div>;
+  if (isLoading) return <div className="p-4">Loading repositories...</div>;
+  if (isError) return <div className="text-red-500 p-4">{error.message}</div>;
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-lg">
+    <div className="w-full px-4 md:px-8 py-6 bg-white rounded-xl shadow-lg">
       <RepoTable
         {...{
           filteredRepos,
@@ -115,3 +114,4 @@ const Repositories = () => {
 };
 
 export default Repositories;
+

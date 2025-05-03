@@ -10,6 +10,7 @@ import webhookRoutes from "./routes/webhookRoutes.js";
 import githubAnalysisRoutes from "./routes/githubAnalysisRoutes.js";
 import userRoutes from './routes/userRoute.js';
 import githubFixRoutes from "./routes/githubFixRoutes.js";
+import notificationRoutes from "./routes/notification.js";
 
 
 dotenv.config();
@@ -37,6 +38,8 @@ app.use('/githubAnalysis', githubAnalysisRoutes);
 app.use('/user', userRoutes);
 
 app.use("/api/fix", githubFixRoutes);
+
+app.use("/api/notification", notificationRoutes);
 
 app.get('/', (req, res) => {
     res.send("Welcome to IntelliCodeAI");

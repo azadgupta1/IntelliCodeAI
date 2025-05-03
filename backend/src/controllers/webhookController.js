@@ -137,6 +137,13 @@ export const handleGitHubWebhook = async (req, res) => {
           },
         });
 
+        await prisma.notification.create({
+          data: {
+            userId: dbUser.id,
+            message: `Analysis completed for ${filePath} in ${repoName}`,
+          },
+        });
+
         console.log(`✅ Analysis stored in DB for ${filePath}, analysisId: ${analysisEntry.id}, repoId: ${repo.id}`);
       } catch (error) {
         console.error(`❌ Failed to analyze ${filePath}:`, error.message);
