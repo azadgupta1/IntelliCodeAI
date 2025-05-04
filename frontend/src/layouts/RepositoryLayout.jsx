@@ -123,11 +123,11 @@ const RepositoryLayout = () => {
 
       {/* Main Content */}
       <div className="flex-1 ml-16 sm:ml-20 p-0 overflow-y-auto">
-        <div className="bg-white shadow-md rounded-md mb-4 p-6">
-  <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
-    {owner} / {repo}
-  </h1>
-</div>
+        {/* <div className="bg-white shadow-md rounded-md mb-4 p-6">
+        <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
+          {owner} / {repo}
+        </h1>
+      </div> */}
 
         <Outlet />
       </div>

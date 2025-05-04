@@ -957,6 +957,7 @@ export const getRepoErrors = async (req, res) => {
         repoName: repo,
       },
       select: {
+        id: true,
         errorCount: true, // assuming you have this field
       },
     });
@@ -967,7 +968,7 @@ export const getRepoErrors = async (req, res) => {
       return res.status(404).json({ success: false, message: "Repository not found" });
     }
 
-    res.json({ success: true, errorCount: repoData.errorCount });
+    res.json({ success: true, data: repoData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error" });

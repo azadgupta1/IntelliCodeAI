@@ -350,7 +350,9 @@ export const fetchRepoErrors = async (owner, repo) =>{
         }
       );
 
+      console.log(respone.data);
       return respone.data;
+
 
     }catch(error){
       console.error("Error fetching repo errors: ", error.response?.data || error.data);
