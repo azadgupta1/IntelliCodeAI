@@ -496,6 +496,14 @@ export const commitFixedCode = async (req, res) => {
         },
       },
     });
+
+    // // Log snapshot
+    // await prisma.repoErrorHistory.create({
+    //   data: {
+    //     repoId: updatedRepo.id,
+    //     errorCount: updatedRepo.errorCount,
+    //   },
+    // })
     
     console.log("✅ Safe decrement:", {
       attempted: fixedErrorCount,
