@@ -4,3 +4,7 @@ body {
   @apply m-0 p-0 font-sans; /* Tailwind's sans-serif font, or you can apply Arial if needed */
   font-family: 'Arial', sans-serif; /* You can keep the custom font if you want */
 }
+
+@theme{
+  --color-primary: #32a866;
+}
