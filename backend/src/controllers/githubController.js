@@ -683,6 +683,7 @@ export const fetchAnalyzedRepos = async (req, res) => {
         repoUrl: true,
         ownerName: true,
         createdAt: true,
+        errorCount: true,
       },
     });
 
@@ -725,6 +726,8 @@ export const fetchAnalyzedRepos = async (req, res) => {
       .sort((a, b) => b.latestCommitDate - a.latestCommitDate); // Sort by the latest commit date in descending order
 
     // Return the sorted repos
+
+    console.log("DATA is ", sortedRepos);
     res.status(200).json({
       message: "Repositories fetched successfully",
       repositories: sortedRepos,
