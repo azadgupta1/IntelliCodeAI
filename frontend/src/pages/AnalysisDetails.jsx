@@ -29,6 +29,7 @@ const AnalysisDetails = () => {
   const [fixLoading, setFixLoading] = useState(false);
   const [error, setError] = useState("");
   const [isCommitted, setIsCommitted] = useState(false);
+  const [manuallyAnalyzed, setManuallyAnalyzed] = useState(false);
 
   const numErrors = analysis?.result?.errors?.length || 0;
 
@@ -40,49 +41,55 @@ const AnalysisDetails = () => {
           setError("⚠️ You must be logged in to view this page.");
           return;
         }
-
+  
         setLoading(true);
-
+  
         const result = await fetchAnalysisById(id, token);
         if (!result.success) {
           setError(result.message || "Failed to fetch analysis data.");
           return;
         }
-
-
-        console.log("RESULT is : ",result);
-
+  
+        console.log("RESULT is : ", result);
+  
         const analysisData = result.data;
         setAnalysis(analysisData);
-
+  
         const repoInfo = await fetchGithubRepoById(analysisData.githubRepoId, token);
         if (!repoInfo.success) {
           setError(repoInfo.message || "Failed to fetch repo data.");
           return;
         }
-
+  
         console.log(repoInfo);
-
+  
         setRepo(repoInfo.data);
-
+  
+        // 👇 Determine how to get fixed/original code
         if (analysisData.file) {
           const repoName = repoInfo.data.repoName;
           const repoUrl = repoInfo.data.repoUrl;
           const owner = repoUrl.split("github.com/")[1]?.split("/")[0];
           const commitSha = analysisData.commitHash;
           const filePath = analysisData.file.filename;
-
+  
           const fixResult = await fetchAIFixedCode(owner, repoName, commitSha, filePath, token);
-
+  
           console.log("Both CODES are here: ", fixResult);
-          
+  
           if (fixResult.success) {
             setFixedCode(fixResult.fixedCode);
             setOriginalCode(fixResult.originalCode);
           } else {
             setError("⚠️ Failed to fetch AI-fixed code.");
           }
+        } else if (!analysisData.fileId && analysisData.filePath) {
+          // ✅ Handle case when fileId is null but filePath exists
+          setManuallyAnalyzed(true);
+          setFixedCode(analysisData.fixedCode);
+          setOriginalCode(analysisData.originalCode);
         }
+  
       } catch (err) {
         console.error(err);
         setError("❌ An unexpected error occurred.");
@@ -90,9 +97,10 @@ const AnalysisDetails = () => {
         setLoading(false);
       }
     };
-
+  
     fetchDetails();
   }, [id]);
+  
 
 
 
@@ -150,7 +158,17 @@ const AnalysisDetails = () => {
         <div className="border border-zinc-800 rounded-2xl p-6 bg-zinc-900 shadow-md">
           <h1 className="text-3xl font-bold mb-4">🧠 Analysis Summary</h1>
           <p><span className="font-medium text-zinc-400">Commit:</span> {analysis.commitHash}</p>
-          <p><span className="font-medium text-zinc-400">File:</span> {analysis.file?.filename || "N/A"}</p>
+          {/* <p><span className="font-medium text-zinc-400">File:</span> {analysis.file?.filename || "N/A"}</p> */}
+          <p>
+            <span className="font-medium text-zinc-400">File:</span>{" "}
+            {analysis.file?.filename || analysis.filePath || "N/A"}
+            {manuallyAnalyzed && (
+              <span className="ml-2 px-2 py-1 text-xs rounded bg-yellow-500 text-black">
+                 Manually Analyzed
+              </span>
+            )}
+          </p>
+
         </div>
 
         {/* Errors */}
@@ -213,7 +231,7 @@ const AnalysisDetails = () => {
               </div>
             </div>
 
-            <div className="text-center mt-8">
+            {/* <div className="text-center mt-8">
               <button
                 onClick={handleCommitFix}
                 disabled={fixLoading || isCommitted}
@@ -227,7 +245,26 @@ const AnalysisDetails = () => {
                   ? "✅ Fix Committed"
                   : "♊ Commit AI Fix to GitHub"}
               </button>
-            </div>
+            </div> */}
+
+            {!manuallyAnalyzed && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={handleCommitFix}
+                  disabled={fixLoading || isCommitted}
+                  className={`inline-flex items-center gap-2 text-white text-lg font-semibold px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500 transition-all shadow-lg hover:shadow-xl hover:scale-105 ${
+                    fixLoading || isCommitted ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {fixLoading
+                    ? "⏳ Committing..."
+                    : isCommitted
+                    ? "✅ Fix Committed"
+                    : "♊ Commit AI Fix to GitHub"}
+                </button>
+              </div>
+            )}
+
           </div>
         )}
       </div>
@@ -236,6 +273,95 @@ const AnalysisDetails = () => {
 };
 
 export default AnalysisDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// useEffect(() => {
+  //   const fetchDetails = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       if (!token) {
+  //         setError("⚠️ You must be logged in to view this page.");
+  //         return;
+  //       }
+
+  //       setLoading(true);
+
+  //       const result = await fetchAnalysisById(id, token);
+  //       if (!result.success) {
+  //         setError(result.message || "Failed to fetch analysis data.");
+  //         return;
+  //       }
+
+
+  //       console.log("RESULT is : ",result);
+
+  //       const analysisData = result.data;
+  //       setAnalysis(analysisData);
+
+  //       const repoInfo = await fetchGithubRepoById(analysisData.githubRepoId, token);
+  //       if (!repoInfo.success) {
+  //         setError(repoInfo.message || "Failed to fetch repo data.");
+  //         return;
+  //       }
+
+  //       console.log(repoInfo);
+
+  //       setRepo(repoInfo.data);
+
+  //       console.log("Analysis Data is : ",analysisData.file);
+
+  //       if (analysisData.file) {
+  //         const repoName = repoInfo.data.repoName;
+  //         const repoUrl = repoInfo.data.repoUrl;
+  //         const owner = repoUrl.split("github.com/")[1]?.split("/")[0];
+  //         const commitSha = analysisData.commitHash;
+  //         const filePath = analysisData.file.filename;
+
+  //         const fixResult = await fetchAIFixedCode(owner, repoName, commitSha, filePath, token);
+
+  //         console.log("Both CODES are here: ", fixResult);
+          
+  //         if (fixResult.success) {
+  //           setFixedCode(fixResult.fixedCode);
+  //           setOriginalCode(fixResult.originalCode);
+  //         } else {
+  //           setError("⚠️ Failed to fetch AI-fixed code.");
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //       setError("❌ An unexpected error occurred.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchDetails();
+  // }, [id]);
+
+
+
+
+
+
+
+
+
+
 
 
 
