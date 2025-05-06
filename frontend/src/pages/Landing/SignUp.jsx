@@ -1,6 +1,6 @@
 import React from "react";
-import { githubLogin } from "../services/authServices";
-import IntelliCodeAI_1 from "../assets/IntelliCodeAI_1.png"; // Make sure this path is correct
+import { githubLogin } from "../../services/authServices";
+import IntelliCodeAI_1 from "../../assets/IntelliCodeAI_1.png"; // Make sure this path is correct
 
 export const Signup = () => {
   return (

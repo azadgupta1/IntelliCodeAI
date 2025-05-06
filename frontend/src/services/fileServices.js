@@ -1,12 +1,8 @@
 // src/services/api.js
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000', // Backend running on port 3000
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+const API_BASE_URL = "http://localhost:3000";
+
 
 // File upload function
 export const uploadFile = async (file) => {
@@ -14,7 +10,7 @@ export const uploadFile = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post('/files/upload', formData, {
+    const response = await axios.post(`${API_BASE_URL}/files/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -30,7 +26,7 @@ export const uploadFile = async (file) => {
 // File analysis function
 export const analyzeFile = async (fileId) => {
   try {
-    const response = await api.post(`/analysis/analyze/${fileId}`);
+    const response = await axios.post(`${API_BASE_URL}/analysis/analyze/${fileId}`);
     return response.data;
   } catch (error) {
     console.error('File Analysis Error:', error.response?.data || error.message);
@@ -38,4 +34,4 @@ export const analyzeFile = async (fileId) => {
   }
 };
 
-export default api;
+

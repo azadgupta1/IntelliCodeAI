@@ -3,7 +3,6 @@ import { fetchUserRepos, fetchCommitDetails, fetchFileContent, fetchRepoFiles,
     githubFileAnalysis, enableAutoAnalysisController, getAutoAnalysisStatusController,
     getAutoAnalysisRepos, getRepoAnalysisHistory, disableAutoAnalysisController, getRepoById, fetchRepoCommits, 
     fetchPullRequests, getRepoErrors, fetchAnalyzedRepos, syncRepoMetadata, getRepoSettings, deleteGithubRepo, deleteAccount} from "../controllers/githubController.js";
-import { handleGitHubWebhook } from "../controllers/webhookController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();

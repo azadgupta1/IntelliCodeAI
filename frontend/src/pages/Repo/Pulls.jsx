@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import PullRequestCard from "../components/PullRequestCard";
+import PullRequestCard from "../../components/PullRequestCard";
 
 const PullsPage = () => {
   const [pullRequests, setPullRequests] = useState([]);

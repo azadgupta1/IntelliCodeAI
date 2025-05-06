@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { uploadFile, analyzeFile } from '../services/api';
-import Navbar from '../components/Landing/Navbar';
+import { uploadFile, analyzeFile } from '../../services/api';
+import Navbar from '../../components/Landing/Navbar';
 
 const UploadFile = () => {
   const [selectedFile, setSelectedFile] = useState(null);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import DiffViewer from "../components/DiffViewer";
-import CodeEditor from "../components/CodeEditor";
+import DiffViewer from "../../components/DiffViewer";
+import CodeEditor from "../../components/CodeEditor";
 
 // Build nested file tree
 const buildFileTree = (paths) => {

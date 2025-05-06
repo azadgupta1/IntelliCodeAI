@@ -53,8 +53,8 @@
 import React, { useEffect, useState } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchRepoErrors } from '../services/githubServices';
-import RepoErrorChart from '../components/RepoErrorChart'; // 👈 import chart
+import { fetchRepoErrors } from '../../services/githubServices';
+import RepoErrorChart from '../../components/RepoErrorChart'; // 👈 import chart
 
 function RepoOverview() {
   const { owner, repo } = useParams();
