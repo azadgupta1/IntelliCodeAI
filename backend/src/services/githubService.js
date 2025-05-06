@@ -4,17 +4,7 @@ import prisma from "../config/db.js";
 export const enableAutoAnalysis = async (userId, repoName, githubToken) => {
   try {
 
-    //--------------------------------------------------------------------------------------
-    // const repo = await prisma.githubRepo.findFirst({
-    //   where: { userId, repoName },
-    // });
-
-    //-----------------------------------------------------------------------------------------
-
-    // const repoWithoutUser = await prisma.githubRepo.findFirst({
-    //     where: { repoName: { equals: repoName, mode: "insensitive" } },
-    //   });
-    //   console.log("Repo without user filter:", repoWithoutUser);
+    
 
     const repos = await prisma.githubRepo.findMany({
         where: { 
@@ -44,17 +34,7 @@ export const enableAutoAnalysis = async (userId, repoName, githubToken) => {
       },
     };
 
-    // Create Webhook via GitHub API
-    // const response = await axios.post(
-    //   `https://api.github.com/repos/${repoName}/hooks`,
-    //   webhookData,
-    //   { headers: { Authorization: `Bearer ${githubToken}` } }
-    // );
-    // const response = await axios.post(
-    //     `https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/hooks`, // FIXED
-    //     webhookData,
-    //     { headers: { Authorization: `Bearer ${githubToken}` } }
-    //   );
+    
       
     // Construct API URL
 const apiUrl = `https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/hooks`;

@@ -138,9 +138,9 @@
 
 
 import React, { useState } from 'react';
-import General from '../components/Settings/General';
-import PlanBillings from '../components/Settings/PlanBillings';
-import Profile from './Profile';
+import General from '../../components/Settings/General';
+import PlanBillings from '../../components/Settings/PlanBillings';
+import Profile from '../Profile';
 
 function Settings() {
   const [activeTab, setActiveTab] = useState('general');

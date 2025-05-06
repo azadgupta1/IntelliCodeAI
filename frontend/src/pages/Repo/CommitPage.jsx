@@ -55,8 +55,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CommitList from "../components/CommitList";
-import CommitDetailModal from "../components/CommitDetailModal";
+import CommitList from "../../components/CommitList";
+import CommitDetailModal from "../../components/CommitDetailModal";
 import axios from "axios";
 
 const CommitsPage = () => {

@@ -2,47 +2,6 @@ import axios from "axios";
 
 const API_BASE_URL =  "http://localhost:3000";
 
-
-// Fetch AI-fixed code
-// export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
-//   try {
-//     const res = await axios.get(`${API_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`, {
-//       headers: { Authorization: `Bearer ${token}` },
-//       withCredentials: true,
-//     });
-//     return { success: true, fixedCode: res.data.fixedCode };
-//   } catch (err) {
-//     return { success: false };
-//   }
-// };
-
-// export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
-//   try {
-//     const url = `${API_BASE_URL}/api/fix/github/fix/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`;
-//     console.log("🌐 fetchAIFixedCode URL:", url);
-
-//     const res = await axios.get(url, {
-//       headers: { Authorization: `Bearer ${token}` },
-//       withCredentials: true,
-//     });
-
-//     console.log("🧠 Backend AI Fixed Code Response:", res.data);
-
-//     return { success: true, 
-//             fixedCode: res.data.fixed,
-//             originalCode: res.data.original,
-//           };
-    
-//   } catch (err) {
-//     console.error("❌ fetchAIFixedCode error:", err.response?.data || err.message);
-//     return { success: false };
-//   }
-// };
-
-
-// import axios from 'axios';
-// import { API_BASE_URL } from '../config'; // Adjust path as needed
-
 export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
   try {
     const encodedPath = encodeURIComponent(filePath);
@@ -79,27 +38,6 @@ export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) 
   }
 };
 
-
-
-// Commit the AI fix
-// export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, fixedCode, token) => {
-//   try {
-//     const res = await axios.post(`${API_URL}/api/fix/commit-fixed-code`, {
-//       owner,
-//       repo,
-//       commitSha,
-//       filePath,
-//       fixedCode,
-//     }, {
-//       headers: { Authorization: `Bearer ${token}` },
-//       withCredentials: true,
-//     });
-
-//     return { success: true, data: res.data };
-//   } catch (err) {
-//     return { success: false };
-//   }
-// };
 
 
 export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, fixedCode, token, numErrors, githubRepoId) => {
@@ -178,22 +116,7 @@ export const fetchAnalysisHistory = async (token) => {
   }
 };
 
-// export const markAsCommitted = async (analysisId, token) => {
-//   try {
-//     const res = await fetch(`${API_BASE_URL}/analysis/${analysisId}/commit`, {
-//       method: "PATCH",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
 
-//     return await res.json();
-//   } catch (error) {
-//     console.error("Error marking analysis as committed:", error);
-//     return { success: false };
-//   }
-// };
 
 export const markAsCommitted = async (analysisId, token) => {
   try {
@@ -235,14 +158,12 @@ export const fetchAnalysisById = async (id, token) => {
 
 
 
-// import axios from "axios";
 
-const API_URL = "http://localhost:3000"; // Backend running on port 3000
 
 // Fetch user repositories
 export const fetchUserRepos = async () => {
   try {
-    const response = await axios.get(`${API_URL}/github/repos`, { withCredentials: true });
+    const response = await axios.get(`${API_BASE_URL}/github/repos`, { withCredentials: true });
     return response.data.repositories;
   } catch (error) {
     console.error("Error fetching repositories:", error);
@@ -253,7 +174,7 @@ export const fetchUserRepos = async () => {
 // Fetch commit details
 export const fetchCommitDetails = async (owner, repo, commitSha) => {
   try {
-    const response = await axios.get(`${API_URL}/github/repos/${owner}/${repo}/commits/${commitSha}`, {
+    const response = await axios.get(`${API_BASE_URL}/github/repos/${owner}/${repo}/commits/${commitSha}`, {
       withCredentials: true,
     });
     return response.data.commitDetails;
@@ -267,7 +188,7 @@ export const fetchCommitDetails = async (owner, repo, commitSha) => {
 export const fetchFileContent = async (owner, repo, commitSha, filePath) => {
   try {
     const response = await axios.get(
-      `${API_URL}/github/repos/${owner}/${repo}/commits/${commitSha}/file/${encodeURIComponent(filePath)}`,
+      `${API_BASE_URL}/github/repos/${owner}/${repo}/commits/${commitSha}/file/${encodeURIComponent(filePath)}`,
       { withCredentials: true }
     );
     return response.data.fileContent;
@@ -281,7 +202,7 @@ export const fetchFileContent = async (owner, repo, commitSha, filePath) => {
 export const analyzeFile = async (owner, repo, commitSha, filePath) => {
   try {
     const response = await axios.get(
-      `${API_URL}/github/analyze/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`,
+      `${API_BASE_URL}/github/analyze/file/${owner}/${repo}/${commitSha}/${encodeURIComponent(filePath)}`,
       { withCredentials: true }
     );
     return response.data.analysisResult;
@@ -297,7 +218,7 @@ export const analyzeFile = async (owner, repo, commitSha, filePath) => {
 // ✅ Fetch repositories with auto-analysis enabled
 export const fetchAutoAnalysisRepos = async (token) => {
   try {
-    const response = await axios.get(`${API_URL}/github/auto-analysis-repos`, {
+    const response = await axios.get(`${API_BASE_URL}/github/auto-analysis-repos`, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
     });
@@ -319,7 +240,7 @@ export const fetchRepoAnalysisHistory = async (owner, repo) => {
     }
 
     const response = await axios.get(
-      `http://localhost:3000/github/repo/${owner}/${repo}/analysis-history`,
+      `${API_BASE_URL}/github/repo/${owner}/${repo}/analysis-history`,
       {
         headers: { Authorization: `Bearer ${token}` }, // ✅ Ensure Authorization header is sent
         // Remove withCredentials if backend does not support cookies
@@ -344,7 +265,7 @@ export const fetchRepoErrors = async (owner, repo) =>{
       }
 
       const respone = await axios.get(
-        `http://localhost:3000/github/errors/${owner}/${repo}`,
+        `${API_BASE_URL}/github/errors/${owner}/${repo}`,
         {
             headers: {Authorization: `Bearer ${token}`},
         }

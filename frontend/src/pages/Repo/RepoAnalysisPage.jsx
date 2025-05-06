@@ -757,8 +757,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchRepoAnalysisHistory, ignoreAnalysis } from "../services/githubServices";
-import { Loader } from "../components/ui/loader";
+import { fetchRepoAnalysisHistory, ignoreAnalysis } from "../../services/githubServices";
+import { Loader } from "../../components/ui/loader";
 import { CheckCircle } from "lucide-react";
 
 const AutoAnalysisStatus = () => {

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import RepoTable from "../components/RepoTable";
-import EnabledRepoList from "../components/EnabledRepoList";
-import { fetchAutoAnalysisRepos } from "../services/githubServices";
+import RepoTable from "../../components/RepoTable";
+import EnabledRepoList from "../../components/EnabledRepoList";
+import { fetchAutoAnalysisRepos } from "../../services/githubServices";
 
 const fetchRepos = async () => {
   const token = localStorage.getItem("token");

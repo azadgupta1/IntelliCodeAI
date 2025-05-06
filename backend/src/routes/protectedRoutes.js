@@ -1,18 +1,3 @@
-// import express from "express";
-// import { authenticate } from "../middlewares/authMiddleware.js"; // Your middleware
-
-// const router = express.Router();
-
-// router.get("/user", authenticate, async (req, res) => {
-//     try {
-//         res.json({ user: req.user }); // Send only the user object
-//     } catch (error) {
-//         res.status(500).json({ message: "Server error", error: error.message });
-//     }
-// });
-
-// export default router;
-
 import express from "express";
 import { authenticate } from "../middlewares/authMiddleware.js"; // Your middleware
 

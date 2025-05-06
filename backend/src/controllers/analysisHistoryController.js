@@ -20,31 +20,6 @@ export const getAnalysisHistory = async (req, res) => {
   }
 };
 
-// export const commitAnalysis = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const analysis = await prisma.analysis.findUnique({ where: { id } });
-
-//     if (!analysis) {
-//       return res.status(404).json({ success: false, message: "Analysis not found." });
-//     }
-
-//     if (analysis.isCommitted) {
-//       return res.status(200).json({ success: true, alreadyCommitted: true });
-//     }
-
-//     await prisma.analysis.update({
-//       where: { id },
-//       data: { isCommitted: true },
-//     });
-
-//     res.json({ success: true, alreadyCommitted: false });
-//   } catch (error) {
-//     console.error("Error committing analysis:", error);
-//     res.status(500).json({ success: false, message: "Failed to commit analysis" });
-//   }
-// };
 
 export const commitAnalysis = async (req, res) => {
   try {
@@ -78,30 +53,6 @@ export const commitAnalysis = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to commit analysis" });
   }
 };
-
-
-
-// export const getAnalysisHistory = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-
-//     const analyses = await prisma.analysis.findMany({
-//       where: {
-//         userId,
-//         ignored: false, // Exclude ignored analyses
-//       },
-//       include: {
-//         file: true, // Include file details
-//       },
-//       orderBy: { createdAt: "desc" }, // Show latest analyses first
-//     });
-
-//     res.json({ success: true, data: analyses });
-//   } catch (error) {
-//     console.error("Error fetching analysis history:", error);
-//     res.status(500).json({ success: false, message: "Failed to fetch analysis history" });
-//   }
-// };
 
 
 
