@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-    <section className="h-screen bg-black flex flex-col justify-center items-center text-white px-4">
+    <section className="h-screen bg-[#9384e6] flex flex-col justify-center items-center text-white px-4">
       {/* Optional logo/image */}
       {/* <img src="/path-to-your-logo.png" alt="Logo" className="w-32 mb-6" /> */}
 
@@ -17,7 +17,7 @@ const HeroSection = () => {
       </p>
 
       {/* Optional CTA button */}
-      <button className="mt-8 px-6 py-3 bg-[#00ffd1] text-black font-semibold rounded hover:bg-[#00e6b8] transition-colors duration-200">
+      <button className="mt-8 px-6 py-3 bg-[black] text-white font-semibold rounded hover:bg-[black] transition-colors duration-200">
         Get Started
       </button>
     </section>

@@ -133,7 +133,7 @@ const Organisations = () => {
       {/* 🟡 Floating Chatbot Icon */}
       <button
         onClick={() => setIsChatOpen((prev) => !prev)}
-        className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all z-50"
+        className="fixed bottom-6 right-6 dark:bg-gray-900 text-white p-4 rounded-full shadow-lg hover:dark:bg-gray-900 transition-all z-50"
       >
         <FaCommentDots size={24} />
       </button>
@@ -141,7 +141,7 @@ const Organisations = () => {
       {/* 🟢 Chatbox UI */}
       {isChatOpen && (
         <div className="fixed bottom-20 right-6 w-80 bg-white border border-gray-300 rounded-xl shadow-lg z-50">
-          <div className="p-4 border-b font-semibold bg-blue-600 text-white rounded-t-xl">
+          <div className="p-4 border-b font-semibold dark:bg-gray-900 text-white rounded-t-xl">
             AI Chat Assistant
           </div>
           <div className="p-4 h-64 overflow-y-auto">
