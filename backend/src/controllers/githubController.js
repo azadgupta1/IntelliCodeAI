@@ -798,7 +798,33 @@ export const syncRepoMetadata = async (req, res) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const branchNames = branchesRes.data.map((b) => b.name);
+    // const branchNames = branchesRes.data.map((b) => b.name);
+    // const branchInfo = branchesRes.data.map((b) => ({
+    //   name: b.name,
+    //   lastUpdated: b.commit?.commit?.committer?.date || null,
+    // }));
+    const branchInfo = await Promise.all(
+      branchesRes.data.map(async (b) => {
+        try {
+          const commitRes = await axios.get(b.commit.url, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+    
+          return {
+            name: b.name,
+            lastUpdated: commitRes.data.commit.committer.date || null,
+          };
+        } catch (err) {
+          console.error(`Failed to fetch commit for branch ${b.name}:`, err.message);
+          return {
+            name: b.name,
+            lastUpdated: null,
+          };
+        }
+      })
+    );
+    
+    
     const now = new Date();
 
     const updatedRepo = await prisma.githubRepo.update({
@@ -810,7 +836,7 @@ export const syncRepoMetadata = async (req, res) => {
       },
       data: {
         defaultBranch,
-        branches: branchNames,
+        branches: branchInfo,
         lastSyncedAt: now,
       },
     });

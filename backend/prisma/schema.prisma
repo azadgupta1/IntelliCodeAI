@@ -79,7 +79,7 @@ model GithubRepo {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   defaultBranch String?
-  branches      String[]
+  branches      Json?
 
   lastSyncedAt DateTime?
   lastCommitAt DateTime?
