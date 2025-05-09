@@ -12,7 +12,7 @@ const totalIssues = issues.reduce((sum, issue) => sum + issue.count, 0);
 
 const IssuesBreakdown = () => {
   return (
-    <section id="chart-issues-breakdown" className="w-72 h-100 mt-10 p-4 bg-white shadow-lg rounded-lg space-y-3">
+    <section id="chart-issues-breakdown" className="w-82 h-100 mt-10 p-4 bg-white shadow-lg rounded-lg space-y-3">
       <header className="flex items-baseline gap-2">
         <h4 className="text-2xl font-semibold">{totalIssues}</h4>
         <p className="text-sm text-gray-500">total issues</p>
@@ -45,7 +45,7 @@ const IssuesBreakdown = () => {
       </div>
 
       <a
-        href="/gh/azadgupta1/Blogger/issues"
+        href="/repositories/azadgupta1/Blogger/issues"
         className="block text-blue-600 text-xs font-medium mt-4 hover:underline"
       >
         See all issues

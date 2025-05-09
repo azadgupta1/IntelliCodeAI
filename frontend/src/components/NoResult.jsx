@@ -4,7 +4,7 @@ import NoResultImg from "../assets/Empty.svg"
 const NoResults = () => {
   return (
     <div className="flex justify-center items-center p-10">
-      <div className="flex flex-col items-center w-72 h-100 bg-white shadow-lg rounded-lg p-6 space-y-4">
+      <div className="flex flex-col items-center w-82 h-100 bg-white shadow-lg rounded-lg p-6 space-y-4">
         <div className="flex justify-center items-center">
           <img
             src={NoResultImg}
