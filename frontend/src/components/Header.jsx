@@ -11,14 +11,11 @@ import IntelliCodeAI_3 from "../assets/IntelliCodeAI_3.png";
 import { FaBriefcase } from "react-icons/fa";
 import { IoFolderOpenOutline } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
-
-
-
 import { FiBell, FiChevronDown, FiHome, FiFolder } from "react-icons/fi";
 import { GoGitBranch } from 'react-icons/go';
 import { HiOutlineSlash } from "react-icons/hi2";
-
 import avtar from "../assets/avtar.png";
+
 
 const Header = () => {
   const [profile, setProfile] = useState(null);
@@ -28,6 +25,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
+
 
   useEffect(() => {
     const getUserProfile = async () => {

@@ -100,7 +100,7 @@ const RepositoryLayout = () => {
   return (
     <div className="flex bg-gray-50 min-h-screen">
       {/* Fixed Sidebar */}
-      <div className="fixed h-screen w-16 sm:w-20 bg-white border-r shadow-sm flex flex-col items-center py-6 space-y-6">
+      <div className="fixed h-screen w-16 sm:w-22 bg-white border-r shadow-sm flex flex-col items-center py-6 space-y-6">
         <button
           onClick={() => navigate(-1)}
           className="text-gray-600 hover:text-gray-900 cursor-pointer transition-all"

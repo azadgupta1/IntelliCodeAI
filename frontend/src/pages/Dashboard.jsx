@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray">
       {/* Sidebar */}
-      <div className="h-screen w-16 sm:w-20 bg-white border-r shadow-sm flex flex-col items-center py-6 space-y-6 fixed">
+      <div className="h-screen w-24 sm:w-22 bg-white border-r shadow-sm flex flex-col items-center py-6 space-y-6 fixed">
         <NavLink to={`/dashboard/${username}`} end className={linkClasses}>
           <FaHome size={20} />
         </NavLink>
