@@ -51,7 +51,7 @@ export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, 
   });
 
   try {
-    const res = await axios.post(`${API_URL}/api/fix/commit-fixed-code`, {
+    const res = await axios.post(`${API_BASE_URL}/api/fix/commit-fixed-code`, {
       owner,
       repo,
       filePath,
@@ -75,7 +75,7 @@ export const commitFixedCodeToGitHub = async (owner, repo, commitSha, filePath, 
 
 export const fetchGithubRepoById = async (repoId, token) => {
   try {
-    const res = await axios.get(`${API_URL}/github/repos/id/${repoId}`, {
+    const res = await axios.get(`${API_BASE_URL}/github/repos/id/${repoId}`, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
     });

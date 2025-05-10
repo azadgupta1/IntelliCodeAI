@@ -305,6 +305,7 @@ export const handleGitHubWebhook = async (req, res) => {
             errorCnt: numErrors,
             suggestionCnt: numSuggestions,
             optimizationCnt: numOptimizations,
+            commitMessage: commitMessage,
           },
         });
 

@@ -6,6 +6,10 @@ import { useParams } from 'react-router-dom';
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CheckCircle, HelpCircle, Circle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { FaFolderOpen } from "react-icons/fa6";
+import { formatDistanceToNow } from 'date-fns';
+import { FaBug } from "react-icons/fa6";
+
 
 
 import {
@@ -29,6 +33,8 @@ const fetchRepos = async () => {
   const response = await axios.get('http://localhost:3000/github/repos/fetchLatest', {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+  console.log(response.data.repositories);
 
   return response.data.repositories;
 };
@@ -177,15 +183,14 @@ function Overview() {
     </div>
 </div>
 
-      {/* 📋 Repositories Table */}
+      {/* 📋 Repositories Table
       <table className="min-w-full table-auto border-collapse border border-gray-200">
         <thead>
           <tr className="bg-gray-100">
-            <th className="px-4 py-2 border border-gray-300">Repo Name</th>
-            <th className="px-4 py-2 border border-gray-300">Owner</th>
-            <th className="px-4 py-2 border border-gray-300">Number of Issues</th>
-            <th className="px-4 py-2 border border-gray-300">Last Commit</th>
-            <th className="px-4 py-2 border border-gray-300">Repo URL</th>
+            <th className="px-4 py-2  border-gray-300"><FaFolderOpen className='text-gray-400' />Repository</th>
+            <th className="px-4 py-2  border-gray-300">Owner</th>
+            <th className="px-4 py-2  border-gray-300">Issues</th>
+            <th className="px-4 py-2  border-gray-300">Last Commit</th>
           </tr>
         </thead>
         <tbody>
@@ -195,15 +200,86 @@ function Overview() {
               className="odd:bg-white even:bg-gray-50 cursor-pointer hover:bg-blue-50 transition"
               onClick={() => navigate(`/repositories/${repo.ownerName}/${repo.repoName}`)}
             >
-              <td className="px-4 py-2 border border-gray-300">{repo.repoName}</td>
-              <td className="px-4 py-2 border border-gray-300">{repo.ownerName}</td>
-              <td className="px-4 py-2 border border-gray-300">{repo.errorCount}</td>
-              <td className="px-4 py-2 border border-gray-300">
+              <td className="px-4 py-2  border-gray-300">{repo.repoName}</td>
+              <td className="px-4 py-2  border-gray-300">{repo.ownerName}</td>
+              <td className="px-4 py-2  border-gray-300">{repo.errorCount}</td>
+              <td className="px-4 py-2  border-gray-300">
                 {repo.latestCommitDate
                   ? new Date(repo.latestCommitDate).toLocaleString()
                   : 'No commits yet'}
               </td>
-              <td className="px-4 py-2 border border-gray-300">
+              
+            </tr>
+          ))}
+        </tbody>
+      </table> */}
+
+      {/* 📋 Repositories Table */}
+<table className="w-300  border-collapse border border-gray-200">
+  <thead>
+    <tr className="bg-gray-100">
+      <th className="px-4 py-2 border-gray-300 text-left text-gray-400"><FaFolderOpen className='inline-block mr-2 text-gray-400' />Repository</th>
+      <th className="px-4 py-2 border-gray-300 text-center text-gray-400"><FaBug className='inline-block mr-2 text-gray-400' />Issues</th>
+      <th className="px-4 py-2 border-gray-300 text-center text-gray-400">Last Commit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {repos.map((repo) => (
+      <tr
+        key={repo.id}
+        className="odd:bg-white even:bg-gray-50 cursor-pointer hover:bg-blue-50 transition"
+        onClick={() => navigate(`/repositories/${repo.ownerName}/${repo.repoName}`)}
+      >
+        <td className="px-4 py-2 border-gray-300">
+          <div className="font-medium">{repo.repoName}</div>
+          <div className="text-sm text-gray-400"> {repo.ownerName}</div>
+        </td>
+        <td
+          className={`px-4 py-2 border-gray-300 text-center ${
+            repo.errorCount === 0
+              ? 'text-green-400'
+              : repo.errorCount < 5
+              ? 'text-yellow-600'
+              : repo.errorCount <= 10
+              ? 'text-orange-600'
+              : 'text-red-500'
+          }`}
+        >
+          {repo.errorCount}
+        </td>
+
+        <td className="px-4 py-2 border-gray-300 text-center">
+          {repo.latestCommitDate
+            ? `${formatDistanceToNow(new Date(repo.latestCommitDate), { addSuffix: true })}`
+            : 'No commits yet'}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+    </div>
+  );
+}
+
+export default Overview;
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* <th className="px-4 py-2 border border-gray-300">Repo URL</th> */}
+
+
+
+{/* <td className="px-4 py-2 border border-gray-300">
                 <a
                   href={repo.repoUrl}
                   target="_blank"
@@ -213,13 +289,4 @@ function Overview() {
                 >
                   View Repo
                 </a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-export default Overview;
+              </td> */}

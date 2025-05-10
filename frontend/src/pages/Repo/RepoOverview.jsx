@@ -40,7 +40,7 @@ function RepoOverview() {
 
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       <div className='flex items-center'>
         <h1 className='text-2xl font-bold p-4'>{repo}</h1>
 
