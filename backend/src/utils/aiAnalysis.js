@@ -9,13 +9,55 @@ async function analyzeCode(code, filePath) {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     
-    const prompt = `
+    // const prompt = `
+    //     You are a senior AI code reviewer. Analyze the code below and provide structured feedback.
+
+    //     ---
+    //     Code:
+    //     \`\`\`
+    //     ${code}
+    //     \`\`\`
+
+    //     Respond with STRICTLY a valid JSON object in the following format:
+
+    //     {
+    //       "errors": [
+    //         {
+    //           "message": "Describe the critical issue",
+    //           "line": 12,
+    //           "severity": "high | medium | low"
+    //         }
+    //       ],
+    //       "optimizations": [
+    //         {
+    //           "message": "Describe the performance improvement",
+    //           "line": 22
+    //         }
+    //       ],
+    //       "suggestions": [
+    //         {
+    //           "message": "Describe the best practice",
+    //           "line": 8
+    //         }
+    //       ]
+    //     }
+
+    //     Keep the response clean and ensure proper JSON syntax. Only return the JSON object. Do NOT add commentary.
+    //     `;
+
+    const numberedCode = code
+          .split("\n")
+          .map((line, idx) => `${idx + 1}: ${line}`)
+          .join("\n");
+
+        const prompt = `
         You are a senior AI code reviewer. Analyze the code below and provide structured feedback.
 
         ---
+
         Code:
         \`\`\`
-        ${code}
+        ${numberedCode}
         \`\`\`
 
         Respond with STRICTLY a valid JSON object in the following format:
@@ -44,6 +86,7 @@ async function analyzeCode(code, filePath) {
 
         Keep the response clean and ensure proper JSON syntax. Only return the JSON object. Do NOT add commentary.
         `;
+
 
 
     const response = await model.generateContent(prompt);

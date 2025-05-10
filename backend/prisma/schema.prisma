@@ -44,7 +44,7 @@ model Analysis {
   createdAt  DateTime @default(now())
 
   file         File?       @relation(name: "FileToAnalysis", fields: [fileId], references: [id], onDelete: Cascade)
-  filePath         String?
+  filePath     String?
   userId       Int? // Allow anonymous analysis
   user         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   // ✅ New relation: An analysis belongs to a repo
@@ -58,8 +58,9 @@ model Analysis {
   ignored    Boolean @default(false)
   isCommited Boolean @default(false)
 
-  originalCode String?
-  fixedCode    String?
+  originalCode  String?
+  fixedCode     String?
+  commitMessage String?
 }
 
 model GithubRepo {
@@ -81,13 +82,12 @@ model GithubRepo {
   defaultBranch String?
   branches      Json?
 
-  lastSyncedAt DateTime?
-  lastCommitAt DateTime?
+  lastSyncedAt     DateTime?
+  lastCommitAt     DateTime?
+  RepoErrorHistory RepoErrorHistory[]
 
   @@unique([repoName, userId])
-  RepoErrorHistory RepoErrorHistory[]
 }
-
 
 model RepoErrorHistory {
   id         Int      @id @default(autoincrement())
@@ -99,8 +99,6 @@ model RepoErrorHistory {
 
   @@index([repoId, timestamp])
 }
-
-
 
 model Notification {
   id        Int      @id @default(autoincrement())

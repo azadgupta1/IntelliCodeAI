@@ -695,13 +695,19 @@ export const getRepoById = async (req, res) => {
   const { repoId } = req.params;
 
   try {
+
+    console.log("Running...");
     const repo = await prisma.githubRepo.findUnique({
       where: { id: parseInt(repoId) },
     });
 
+    console.log("Running...")
+
     if (!repo) {
       return res.status(404).json({ message: "Repository not found" });
     }
+
+    console.log("Repo data is : ",repo);
 
     return res.json({ repo });
   } catch (error) {

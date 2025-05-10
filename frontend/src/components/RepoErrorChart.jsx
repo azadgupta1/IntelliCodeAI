@@ -42,7 +42,23 @@ const RepoErrorChart = ({ repoId, range, errorCount }) => {
             };
           });
 
-          setChartData(formattedData);
+          // setChartData(formattedData);
+
+          const today = new Date().toISOString().split('T')[0];
+const hasToday = formattedData.some(item => item.date === today);
+
+if (!hasToday) {
+  const prevCount = formattedData.length > 0 ? formattedData[formattedData.length - 1].errorCount : 0;
+  const todayData = {
+    date: today,
+    errorCount: errorCount,
+    delta: errorCount - prevCount,
+  };
+  formattedData.push(todayData);
+}
+
+setChartData(formattedData);
+
         }
       } catch (err) {
         console.error('Failed to fetch error history:', err);

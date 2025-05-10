@@ -66,14 +66,20 @@ function App() {
           <Route path="organisations" element={<ProtectedRoute element={<Organisations />} />} />
           <Route path="github-dashboard" element={<ProtectedRoute element={<GithubDashboard />} />} />
           <Route path="repositories/:owner/:repo" element={<RepositoryLayout />} >
-              <Route index element={<RepoOverview />} /> {/* <-- default route */}
-              <Route path="repooverview" element={<RepoOverview />} />
+              <Route index element={<RepoOverview />} /> 
+               <Route path="repooverview" element={<RepoOverview />} />
                <Route path="commits" element={<CommitsPage />} />
                <Route path="files" element={<GithubFileAnalysis />} />
                <Route path="issues" element={<RepoAnalysisPage />} />
                <Route path="pulls" element={<Pulls />} />
                <Route path="settings" element={<RepoSettings />} />
-          </Route>
+                <Route path="analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} />
+                
+               {/* <Route path="issues" element={<RepoAnalysisPage />}>
+                <Route path="analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} />
+              </Route> */}
+          </Route> 
+
 
           {/* <Route path="dashboard" element={<ProtectedRoute element={<Dashboard />} />}> */}
           <Route path="dashboard/:username" element={<ProtectedRoute element={<Dashboard />} />}>
@@ -91,7 +97,7 @@ function App() {
         <Route path="/github/:owner/:repo/analyze" element={<ProtectedRoute element={<GithubFileAnalysis />} />} />
         <Route path="/auto-analysis-status" element={<ProtectedRoute element={<AutoAnalysisStatus />} />} />
         <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-        <Route path="/analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} />
+        {/* <Route path="analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} /> */}
         <Route path="/analysis-history" element={<ProtectedRoute element={<AnalysisHistory />} />} />
         <Route path="/analyze-manually" element={<UserRepositories />} />
       </Routes>
