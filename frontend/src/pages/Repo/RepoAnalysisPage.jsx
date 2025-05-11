@@ -56,6 +56,8 @@ const AutoAnalysisStatus = () => {
     }
   };
 
+  console.log("IGNORED : ",ignoredAnalyses);
+
 return (
   <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200 min-h-[300px]">
     <div className="mb-8">

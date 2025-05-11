@@ -49,7 +49,7 @@ const AnalysisDetails = () => {
 
         const analysisData = result.data;
 
-        console.log(analysisData);
+        console.log("Analysis Detail: ",analysisData);
         setAnalysis(analysisData);
 
         const repoInfo = await fetchGithubRepoById(analysisData.githubRepoId, token);
@@ -114,7 +114,7 @@ const AnalysisDetails = () => {
                 className={`py-2 px-4 text-sm font-medium border-b-2 ${
                   activeTab === tab.id
                     ? "border-blue-500 text-blue-400"
-                    : "border-transparent text-gray-400 hover:text-white"
+                    : "border-transparent text-gray-400 hover:text-black"
                 }`}
               >
                 {tab.label}

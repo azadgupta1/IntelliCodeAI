@@ -33,6 +33,9 @@ import Pulls from "./pages/Repo/Pulls";
 import RepoOverview from "./pages/Repo/RepoOverview";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RepoSettings from "./pages/Repo/RepoSettings";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 
 const queryClient = new QueryClient();
@@ -101,6 +104,15 @@ function App() {
         <Route path="/analysis-history" element={<ProtectedRoute element={<AnalysisHistory />} />} />
         <Route path="/analyze-manually" element={<UserRepositories />} />
       </Routes>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        pauseOnHover
+        draggable={false}
+      />
     </Router>
     </QueryClientProvider>
   );
