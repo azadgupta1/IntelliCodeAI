@@ -9,9 +9,9 @@ const Button = ({ children, className, onClick, ...props }) => {
     const combinedClasses = `
     ${className || ''}
     px-6 py-3 rounded-full font-semibold text-lg
-    bg-gradient-to-r from-purple-500 to-pink-500
+    bg-black from-black-900 to-black-600
     text-white
-    hover:from-purple-600 hover:to-pink-600
+    hover:from-black-600 hover:to-black-600
     transition-all duration-300
     cursor-pointer
     border-none

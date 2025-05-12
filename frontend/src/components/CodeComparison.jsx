@@ -255,7 +255,7 @@ const CodeComparison = ({
               ${
                 fixLoading || isCommitted
                   ? "bg-gray-200 text-gray-600 cursor-not-allowed"
-                  : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                  : "bg-gradient-to-r from-black-800 to-black-500 hover:from-black-600 hover:to-black-600 text-white"
               }
               transition-all duration-300 border-none font-semibold text-sm shadow-sm
             `}
