@@ -143,6 +143,7 @@
 // };
 
 // export default CodeComparison;
+// check variables
 
 import React, { useState } from "react";
 import CodeEditor from "./CodeEditors";
