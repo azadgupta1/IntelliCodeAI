@@ -194,8 +194,9 @@ const getSeverityDetails = (severity) => {
   }
 };
 
-const ErrorSection = ({ errors, originalCode }) => {
+const ErrorSection = ({ errors, originalCode, analysis }) => {
   if (!errors?.length) return null;
+
 
   return (
     <div className="space-y-6">
@@ -243,8 +244,8 @@ const ErrorSection = ({ errors, originalCode }) => {
             {/* File path */}
             <div className="mt-3 flex items-center text-sm text-gray-600 space-x-2">
               <IoDocumentOutline className="w-5 h-5 text-gray-500" />
-              <span>Blogger/backend/controllers/</span>
-              <span className="font-semibold">hello.js</span>
+              <span>{analysis.file.filename}</span>
+              {/* <span className="font-semibold">hello.js</span> */}
             </div>
 
             {/* Code Block */}

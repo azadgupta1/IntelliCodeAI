@@ -119,3 +119,13 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+// postgresql://neondb_owner:npg_Ht93SYaUVieq@ep-noisy-hill-a1xp21qr-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
