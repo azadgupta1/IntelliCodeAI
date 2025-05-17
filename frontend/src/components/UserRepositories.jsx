@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../services/githubServices";
 
 const UserRepositories = () => {
   const [repos, setRepos] = useState([]);
@@ -19,7 +20,7 @@ const UserRepositories = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:3000/github/repos", {
+        const response = await axios.get(`http://localhost:3000/github/repos`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,7 +51,7 @@ const UserRepositories = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:3000/github/enable-auto-analysis",
+        `http://localhost:3000/github/enable-auto-analysis`,
         { repoName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -73,7 +74,7 @@ const UserRepositories = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:3000/github/disable-auto-analysis",
+        `http://localhost:3000/github/disable-auto-analysis`,
         { repoName },
         { headers: { Authorization: `Bearer ${token}` } }
       );

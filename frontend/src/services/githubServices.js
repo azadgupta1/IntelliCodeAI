@@ -8,6 +8,8 @@ import axios from "axios";
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+console.log("API URL is : ", API_BASE_URL);
+
 
 export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
   try {
