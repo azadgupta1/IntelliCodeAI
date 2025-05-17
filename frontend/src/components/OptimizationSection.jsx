@@ -39,7 +39,7 @@ const getLineContext = (code, line, context = 2) => {
   return lines.slice(start, end).join("\n");
 };
 
-const OptimizationSection = ({ optimizations, originalCode, fixedCode }) => {
+const OptimizationSection = ({ optimizations, originalCode, fixedCode, analysis }) => {
   if (!optimizations?.length) return null;
 
   return (
@@ -68,8 +68,8 @@ const OptimizationSection = ({ optimizations, originalCode, fixedCode }) => {
           {/* File path (customize as needed) */}
           <div className="mt-3 flex items-center text-sm text-gray-600 space-x-2">
             <IoDocumentOutline className="w-5 h-5 text-gray-500" />
-            <span>Blogger/backend/controllers/</span>
-            <span className="font-semibold">hello.js</span>
+            <span>{analysis.file.filename}</span>
+            {/* <span className="font-semibold">hello.js</span> */}
           </div>
 
           {/* Code Diff Viewer */}

@@ -42,11 +42,13 @@ const getLineContext = (code, line, context = 2) => {
   return lines.slice(start, end).join("\n");
 };
 
-const SuggestionSection = ({ suggestions, originalCode, fixedCode }) => {
+const SuggestionSection = ({ suggestions, originalCode, fixedCode, analysis }) => {
   if (!suggestions?.length) return null;
 
   console.log("Suggestion: ",suggestions);
   console.log( originalCode);
+  console.log("Suggestion Analysis: ", analysis);
+  console.log("FilePath is : ", analysis.filePath);
 
   return (
     <div className="space-y-6">
@@ -74,8 +76,8 @@ const SuggestionSection = ({ suggestions, originalCode, fixedCode }) => {
           {/* File path (mocked or update this if needed) */}
           <div className="mt-3 flex items-center text-sm text-gray-600 space-x-2">
             <IoDocumentOutline className="w-5 h-5 text-gray-500" />
-            <span>Blogger/backend/controllers/</span>
-            <span className="font-semibold">hello.js</span>
+            <span>{analysis.file.filename || analysis.filePath}</span>
+            {/* <span className="font-semibold">hello.js</span> */}
           </div>
 
           {/* Code Diff Viewer */}

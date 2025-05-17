@@ -231,10 +231,13 @@ const CodeComparison = ({
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-xl border border-gray-200">
-      <div className="grid md:grid-cols-2 gap-0">
+      {/* <div className="grid md:grid-cols-2 gap-0">
         <div>
           <h3 className="text-lg font-semibold text-red-600 mb-2">
             🔧 Original Code
+            <div>
+              {analysis.file.filename}
+            </div>
           </h3>
           <CodeEditor code={originalCode} readOnly />
         </div>
@@ -244,7 +247,30 @@ const CodeComparison = ({
           </h3>
           <CodeEditor code={fixedCode} readOnly />
         </div>
+      </div> */}
+
+      <div className="grid md:grid-cols-2 gap-0">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            Original Code
+          </h3>
+          <p className="text-sm text-gray-700 mb-2 px-3 py-1 rounded-md bg-gray-100 border border-gray-300 shadow-sm w-fit">
+            File: {analysis.file.filename}
+          </p>
+
+          <CodeEditor code={originalCode} readOnly />
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+            AI Suggested Fix
+          </h3>
+          <p className="text-sm text-gray-700 mb-2 px-3 py-1 rounded-md bg-gray-100 border border-gray-300 shadow-sm w-fit">
+            File: {analysis.file.filename}
+          </p>
+          <CodeEditor code={fixedCode} readOnly />
+        </div>
       </div>
+
 
       {!manuallyAnalyzed && (
         <div className="text-center mt-10">

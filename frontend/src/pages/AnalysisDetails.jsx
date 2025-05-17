@@ -128,13 +128,14 @@ const AnalysisDetails = () => {
         <div className="pt-4">
           
           {activeTab === "errors" && (
-            <ErrorSection errors={result.errors} originalCode={originalCode} fixedCode={fixedCode} />
+            <ErrorSection errors={result.errors} originalCode={originalCode} fixedCode={fixedCode} analysis={analysis} />
           )}
           {activeTab === "suggestions" && (
             <SuggestionSection
               suggestions={result.suggestions}
               originalCode={originalCode}
               fixedCode={fixedCode}
+              analysis={analysis}
             />
           )}
           {activeTab === "optimizations" && (
@@ -142,6 +143,7 @@ const AnalysisDetails = () => {
               optimizations={result.optimizations}
               originalCode={originalCode}
               fixedCode={fixedCode}
+              analysis={analysis}
             />
           )}
           {activeTab === "comparison" && fixedCode && (

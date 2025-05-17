@@ -1,6 +1,13 @@
 import axios from "axios";
 
-const API_BASE_URL =  "http://localhost:3000";
+
+
+// const API_BASE_URL =  "http://localhost:3000";
+
+// const API_BASE_URL=process.env.REACT_APP_API_BASE_URL
+
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 export const fetchAIFixedCode = async (owner, repo, commitSha, filePath, token) => {
   try {
