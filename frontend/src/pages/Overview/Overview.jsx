@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { FaFolderOpen } from "react-icons/fa6";
 import { formatDistanceToNow } from 'date-fns';
 import { FaBug } from "react-icons/fa6";
+import { API_BASE_URL } from '../../services/githubServices';
 
 
 
@@ -30,7 +31,7 @@ const fetchRepos = async () => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No access token found');
 
-  const response = await axios.get('http://localhost:3000/github/repos/fetchLatest', {
+  const response = await axios.get(`${API_BASE_URL}/github/repos/fetchLatest`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 

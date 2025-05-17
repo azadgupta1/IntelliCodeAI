@@ -4,6 +4,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import { Link } from 'react-router';
+import { API_BASE_URL } from '../services/githubServices';
 
 const RepoErrorChart = ({ repoId, range, errorCount }) => {
   const [chartData, setChartData] = useState([]);
@@ -13,7 +14,7 @@ const RepoErrorChart = ({ repoId, range, errorCount }) => {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.get(
-          `http://localhost:3000/api/history/repo/${repoId}/error-history?range=${range}`,
+          `${API_BASE_URL}/api/history/repo/${repoId}/error-history?range=${range}`,
           {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,

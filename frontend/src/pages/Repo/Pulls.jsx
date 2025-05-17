@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import PullRequestCard from "../../components/PullRequestCard";
+import { API_BASE_URL } from "../../services/githubServices";
 
 const PullsPage = () => {
   const [pullRequests, setPullRequests] = useState([]);
@@ -20,7 +21,7 @@ const PullsPage = () => {
           return;
         }
 
-        const res = await axios.get(`http://localhost:3000/github/${owner}/${repo}/pulls`, {
+        const res = await axios.get(`${API_BASE_URL}/github/${owner}/${repo}/pulls`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

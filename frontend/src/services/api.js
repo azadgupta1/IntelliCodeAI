@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API_BASE_URL = "http://localhost:3000"; // Adjust based on your backend URL
+import { API_BASE_URL } from "./githubServices";
 
 axios.defaults.withCredentials = true; // Enable cookies in requests
 

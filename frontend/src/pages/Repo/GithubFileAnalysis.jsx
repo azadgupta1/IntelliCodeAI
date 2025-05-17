@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import DiffViewer from "../../components/DiffViewer";
 import CodeEditor from "../../components/CodeEditor";
+import { API_BASE_URL } from "../../services/githubServices";
 
 // Build nested file tree
 const buildFileTree = (paths) => {
@@ -93,7 +94,7 @@ const GithubFileAnalysis = () => {
         if (!token) throw new Error("Authentication token not found.");
 
         const response = await axios.get(
-          `http://localhost:3000/github/repos/${owner}/${repo}/files`,
+          `${API_BASE_URL}/github/repos/${owner}/${repo}/files`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -145,7 +146,7 @@ const GithubFileAnalysis = () => {
       const token = localStorage.getItem("token");
   
       const response = await axios.post(
-        `http://localhost:3000/github/repos/${owner}/${repo}/analyze`,
+        `${API_BASE_URL}/github/repos/${owner}/${repo}/analyze`,
         { filePath },
         { headers: { Authorization: `Bearer ${token}` } }
       );

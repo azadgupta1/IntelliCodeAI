@@ -15,7 +15,7 @@ const RepoFiles = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:3000/github/${owner}/${repo}/files`,
+          `${API_BASE_URL}/github/${owner}/${repo}/files`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

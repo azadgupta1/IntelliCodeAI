@@ -58,6 +58,7 @@ import { useParams } from "react-router-dom";
 import CommitList from "../../components/CommitList";
 import CommitDetailModal from "../../components/CommitDetailModal";
 import axios from "axios";
+import { API_BASE_URL } from "../../services/githubServices";
 
 const CommitsPage = () => {
   const [commits, setCommits] = useState([]);
@@ -72,10 +73,10 @@ const CommitsPage = () => {
         if (!token) return;
 
         const [commitsRes, analysisRes] = await Promise.all([
-          axios.get(`http://localhost:3000/github/${owner}/${repo}/commits`, {
+          axios.get(`${API_BASE_URL}/github/${owner}/${repo}/commits`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get(`http://localhost:3000/analysis/history`, {
+          axios.get(`${API_BASE_URL}/analysis/history`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
