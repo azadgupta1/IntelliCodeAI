@@ -7,6 +7,7 @@ import { IoIosGitBranch } from "react-icons/io";
 import { IoAnalytics } from "react-icons/io5";
 import { CiBookmark } from "react-icons/ci";
 import Switch from "../../components/ui/Switch";
+import { API_BASE_URL } from "../../services/githubServices";
 
 
 
@@ -26,7 +27,7 @@ function RepoSettings() {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:3000/github/${owner}/${repo}/settings`,
+        `${API_BASE_URL}/github/${owner}/${repo}/settings`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -46,7 +47,7 @@ function RepoSettings() {
     try {
       setSyncing(true);
       await axios.put(
-        `http://localhost:3000/github/${owner}/${repo}/sync`,
+        `${API_BASE_URL}/github/${owner}/${repo}/sync`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -67,7 +68,7 @@ function RepoSettings() {
         : "enable-auto-analysis";
 
       await axios.post(
-        `http://localhost:3000/github/${endpoint}`,
+        `${API_BASE_URL}/github/${endpoint}`,
         { owner, repoName: repo },
         { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
       );
@@ -86,7 +87,7 @@ function RepoSettings() {
 
     try {
       setDeleting(true);
-      await axios.delete(`http://localhost:3000/github/${owner}/${repo}`, {
+      await axios.delete(`${API_BASE_URL}/github/${owner}/${repo}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Repository deleted successfully.");

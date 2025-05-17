@@ -5,12 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import RepoTable from "../../components/RepoTable";
 import EnabledRepoList from "../../components/EnabledRepoList";
 import { fetchAutoAnalysisRepos } from "../../services/githubServices";
+import { API_BASE_URL } from "../../services/githubServices";
 
 const fetchRepos = async () => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No token found");
 
-  const response = await axios.get("http://localhost:3000/github/repos", {
+  const response = await axios.get(`${API_BASE_URL}/github/repos`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -70,7 +71,7 @@ const Repositories = () => {
       const endpoint = repo.autoAnalyze ? "disable-auto-analysis" : "enable-auto-analysis";
 
       const response = await axios.post(
-        `http://localhost:3000/github/${endpoint}`,
+        `${API_BASE_URL}/github/${endpoint}`,
         { repoName: repo.repoName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
