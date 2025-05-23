@@ -26,7 +26,7 @@
 // export default DiffViewer;
 
 import React from "react";
-import ReactDiffViewer from "react-diff-viewer";
+import ReactDiffViewer from "react-diff-viewer-continued";
 
 const DiffViewer = ({ oldValue, newValue, title }) => {
   return (
