@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {API_BASE_URL} from "../../services/githubServices";
 
 function General() {
   const [darkMode, setDarkMode] = useState(false);
@@ -31,7 +32,7 @@ function General() {
         return;
       }
   
-      await axios.delete(`http://localhost:3000/github/delete-account`, {
+      await axios.delete(`${API_BASE_URL}/github/delete-account`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

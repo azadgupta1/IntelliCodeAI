@@ -495,13 +495,95 @@ export const fetchUserRepos = async (req, res) => {
 
 
 
+// export const fetchAnalyzedRepos = async (req, res) => {
+//   console.log("Incoming Headers:", req.headers);
+//   console.log("Decoded User:", req.user);
+
+//   try {
+//     // Ensure we have a valid access token
+//     const accessToken = req.user.accessToken;
+//     if (!accessToken) {
+//       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
+//     }
+
+//     // Fetch repos with autoAnalyze set to true
+//     const repos = await prisma.githubRepo.findMany({
+//       where: {
+//         userId: req.user.id,
+//         autoAnalyze: true, // Only fetch repos with autoAnalyze set to true
+//       },
+//       select: {
+//         id: true,
+//         repoName: true,
+//         repoUrl: true,
+//         ownerName: true,
+//         createdAt: true,
+//         errorCount: true,
+//       },
+//     });
+
+//     // If no repos are found with autoAnalyze set to true
+//     if (repos.length === 0) {
+//       return res.status(404).json({ message: "No repositories to analyze." });
+//     }
+
+//     // Fetch the latest commit timestamp for each repo
+//     const reposWithCommitData = await Promise.all(
+//       repos.map(async (repo) => {
+//         try {
+//           const githubApiUrl = `https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/commits`;
+
+//           // Make the API call with the Authorization header for private repositories
+//           const response = await axios.get(githubApiUrl, {
+//             headers: {
+//               Authorization: `Bearer ${accessToken}`, // Include the token in the header
+//             },
+//           });
+
+//           // Get the timestamp of the latest commit (the first commit in the response)
+//           const latestCommit = response.data[0];
+//           const latestCommitDate = new Date(latestCommit.commit.author.date);
+
+//           return {
+//             ...repo,
+//             latestCommitDate, // Add the latest commit date to the repo data
+//           };
+//         } catch (error) {
+//           console.error(`Error fetching commits for repo ${repo.repoName}:`, error.message);
+//           return { ...repo, latestCommitDate: null }; // In case of error, nullify the commit date
+//         }
+//       })
+//     );
+
+//     // Sort the repos by the latest commit date (descending)
+//     const sortedRepos = reposWithCommitData
+//       .filter(repo => repo.latestCommitDate) // Filter out repos without a valid commit date
+//       .sort((a, b) => b.latestCommitDate - a.latestCommitDate); // Sort by the latest commit date in descending order
+
+//     // Return the sorted repos
+
+//     console.log("DATA is ", sortedRepos);
+//     res.status(200).json({
+//       message: "Repositories fetched successfully",
+//       repositories: sortedRepos,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching analyzed repositories:", error.message);
+//     res.status(500).json({
+//       message: "Failed to fetch analyzed repositories",
+//       error: error.response?.data?.message || error.message,
+//     });
+//   }
+// };
+
+
 export const fetchAnalyzedRepos = async (req, res) => {
   console.log("Incoming Headers:", req.headers);
   console.log("Decoded User:", req.user);
 
   try {
-    // Ensure we have a valid access token
     const accessToken = req.user.accessToken;
+
     if (!accessToken) {
       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
     }
@@ -510,7 +592,7 @@ export const fetchAnalyzedRepos = async (req, res) => {
     const repos = await prisma.githubRepo.findMany({
       where: {
         userId: req.user.id,
-        autoAnalyze: true, // Only fetch repos with autoAnalyze set to true
+        autoAnalyze: true,
       },
       select: {
         id: true,
@@ -522,54 +604,51 @@ export const fetchAnalyzedRepos = async (req, res) => {
       },
     });
 
-    // If no repos are found with autoAnalyze set to true
+    // 🛠️ FIX: Don't return 404 here. Return 200 with empty array.
     if (repos.length === 0) {
-      return res.status(404).json({ message: "No repositories to analyze." });
+      return res.status(200).json({
+        message: "No repositories to analyze.",
+        repositories: [],
+      });
     }
 
-    // Fetch the latest commit timestamp for each repo
     const reposWithCommitData = await Promise.all(
       repos.map(async (repo) => {
         try {
           const githubApiUrl = `https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/commits`;
 
-          // Make the API call with the Authorization header for private repositories
           const response = await axios.get(githubApiUrl, {
             headers: {
-              Authorization: `Bearer ${accessToken}`, // Include the token in the header
+              Authorization: `Bearer ${accessToken}`,
             },
           });
 
-          // Get the timestamp of the latest commit (the first commit in the response)
           const latestCommit = response.data[0];
           const latestCommitDate = new Date(latestCommit.commit.author.date);
 
           return {
             ...repo,
-            latestCommitDate, // Add the latest commit date to the repo data
+            latestCommitDate,
           };
         } catch (error) {
           console.error(`Error fetching commits for repo ${repo.repoName}:`, error.message);
-          return { ...repo, latestCommitDate: null }; // In case of error, nullify the commit date
+          return { ...repo, latestCommitDate: null };
         }
       })
     );
 
-    // Sort the repos by the latest commit date (descending)
     const sortedRepos = reposWithCommitData
-      .filter(repo => repo.latestCommitDate) // Filter out repos without a valid commit date
-      .sort((a, b) => b.latestCommitDate - a.latestCommitDate); // Sort by the latest commit date in descending order
-
-    // Return the sorted repos
+      .filter(repo => repo.latestCommitDate)
+      .sort((a, b) => b.latestCommitDate - a.latestCommitDate);
 
     console.log("DATA is ", sortedRepos);
-    res.status(200).json({
+    return res.status(200).json({
       message: "Repositories fetched successfully",
       repositories: sortedRepos,
     });
   } catch (error) {
     console.error("Error fetching analyzed repositories:", error.message);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to fetch analyzed repositories",
       error: error.response?.data?.message || error.message,
     });
