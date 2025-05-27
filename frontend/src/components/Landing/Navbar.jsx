@@ -271,20 +271,21 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden mt-4 space-y-3">
-            <Link to="/" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Home</Link>
-            <Link to="/features/ai-review" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>AI Code Review</Link>
-            <Link to="/features/github-analysis" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>GitHub Auto Analysis</Link>
-            <Link to="/features/fix-and-commit" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Fix & Commit</Link>
-            <Link to="/uploadfile" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Upload File</Link>
-            <Link to="/docs/api" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>API Reference</Link>
-            <Link to="/docs/webhooks" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Webhooks</Link>
-            <Link to="/docs/faqs" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>FAQs</Link>
-            <Link to="/pricing" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Pricing</Link>
-            <button onClick={githubLogin} className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Login</button>
-            <button onClick={() => { navigate("/signup"); setMenuOpen(false); }} className="block w-full text-left bg-black text-white px-4 py-2 rounded hover:bg-[#9384e6]">Start Free</button>
-          </div>
-        )}
+  <div className="md:hidden mt-4 max-h-[80vh] overflow-y-auto space-y-3 pb-4">
+    <Link to="/" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Home</Link>
+    <Link to="/features/ai-review" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>AI Code Review</Link>
+    <Link to="/features/github-analysis" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>GitHub Auto Analysis</Link>
+    <Link to="/features/fix-and-commit" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Fix & Commit</Link>
+    <Link to="/uploadfile" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Upload File</Link>
+    <Link to="/docs/api" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>API Reference</Link>
+    <Link to="/docs/webhooks" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Webhooks</Link>
+    <Link to="/docs/faqs" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>FAQs</Link>
+    <Link to="/pricing" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Pricing</Link>
+    <button onClick={githubLogin} className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Login</button>
+    <button onClick={() => { navigate("/signup"); setMenuOpen(false); }} className="block w-full text-left bg-black text-white px-4 py-2 rounded hover:bg-[#9384e6]">Start Free</button>
+  </div>
+)}
+
       </div>
     </nav>
   );
