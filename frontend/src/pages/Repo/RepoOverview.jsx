@@ -96,7 +96,7 @@ function RepoOverview() {
 
       <div className='flex justify-center'>
         <div>
-          <IssuesBreakdown />
+          <IssuesBreakdown owner={owner} repo={repo} />
         </div>
 
         <div>
@@ -104,7 +104,7 @@ function RepoOverview() {
         </div>
 
         <div>
-          <IssuesBreakdown />
+          <IssuesBreakdown owner={owner} repo={repo} />
         </div>
 
       </div>

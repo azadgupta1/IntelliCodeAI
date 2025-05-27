@@ -10,7 +10,7 @@ const issues = [
 
 const totalIssues = issues.reduce((sum, issue) => sum + issue.count, 0);
 
-const IssuesBreakdown = () => {
+const IssuesBreakdown = ({owner, repo}) => {
   return (
     <section id="chart-issues-breakdown" className="w-82 h-100 mt-10 p-4 bg-white shadow-lg rounded-lg space-y-3">
       <header className="flex items-baseline gap-2">
@@ -45,7 +45,7 @@ const IssuesBreakdown = () => {
       </div>
 
       <a
-        href="/repositories/azadgupta1/Blogger/issues"
+        href={`/repositories/${owner}/${repo}/issues`}
         className="block text-blue-600 text-xs font-medium mt-4 hover:underline"
       >
         See all issues
