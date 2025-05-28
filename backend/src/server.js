@@ -14,6 +14,7 @@ import notificationRoutes from "./routes/notification.js";
 import chartRoutes from './routes/chartRoutes.js';
 // Existing imports...
 import './jobs/snapshotErrorHistory.js';
+import chatbotRoutes from './routes/chatbotRoutes.js';
 
 
 
@@ -45,6 +46,7 @@ app.use("/api/fix", githubFixRoutes);
 
 app.use("/api/notification", notificationRoutes);
 app.use("/api/history", chartRoutes);
+app.use("/api", chatbotRoutes);
 
 app.get('/', (req, res) => {
     res.send("Welcome to IntelliCodeAI");

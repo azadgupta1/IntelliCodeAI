@@ -35,6 +35,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RepoSettings from "./pages/Repo/RepoSettings";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Login from "./components/Landing/Login";
 
 
 
@@ -58,6 +59,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="uploadfile" element={<UploadFile />} />
           <Route path="pricing" element={<Pricing />} />
+          <Route path="loginpage" element={<Login />} />
         </Route>
 
         {/* Auth-related Routes */}

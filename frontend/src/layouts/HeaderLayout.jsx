@@ -20,6 +20,7 @@
 import React from "react";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
+import ChatBot from "../components/Chatbot";
 
 const HeaderLayout = () => {
   return (
@@ -27,6 +28,8 @@ const HeaderLayout = () => {
       {/* Fixed Header */}
       <div className="fixed top-0 left-0 right-0 z-50">
         <Header />
+
+        <ChatBot />
       </div>
 
       {/* Content below the header */}

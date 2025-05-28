@@ -294,6 +294,7 @@ import ChartSection from '../../components/Overview/ChartSection';
 import OnboardingSection from '../../components/Overview/OnboardingSection';
 import ReposTable from '../../components/Overview/ReposTable';
 import EmptyState from '../../components/Overview/EmptyState'; // Make sure this exists
+import ChatBot from '../../components/Chatbot';
 
 function Overview() {
   const { username } = useParams();
@@ -337,7 +338,7 @@ const chartData = repos.map(r => ({
 
       <Filters />
 
-      <div className="flex items-center">
+      <div className="flex items-center p-4 shadow-sm space-x-5">
         {isEmpty ? (
           <EmptyState />
         ) : (
@@ -349,6 +350,8 @@ const chartData = repos.map(r => ({
       </div>
 
       <ReposTable repos={repos} />
+
+      <ChatBot />
     </div>
   );
 }

@@ -207,6 +207,10 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  const loginpage = () =>{
+    navigate('/loginpage');
+  }
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
@@ -264,7 +268,7 @@ const Navbar = () => {
             </li>
 
             <li><Link to="/pricing" className="hover:text-[#9384e6] transition">Pricing</Link></li>
-            <li><button onClick={githubLogin} className="bg-gray-100 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-200">Login</button></li>
+            <li><button onClick={loginpage} className="bg-gray-100 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-200">Login</button></li>
             <li><button onClick={() => navigate("/signup")} className="bg-black text-white px-4 py-2 rounded-full hover:bg-[#9384e6]">Start Free</button></li>
           </ul>
         </div>
@@ -281,7 +285,7 @@ const Navbar = () => {
     <Link to="/docs/webhooks" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Webhooks</Link>
     <Link to="/docs/faqs" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>FAQs</Link>
     <Link to="/pricing" className="block px-4 py-2 hover:bg-gray-100 rounded" onClick={() => setMenuOpen(false)}>Pricing</Link>
-    <button onClick={githubLogin} className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Login</button>
+    <button onClick={loginpage} className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded">Login</button>
     <button onClick={() => { navigate("/signup"); setMenuOpen(false); }} className="block w-full text-left bg-black text-white px-4 py-2 rounded hover:bg-[#9384e6]">Start Free</button>
   </div>
 )}
