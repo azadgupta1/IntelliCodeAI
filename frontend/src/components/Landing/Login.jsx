@@ -58,7 +58,7 @@ import { githubLogin } from '../../services/authServices';
 
 function Login() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50 mt-20">
       {/* Main Content */}
       <div className="flex flex-col items-center justify-start flex-grow pt-16 px-4 sm:px-6 md:px-8 mb-10">
         
@@ -75,7 +75,7 @@ function Login() {
           <div className="flex justify-center mb-8">
             <button
               onClick={githubLogin}
-              className="bg-white border-2 border-blue-500 rounded-2xl py-3 px-4 transition flex items-center justify-center hover:shadow-md">
+              className="bg-white border-2 border-blue-500 rounded-2xl py-3 px-3 transition flex items-center justify-center hover:shadow-md">
               <img src={githubImg} alt="GitHub" className="w-8 h-8" />
             </button>
           </div>

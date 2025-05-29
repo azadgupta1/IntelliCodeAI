@@ -93,96 +93,194 @@ const Header = () => {
   // #161540
 
   return (
-    <header className="dark:bg-gray-900 text-white p-2 flex justify-between items-center shadow-md">
+    // <header className="dark:bg-gray-900 text-white p-2 flex justify-between items-center shadow-md">
+    //   <div
+    //     className="flex items-center space-x-10  cursor-pointer"
+    //     onClick={(e) => e.preventDefault()}
+    //   >
+    //     <img src={IntelliCodeAI_3} alt="IntelliCodeAI" className="h-12 w-16 transform transition-transform duration-200 hover:scale-105" />
+    //     {renderDynamicPath()}
+    //   </div>
+
+    //   <div className="flex items-center space-x-6 ml-auto mr-6">
+    //     {/* 🔔 Notifications */}
+    //     <div className="relative">
+    //       <div
+    //         onClick={() => setNotificationsOpen(!notificationsOpen)}
+    //         className="cursor-pointer flex items-center space-x-1 group"
+    //       >
+    //         <FiBell className="text-xl text-white" />
+    //         {notifications.length > 0 && (
+    //           <span className="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1">
+    //             {notifications.length}
+    //           </span>
+    //         )}
+    //         <FiChevronDown className="text-sm text-white transition-transform duration-200 group-hover:rotate-180" />
+    //       </div>
+
+    //       {notificationsOpen && (
+    //         <div className="absolute right-0 mt-2 w-72 bg-white text-gray-900 shadow-md rounded-md overflow-hidden z-50">
+    //           <div className="p-4 border-b flex justify-between items-center">
+    //             <h4 className="font-semibold">Notifications</h4>
+    //             <button
+    //               onClick={handleMarkAllRead}
+    //               className="text-sm text-blue-600 hover:underline"
+    //             >
+    //               Mark all as read
+    //             </button>
+    //           </div>
+    //           <ul className="max-h-64 overflow-y-auto">
+    //             {notifications.length === 0 ? (
+    //               <li className="p-4 text-sm text-gray-500">
+    //                 No new notifications
+    //               </li>
+    //             ) : (
+    //               notifications.map((notif, idx) => (
+    //                 <li
+    //                   key={idx}
+    //                   className="p-4 border-b hover:bg-gray-100 text-sm"
+    //                 >
+    //                   {notif.message || "You have a new update"}
+    //                 </li>
+    //               ))
+    //             )}
+    //           </ul>
+    //         </div>
+    //       )}
+    //     </div>
+
+    //     <h4 className="cursor-pointer text-white hover:underline">Docs</h4>
+
+    //     {profile && (
+    //       <div className="relative">
+    //         <img
+    //           src={avtar}
+    //           alt="User Avatar"
+    //           className="w-10 h-10 rounded-full cursor-pointer border-2 border-white"
+    //           onClick={() => setDropdownOpen(!dropdownOpen)}
+    //         />
+    //         {dropdownOpen && (
+    //           <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 shadow-md rounded-md overflow-hidden z-50">
+    //             <div className="p-4 border-b">
+    //               <p className="font-semibold">@{profile.username}</p>
+    //               <p className="text-sm text-gray-600">{profile.email}</p>
+    //             </div>
+    //             <button
+    //               onClick={() => navigate("/profile")}
+    //               className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+    //             >
+    //               ✏ Edit Profile
+    //             </button>
+    //             <button
+    //               onClick={handleLogout}
+    //               className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-200"
+    //             >
+    //               🔐 Logout
+    //             </button>
+    //           </div>
+    //         )}
+    //       </div>
+    //     )}
+    //   </div>
+    // </header>
+
+    <header className="dark:bg-gray-900 text-white px-3 py-2 flex flex-wrap justify-between items-center shadow-md w-full">
+  <div
+    className="flex items-center space-x-4 sm:space-x-10 cursor-pointer"
+    onClick={(e) => e.preventDefault()}
+  >
+    <img
+      src={IntelliCodeAI_3}
+      alt="IntelliCodeAI"
+      className="h-10 w-12 sm:h-12 sm:w-16 transform transition-transform duration-200 hover:scale-105"
+    />
+    <div className="hidden sm:flex">{renderDynamicPath()}</div>
+  </div>
+
+  <div className="flex items-center space-x-4 sm:space-x-6 ml-auto mt-2 sm:mt-0">
+    {/* 🔔 Notifications */}
+    <div className="relative">
       <div
-        className="flex items-center space-x-10  cursor-pointer"
-        onClick={(e) => e.preventDefault()}
+        onClick={() => setNotificationsOpen(!notificationsOpen)}
+        className="cursor-pointer flex items-center space-x-1 group"
       >
-        <img src={IntelliCodeAI_3} alt="IntelliCodeAI" className="h-12 w-16 transform transition-transform duration-200 hover:scale-105" />
-        {renderDynamicPath()}
+        <FiBell className="text-xl text-white" />
+        {notifications.length > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1">
+            {notifications.length}
+          </span>
+        )}
+        <FiChevronDown className="text-sm text-white transition-transform duration-200 group-hover:rotate-180" />
       </div>
 
-      <div className="flex items-center space-x-6 ml-auto mr-6">
-        {/* 🔔 Notifications */}
-        <div className="relative">
-          <div
-            onClick={() => setNotificationsOpen(!notificationsOpen)}
-            className="cursor-pointer flex items-center space-x-1 group"
-          >
-            <FiBell className="text-xl text-white" />
-            {notifications.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-1">
-                {notifications.length}
-              </span>
-            )}
-            <FiChevronDown className="text-sm text-white transition-transform duration-200 group-hover:rotate-180" />
+      {notificationsOpen && (
+        <div className="absolute right-0 mt-2 w-64 sm:w-72 max-w-[90vw] bg-white text-gray-900 shadow-md rounded-md overflow-hidden z-50">
+          <div className="p-4 border-b flex justify-between items-center">
+            <h4 className="font-semibold">Notifications</h4>
+            <button
+              onClick={handleMarkAllRead}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Mark all as read
+            </button>
           </div>
-
-          {notificationsOpen && (
-            <div className="absolute right-0 mt-2 w-72 bg-white text-gray-900 shadow-md rounded-md overflow-hidden z-50">
-              <div className="p-4 border-b flex justify-between items-center">
-                <h4 className="font-semibold">Notifications</h4>
-                <button
-                  onClick={handleMarkAllRead}
-                  className="text-sm text-blue-600 hover:underline"
+          <ul className="max-h-64 overflow-y-auto">
+            {notifications.length === 0 ? (
+              <li className="p-4 text-sm text-gray-500">
+                No new notifications
+              </li>
+            ) : (
+              notifications.map((notif, idx) => (
+                <li
+                  key={idx}
+                  className="p-4 border-b hover:bg-gray-100 text-sm"
                 >
-                  Mark all as read
-                </button>
-              </div>
-              <ul className="max-h-64 overflow-y-auto">
-                {notifications.length === 0 ? (
-                  <li className="p-4 text-sm text-gray-500">
-                    No new notifications
-                  </li>
-                ) : (
-                  notifications.map((notif, idx) => (
-                    <li
-                      key={idx}
-                      className="p-4 border-b hover:bg-gray-100 text-sm"
-                    >
-                      {notif.message || "You have a new update"}
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        <h4 className="cursor-pointer text-white hover:underline">Docs</h4>
-
-        {profile && (
-          <div className="relative">
-            <img
-              src={avtar}
-              alt="User Avatar"
-              className="w-10 h-10 rounded-full cursor-pointer border-2 border-white"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            />
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white text-gray-900 shadow-md rounded-md overflow-hidden z-50">
-                <div className="p-4 border-b">
-                  <p className="font-semibold">@{profile.username}</p>
-                  <p className="text-sm text-gray-600">{profile.email}</p>
-                </div>
-                <button
-                  onClick={() => navigate("/profile")}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                >
-                  ✏ Edit Profile
-                </button>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-200"
-                >
-                  🔐 Logout
-                </button>
-              </div>
+                  {notif.message || "You have a new update"}
+                </li>
+              ))
             )}
+          </ul>
+        </div>
+      )}
+    </div>
+
+    <h4 className="cursor-pointer text-white text-sm hover:underline hidden sm:block">
+      Docs
+    </h4>
+
+    {profile && (
+      <div className="relative">
+        <img
+          src={avtar}
+          alt="User Avatar"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full cursor-pointer border-2 border-white"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        />
+        {dropdownOpen && (
+          <div className="absolute right-0 mt-2 w-48 max-w-[90vw] bg-white text-gray-900 shadow-md rounded-md overflow-hidden z-50">
+            <div className="p-4 border-b">
+              <p className="font-semibold text-sm">@{profile.username}</p>
+              <p className="text-xs text-gray-600">{profile.email}</p>
+            </div>
+            <button
+              onClick={() => navigate("/profile")}
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-200"
+            >
+              ✏ Edit Profile
+            </button>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-200"
+            >
+              🔐 Logout
+            </button>
           </div>
         )}
       </div>
-    </header>
+    )}
+  </div>
+</header>
+
   );
 };
 

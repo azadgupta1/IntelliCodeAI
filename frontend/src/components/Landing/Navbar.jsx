@@ -201,6 +201,7 @@ import IntelliCodeAI_3 from "../../assets/IntelliCodeAI_3.png";
 import { useState } from "react";
 import { Menu, X } from "lucide-react"; // Optional: Lucide icons or use SVG
 
+
 const Navbar = () => {
   const [showFeatures, setShowFeatures] = useState(false);
   const [showDocs, setShowDocs] = useState(false);
@@ -216,13 +217,18 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex items-center gap-3 cursor-pointer">
-            <img src={IntelliCodeAI_3} alt="Logo" className="h-10 w-auto" />
-            <span className="text-2xl font-bold font-orbitron">
+          <div className="flex items-center gap-2 cursor-pointer">
+            <img
+              src={IntelliCodeAI_3}
+              alt="Logo"
+              className="h-10 sm:h-12 md:h-14 w-auto"
+            />
+            <span className="text-2xl sm:text-3xl md:text-4xl font-bold font-orbitron">
               <span className="text-black">IntelliCode</span>
               <span className="text-[#6A3CB3]">AI</span>
             </span>
           </div>
+
 
           {/* Hamburger Button */}
           <div className="md:hidden">
@@ -232,7 +238,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <ul className="hidden md:flex items-center gap-6 text-base text-black">
+          <ul className="hidden md:flex items-center gap-6 text-lg text-black">
             <li><Link to="/" className="hover:text-[#9384e6] transition">Home</Link></li>
 
             <li
@@ -260,7 +266,7 @@ const Navbar = () => {
               <button className="hover:text-[#9384e6] transition">Docs ▾</button>
               {showDocs && (
                 <ul className="absolute top-10 left-0 bg-white border rounded-md shadow-lg w-48 z-10 py-2">
-                  <li><Link to="/docs/api" className="block px-4 py-2 hover:bg-gray-100">API Reference</Link></li>
+                  <li><Link to="/docs" className="block px-4 py-2 hover:bg-gray-100">API Reference</Link></li>
                   <li><Link to="/docs/webhooks" className="block px-4 py-2 hover:bg-gray-100">Webhooks</Link></li>
                   <li><Link to="/docs/faqs" className="block px-4 py-2 hover:bg-gray-100">FAQs</Link></li>
                 </ul>
@@ -268,9 +274,12 @@ const Navbar = () => {
             </li>
 
             <li><Link to="/pricing" className="hover:text-[#9384e6] transition">Pricing</Link></li>
-            <li><button onClick={loginpage} className="bg-gray-100 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-200">Login</button></li>
-            <li><button onClick={() => navigate("/signup")} className="bg-black text-white px-4 py-2 rounded-full hover:bg-[#9384e6]">Start Free</button></li>
-          </ul>
+            </ul>
+            <ul className="hidden md:flex items-center gap-6 text-lg text-black  space-x-2">
+              <li><button onClick={loginpage} className="bg-gray-200 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-200">Login</button></li>
+              <li><button onClick={() => navigate("/signup")} className="bg-black text-white px-4 py-2 rounded-full hover:bg-[#9384e6]">Start Free</button></li>
+          
+            </ul>
         </div>
 
         {/* Mobile Menu */}

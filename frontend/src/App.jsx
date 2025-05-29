@@ -36,6 +36,8 @@ import RepoSettings from "./pages/Repo/RepoSettings";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Landing/Login";
+import Docs from "./pages/Docs";
+import IntelliCodeAI from "./components/Docs/IntelliCodeAI";
 
 
 
@@ -105,6 +107,9 @@ function App() {
         {/* <Route path="analysis/:id" element={<ProtectedRoute element={<AnalysisDetails />} />} /> */}
         <Route path="/analysis-history" element={<ProtectedRoute element={<AnalysisHistory />} />} />
         <Route path="/analyze-manually" element={<UserRepositories />} />
+        <Route path="/docs" element={<Docs />} >
+            <Route index element={<IntelliCodeAI />} />
+        </Route>
       </Routes>
 
       <ToastContainer
