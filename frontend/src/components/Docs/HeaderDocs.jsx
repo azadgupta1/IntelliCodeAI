@@ -13,7 +13,6 @@ function HeaderDocs() {
         </div>
 
         <div className='mr-5'>
-
             <button className='bg-blue-600 text-white rounded-sm p-2'>Get Started</button>
         </div>
         
