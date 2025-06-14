@@ -62,10 +62,11 @@ function App() {
           <Route path="uploadfile" element={<UploadFile />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="loginpage" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
         </Route>
 
         {/* Auth-related Routes */}
-        <Route path="/signup" element={<Signup />} />
+        
         <Route path="/github-success" element={<GithubSuccess />} />
 
         {/* Protected Pages under Header Layout */}

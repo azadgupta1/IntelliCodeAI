@@ -12,9 +12,10 @@ const HomePage = () => {
       {/* <WorkflowScene /> */}
       {/* <Hero /> */}
       <HeroSection />
+      <FixCodeSection />
       <FeatureCard />
       <AIFixSection />
-      <FixCodeSection />
+      
       <Footer />
     </div>
   );

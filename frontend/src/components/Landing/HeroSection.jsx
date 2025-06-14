@@ -108,42 +108,149 @@
 // export default HeroSection;
 
 
+// import { Element, Link as LinkScroll } from "react-scroll";
+// import Button from "../../components/Button.jsx";
+// import NewIA from '../../assets/NewIA.png';
+// import HeroAI from '../../assets/HeroAI.png';
+
+// const HeroSection = () => {
+//   return (
+//     <section className="relative bg-[#080D27] pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
+//       <Element name="hero">
+//         <div className="mx-auto max-w-[1252px] px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
+//           {/* LEFT: Text content */}
+//           <div className="relative z-10 max-w-xl text-center lg:text-left">
+//             <div className="mb-5 uppercase text-[#C8EA80] text-xs font-bold tracking-[0.3em]">
+//               Video Editing
+//             </div>
+//             <h1 className="mb-6 text-[52px] lg:text-[72px] font-black leading-tight tracking-tight text-[#EAEDFF] uppercase">
+//               Amazingly simple
+//             </h1>
+//             <p className="text-lg lg:text-xl text-[#EAEDFF] mb-10 max-w-md leading-relaxed mx-auto lg:mx-0">
+//               We designed XORA AI Video Editor to be easy to use, quick to learn, and surprisingly powerful.
+//             </p>
+//             <LinkScroll to="features" offset={-100} spy smooth>
+//               <Button icon="/images/zap.svg">Try it now</Button>
+//             </LinkScroll>
+//           </div>
+
+//           {/* RIGHT: Image with glass shadow */}
+//           <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl mt-10">
+//             {/* Glass shadow effect */}
+//             <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-xl shadow-2xl z-0" />
+//             {/* Image */}
+//             <img
+//               src={HeroAI}
+//               alt="hero"
+//               className="relative z-10 w-full h-auto rounded-3xl"
+//             />
+//           </div>
+//         </div>
+//       </Element>
+//     </section>
+//   );
+// };
+
+// export default HeroSection;
+
+
+// import { Element, Link as LinkScroll } from "react-scroll";
+// import { FiZap } from "react-icons/fi"; // ✅ Lightning icon from react-icons
+// import Button from "../../components/Button.jsx";
+
+// const HeroSection = () => {
+//   return (
+//     <section className="relative bg-[#080D27] pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
+//       <Element name="hero">
+//         <div className="mx-auto max-w-[1252px] px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
+//           {/* LEFT: Text content */}
+//           <div className="relative z-10 max-w-xl text-center lg:text-left">
+//             <div className="mb-5 uppercase text-[#C8EA80] text-xs font-bold tracking-[0.3em]">
+//               AI-Powered Code Review
+//             </div>
+//             <h1 className="mb-6 text-[42px] sm:text-[52px] lg:text-[68px] font-black leading-tight tracking-tight text-[#EAEDFF] uppercase">
+//               Analyze. Fix. Commit.
+//             </h1>
+//             <p className="text-lg lg:text-xl text-[#EAEDFF] mb-10 max-w-md leading-relaxed mx-auto lg:mx-0">
+//               IntelliCodeAI helps developers instantly review, fix, and improve code using AI — with deep GitHub integration and powerful analysis tools.
+//             </p>
+//             <LinkScroll to="features" offset={-100} spy smooth>
+//               <Button>
+//                 <div className="flex items-center gap-2">
+//                   <FiZap className="text-yellow-400 text-xl" />
+//                   Start Free Analysis
+//                 </div>
+//               </Button>
+//             </LinkScroll>
+//           </div>
+
+//           {/* RIGHT: Video Preview */}
+//           <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl mt-10 rounded-3xl overflow-hidden shadow-2xl z-10">
+//             <video
+//               src="/videos/IntelliCodeAI.mp4" // Replace with your actual demo video
+//               autoPlay
+//               loop
+//               muted
+//               playsInline
+//               className="w-full h-auto object-cover rounded-3xl"
+//             />
+//           </div>
+//         </div>
+//       </Element>
+//     </section>
+//   );
+// };
+
+// export default HeroSection;
+
+
 import { Element, Link as LinkScroll } from "react-scroll";
+import { FiZap } from "react-icons/fi";
 import Button from "../../components/Button.jsx";
-import NewIA from '../../assets/NewIA.png';
 
 const HeroSection = () => {
   return (
-    <section className="relative bg-[#080D27] pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45] pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
       <Element name="hero">
         <div className="mx-auto max-w-[1252px] px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
           {/* LEFT: Text content */}
           <div className="relative z-10 max-w-xl text-center lg:text-left">
             <div className="mb-5 uppercase text-[#C8EA80] text-xs font-bold tracking-[0.3em]">
-              Video Editing
+              AI-Powered Code Review
             </div>
-            <h1 className="mb-6 text-[52px] lg:text-[72px] font-black leading-tight tracking-tight text-[#EAEDFF] uppercase">
-              Amazingly simple
+            <h1 className="mb-6 text-[42px] sm:text-[52px] lg:text-[68px] font-black leading-tight tracking-tight text-[#EAEDFF] uppercase">
+              Analyze. Fix. Commit.
             </h1>
             <p className="text-lg lg:text-xl text-[#EAEDFF] mb-10 max-w-md leading-relaxed mx-auto lg:mx-0">
-              We designed XORA AI Video Editor to be easy to use, quick to learn, and surprisingly powerful.
+              <span className="font-semibold text-[#A5FF90]">
+                IntelliCode
+                <span className="text-[#FFD86F] font-bold">AI</span>
+              </span>{" "}
+              helps developers instantly review, fix, and improve code using AI — with deep GitHub integration and powerful analysis tools.
             </p>
+
             <LinkScroll to="features" offset={-100} spy smooth>
-              <Button icon="/images/zap.svg">Try it now</Button>
+              <Button>
+                <div className="flex items-center gap-2">
+                  <FiZap className="text-yellow-400 text-xl" />
+                  Start Free Analysis
+                </div>
+              </Button>
             </LinkScroll>
           </div>
 
-          {/* RIGHT: Image with glass shadow */}
-          <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl mt-10">
-            {/* Glass shadow effect */}
-            <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl z-0" />
-            {/* Image */}
-            <img
-              src={NewIA}
-              alt="hero"
-              className="relative z-10 w-full h-auto rounded-3xl"
-            />
-          </div>
+          {/* RIGHT: Video Preview */}
+          <div className="relative w-full max-w-xl lg:max-w-[640px] xl:max-w-[720px] aspect-video mt-10 overflow-hidden rounded-sm shadow-[0_0_100px_0_rgba(114,137,218,0.3)] ring-1 ring-white/10 transition-all duration-500 hover:scale-[1.01] z-10">
+  <video
+    src="/videos/IntelliCodeAI1.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="absolute top-0 left-0 w-full h-full object-cover"
+  />
+</div>
+
         </div>
       </Element>
     </section>
