@@ -1,4 +1,4 @@
-# IntelliCodeAI 🚀
+# IntelliCodeAI 
 
 **Your Personal AI Code Reviewer – Built for Developers, Loved by Repositories.**
 
