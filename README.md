@@ -43,6 +43,8 @@ IntelliCodeAI is an intelligent platform that automatically reviews your code us
 |----------------|--------------------|
 | ![dashboard](./screenshots/dashboard.png) | ![ai-fix](./screenshots/aifix.png) |
 
+Screenshots here
+
 ---
 
 ## 🛠️ Tech Stack
