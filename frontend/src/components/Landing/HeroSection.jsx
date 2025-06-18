@@ -204,15 +204,71 @@
 // export default HeroSection;
 
 
+// import { Element, Link as LinkScroll } from "react-scroll";
+// import { FiZap } from "react-icons/fi";
+// import Button from "../../components/Button.jsx";
+
+// const HeroSection = () => {
+//   return (
+//     <section className="relative bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45] mt-10 pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
+//       <Element name="hero">
+//         <div className="mx-auto max-w-[1252px] px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
+//           {/* LEFT: Text content */}
+//           <div className="relative z-10 max-w-xl text-center lg:text-left">
+//             <div className="mb-5 uppercase text-[#C8EA80] text-xs font-bold tracking-[0.3em]">
+//               AI-Powered Code Review
+//             </div>
+//             <h1 className="mb-6 text-[42px] sm:text-[52px] lg:text-[68px] font-black leading-tight tracking-tight text-[#EAEDFF] uppercase">
+//               Analyze. Fix. Commit.
+//             </h1>
+//             <p className="text-lg lg:text-xl text-[#EAEDFF] mb-10 max-w-md leading-relaxed mx-auto lg:mx-0">
+//               <span className="font-semibold text-[#A5FF90]">
+//                 IntelliCode
+//                 <span className="text-[#FFD86F] font-bold">AI</span>
+//               </span>{" "}
+//               helps developers instantly review, fix, and improve code using AI — with deep GitHub integration and powerful analysis tools.
+//             </p>
+
+//             <LinkScroll to="features" offset={-100} spy={true} smooth={true}>
+//               <button
+//                 className="group inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 text-[#080D27] font-bold text-sm shadow-lg hover:shadow-xl transition duration-300 hover:scale-105"
+//               >
+//                 <FiZap className="text-xl text-blue-700 group-hover:animate-pulse" />
+//                 Start Free Analysis
+//               </button>
+//             </LinkScroll>
+
+//           </div>
+
+//           {/* RIGHT: Video Preview */}
+//           <div className="relative w-full max-w-xl lg:max-w-[640px] xl:max-w-[720px] aspect-video mt-10 overflow-hidden rounded-sm shadow-[0_0_100px_0_rgba(114,137,218,0.3)] ring-1 ring-white/10 transition-all duration-500 hover:scale-[1.01] z-10">
+//   <video
+//     src="/videos/IntelliCodeAI1.mp4"
+//     autoPlay
+//     loop
+//     muted
+//     playsInline
+//     className="absolute top-0 left-0 w-full h-full object-cover"
+//   />
+// </div>
+
+//         </div>
+//       </Element>
+//     </section>
+//   );
+// };
+
+// export default HeroSection;
+
+
 import { Element, Link as LinkScroll } from "react-scroll";
 import { FiZap } from "react-icons/fi";
-import Button from "../../components/Button.jsx";
 
 const HeroSection = () => {
   return (
-    <section className="relative bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45] pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45] mt-10 pt-20 pb-40 max-lg:pt-52 max-lg:pb-36 max-md:pt-36 max-md:pb-32 overflow-hidden">
       <Element name="hero">
-        <div className="mx-auto max-w-[1252px] px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
+        <div className="mx-auto max-w-[1252px] px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-16">
           {/* LEFT: Text content */}
           <div className="relative z-10 max-w-xl text-center lg:text-left">
             <div className="mb-5 uppercase text-[#C8EA80] text-xs font-bold tracking-[0.3em]">
@@ -229,28 +285,27 @@ const HeroSection = () => {
               helps developers instantly review, fix, and improve code using AI — with deep GitHub integration and powerful analysis tools.
             </p>
 
-            <LinkScroll to="features" offset={-100} spy smooth>
-              <Button>
-                <div className="flex items-center gap-2">
-                  <FiZap className="text-yellow-400 text-xl" />
-                  Start Free Analysis
-                </div>
-              </Button>
+            <LinkScroll to="features" offset={-100} spy={true} smooth={true}>
+              <button
+                className="group inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 text-[#080D27] font-bold text-sm shadow-lg hover:shadow-xl transition duration-300 hover:scale-105"
+              >
+                <FiZap className="text-xl text-blue-700 group-hover:animate-pulse" />
+                Start Free Analysis
+              </button>
             </LinkScroll>
           </div>
 
           {/* RIGHT: Video Preview */}
-          <div className="relative w-full max-w-xl lg:max-w-[640px] xl:max-w-[720px] aspect-video mt-10 overflow-hidden rounded-sm shadow-[0_0_100px_0_rgba(114,137,218,0.3)] ring-1 ring-white/10 transition-all duration-500 hover:scale-[1.01] z-10">
-  <video
-    src="/videos/IntelliCodeAI1.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="absolute top-0 left-0 w-full h-full object-cover"
-  />
-</div>
-
+          <div className="relative w-full max-w-xl lg:max-w-[720px] aspect-video mt-10 overflow-hidden rounded-xl shadow-2xl ring-2 ring-[#3C52D9]/50 transition-transform duration-500 hover:scale-105 z-10">
+            <video
+              src="/videos/IntelliCodeAI1.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-contain"
+            />
+          </div>
         </div>
       </Element>
     </section>

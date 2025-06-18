@@ -3,9 +3,9 @@ import "../../FixCodeStyles.css";
 
 const FixCodeSection = () => {
   return (
-    <section className="relative min-h-[60vh] w-full bg-black text-white overflow-hidden px-6 py-24 flex flex-col items-center justify-center text-center">
+    <section className="relative min-h-[60vh] w-full bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45] text-white overflow-hidden px-6 py-24 flex flex-col items-center justify-center text-center">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#1e1b4b] via-[#0f172a] to-[#0f766e] z-0 animate-gradientLoop" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45] z-0 animate-gradientLoop" />
       <div className="absolute inset-0 bg-[url('/stars.svg')] opacity-10 z-0" />
 
       {/* Headline with hanging “Breaks” */}

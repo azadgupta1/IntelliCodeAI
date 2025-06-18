@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
+
+
+
 body {
-  @apply m-0 p-0 font-sans; /* Tailwind's sans-serif font, or you can apply Arial if needed */
-  font-family: 'Arial', sans-serif; /* You can keep the custom font if you want */
+  @apply m-0 p-0 font-sans bg-gradient-to-br from-[#080D27] via-[#0E1337] to-[#0F1A45];
+  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
 }
+
 
 @theme{
   --color-primary: #32a866;

@@ -405,6 +405,196 @@ export const githubFileAnalysis = async (req, res) => {
 
 
 
+// export const fetchUserRepos = async (req, res) => {
+//   console.log("Incoming Headers:", req.headers);
+//   console.log("Decoded User:", req.user);
+
+//   try {
+//     const accessToken = req.user.accessToken;
+//     if (!accessToken) {
+//       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
+//     }
+
+//     const githubApiUrl = "https://api.github.com/user/repos?per_page=100";
+//     const response = await axios.get(githubApiUrl, {
+//       headers: { Authorization: `Bearer ${accessToken}` },
+//     });
+
+//     const repositories = response.data;
+//     const savedRepos = [];
+
+//     for (const repo of repositories) {
+//       console.log(`Saving repository: ${repo.name}`);
+//       let lastCommitDate = null;
+
+//       try {
+//         const commitsUrl = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits`;
+//         const commitsResponse = await axios.get(commitsUrl, {
+//           headers: { Authorization: `Bearer ${accessToken}` },
+//         });
+
+//         lastCommitDate = commitsResponse.data[0]?.commit?.committer?.date;
+//       } catch (commitErr) {
+//         console.warn(`Error fetching commits for repo ${repo.name}:`, commitErr.message);
+//       }
+
+//       try {
+//         const savedRepo = await prisma.githubRepo.upsert({
+//           where: {
+//             repoName_userId: {
+//               repoName: repo.name,
+//               userId: req.user.id,
+//             },
+//           },
+//           update: {
+//             lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+//           },
+//           create: {
+//             userId: req.user.id,
+//             repoName: repo.name,
+//             repoUrl: repo.html_url,
+//             ownerName: repo.owner.login,
+//             autoAnalyze: false,
+//             lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+//           },
+//         });
+
+//         savedRepos.push(savedRepo);
+//       } catch (dbErr) {
+//         console.error(`DB error for repo ${repo.name}:`, dbErr.message);
+//       }
+//     }
+
+//     const updatedRepos = await prisma.githubRepo.findMany({
+//       where: { userId: req.user.id },
+//       select: {
+//         id: true,
+//         userId: true,
+//         repoName: true,
+//         repoUrl: true,
+//         ownerName: true,
+//         autoAnalyze: true,
+//         createdAt: true,
+//         errorCount: true,
+//         lastCommitAt: true,
+//       },
+//     });
+
+//     res.status(200).json({
+//       message: "Repositories fetched and saved successfully",
+//       repositories: updatedRepos,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching repositories:", error.message);
+//     res.status(500).json({
+//       message: "Failed to fetch repositories",
+//       error: error.response?.data?.message || error.message,
+//     });
+//   }
+// };
+
+// import pLimit from 'p-limit';
+
+// const limit = pLimit(5);
+
+// export const fetchUserRepos = async (req, res) => {
+//   console.log("Incoming Headers:", req.headers);
+//   console.log("Decoded User:", req.user);
+
+//   try {
+//     const accessToken = req.user.accessToken;
+//     if (!accessToken) {
+//       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
+//     }
+
+//     // Step 1: Fetch GitHub Repos (limit to 30 to avoid rate limits)
+//     const githubApiUrl = "https://api.github.com/user/repos?per_page=100";
+//     const response = await axios.get(githubApiUrl, {
+//       headers: { Authorization: `Bearer ${accessToken}` },
+//     });
+
+//     const repositories = response.data.slice(0, 30); // optional: process only 30 repos
+
+//     // Step 2: Parallel fetch + save using Promise.all
+//     const repoPromises = repositories.map(limit(async (repo) => {
+//       let lastCommitDate = null;
+
+//       try {
+//         const commitsUrl = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits`;
+//         const commitsResponse = await axios.get(commitsUrl, {
+//           headers: { Authorization: `Bearer ${accessToken}` },
+//         });
+
+//         lastCommitDate = commitsResponse.data[0]?.commit?.committer?.date;
+//       } catch (commitErr) {
+//         console.warn(`Error fetching commits for ${repo.name}:`, commitErr.message);
+//       }
+
+//       try {
+//         const savedRepo = await prisma.githubRepo.upsert({
+//           where: {
+//             repoName_userId: {
+//               repoName: repo.name,
+//               userId: req.user.id,
+//             },
+//           },
+//           update: {
+//             lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+//           },
+//           create: {
+//             userId: req.user.id,
+//             repoName: repo.name,
+//             repoUrl: repo.html_url,
+//             ownerName: repo.owner.login,
+//             autoAnalyze: false,
+//             lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+//           },
+//         });
+
+//         return savedRepo;
+//       } catch (dbErr) {
+//         console.error(`DB error for repo ${repo.name}:`, dbErr.message);
+//         return null;
+//       }
+//     }
+//   );
+
+//     // Wait for all repos to finish processing
+//     await Promise.all(repoPromises);
+
+//     // Step 3: Return all saved repos
+//     const updatedRepos = await prisma.githubRepo.findMany({
+//       where: { userId: req.user.id },
+//       select: {
+//         id: true,
+//         userId: true,
+//         repoName: true,
+//         repoUrl: true,
+//         ownerName: true,
+//         autoAnalyze: true,
+//         createdAt: true,
+//         errorCount: true,
+//         lastCommitAt: true,
+//       },
+//     });
+
+//     res.status(200).json({
+//       message: "Repositories fetched and saved successfully",
+//       repositories: updatedRepos,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching repositories:", error.message);
+//     res.status(500).json({
+//       message: "Failed to fetch repositories",
+//       error: error.response?.data?.message || error.message,
+//     });
+//   }
+// };
+
+import pLimit from "p-limit";
+
+const limit = pLimit(5); // only 5 parallel promises at a time
+
 export const fetchUserRepos = async (req, res) => {
   console.log("Incoming Headers:", req.headers);
   console.log("Decoded User:", req.user);
@@ -415,56 +605,63 @@ export const fetchUserRepos = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized: No GitHub access token" });
     }
 
+    // Step 1: Fetch GitHub Repos (limit to 30 to avoid GitHub rate limits)
     const githubApiUrl = "https://api.github.com/user/repos?per_page=100";
     const response = await axios.get(githubApiUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    const repositories = response.data;
-    const savedRepos = [];
+    const repositories = response.data.slice(0, 30); // process only 30 repos
 
-    for (const repo of repositories) {
-      console.log(`Saving repository: ${repo.name}`);
-      let lastCommitDate = null;
+    // Step 2: Parallel fetch+save with concurrency limit
+    const repoPromises = repositories.map((repo) =>
+      limit(async () => {
+        let lastCommitDate = null;
 
-      try {
-        const commitsUrl = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits`;
-        const commitsResponse = await axios.get(commitsUrl, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        try {
+          const commitsUrl = `https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits`;
+          const commitsResponse = await axios.get(commitsUrl, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
 
-        lastCommitDate = commitsResponse.data[0]?.commit?.committer?.date;
-      } catch (commitErr) {
-        console.warn(`Error fetching commits for repo ${repo.name}:`, commitErr.message);
-      }
+          lastCommitDate = commitsResponse.data[0]?.commit?.committer?.date;
+        } catch (commitErr) {
+          console.warn(`Error fetching commits for ${repo.name}:`, commitErr.message);
+        }
 
-      try {
-        const savedRepo = await prisma.githubRepo.upsert({
-          where: {
-            repoName_userId: {
-              repoName: repo.name,
-              userId: req.user.id,
+        try {
+          const savedRepo = await prisma.githubRepo.upsert({
+            where: {
+              repoName_userId: {
+                repoName: repo.name,
+                userId: req.user.id,
+              },
             },
-          },
-          update: {
-            lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
-          },
-          create: {
-            userId: req.user.id,
-            repoName: repo.name,
-            repoUrl: repo.html_url,
-            ownerName: repo.owner.login,
-            autoAnalyze: false,
-            lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
-          },
-        });
+            update: {
+              lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+            },
+            create: {
+              userId: req.user.id,
+              repoName: repo.name,
+              repoUrl: repo.html_url,
+              ownerName: repo.owner.login,
+              autoAnalyze: false,
+              lastCommitAt: lastCommitDate ? new Date(lastCommitDate) : undefined,
+            },
+          });
 
-        savedRepos.push(savedRepo);
-      } catch (dbErr) {
-        console.error(`DB error for repo ${repo.name}:`, dbErr.message);
-      }
-    }
+          return savedRepo;
+        } catch (dbErr) {
+          console.error(`DB error for repo ${repo.name}:`, dbErr.message);
+          return null;
+        }
+      })
+    );
 
+    // Wait for all promises to finish
+    await Promise.all(repoPromises);
+
+    // Step 3: Return all saved repos
     const updatedRepos = await prisma.githubRepo.findMany({
       where: { userId: req.user.id },
       select: {

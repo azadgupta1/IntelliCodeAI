@@ -28,7 +28,8 @@
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.3",
     "octokit": "^4.1.2",
-    "openai": "^4.77.3"
+    "openai": "^4.77.3",
+    "p-limit": "^6.2.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9",

@@ -43,7 +43,7 @@ const Header = () => {
     "fixed top-0 left-0 z-50 w-full transition-all duration-500 ease-in-out",
     hasScrolled
       ? "py-0 bg-[#080D27]/80 backdrop-blur-md"
-      : "py-1 bg-[#080D27]" // Less initial vertical padding
+      : "py-1 bg-[#080D27]/0" // Less initial vertical padding
   )}
 >
   <div
