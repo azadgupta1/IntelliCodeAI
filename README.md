@@ -64,7 +64,8 @@ Screenshots here
 **Others**:  
 - JWT Auth  
 - GitHub OAuth  
-- Ngrok (for local webhook testing)  
+- Ngrok (for local webhook testing)
+- Tested (locally)
 
 ---
 
