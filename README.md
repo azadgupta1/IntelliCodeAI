@@ -53,7 +53,6 @@ Screenshots here
 - React (Vite)  
 - Tailwind CSS  
 - Framer Motion  
-- ShadCN UI  
 
 **Backend**:  
 - Node.js + Express  
