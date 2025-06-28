@@ -75,6 +75,7 @@ Screenshots here
 - PostgreSQL
 - GitHub OAuth App credentials
 - Google Gemini API key
+- Flash 2.0 
 
 ---
 
