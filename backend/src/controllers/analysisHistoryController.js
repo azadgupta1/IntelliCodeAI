@@ -1,6 +1,7 @@
 import prisma from "../config/db.js";
 
 // Fetch all past analyses for the authenticated user
+// Fetch all past analyses for the authenticated user
 export const getAnalysisHistory = async (req, res) => {
   try {
     const userId = req.user.id;
