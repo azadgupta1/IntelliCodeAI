@@ -6,7 +6,7 @@ IntelliCodeAI is an intelligent platform that automatically reviews your code us
 
 ---
 
-## 🔥 Feature
+## 🔥 Features
 
 - ⚙️ **AI-Powered Code Review**
   - Analyzes code for bugs, anti-patterns, performance issues, and code smells using LLMs (Gemini Flash).
