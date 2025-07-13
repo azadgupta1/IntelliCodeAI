@@ -5,9 +5,8 @@ import {
   getUnreadNotifications,
   markNotificationsRead,
 } from "../services/notificationServices";
-import IntelliCodeAI_1 from "../assets/IntelliCodeAI_1.png";
-import IntelliCodeAI_4 from "../assets/IntelliCodeAI_4.png";
 import IntelliCodeAI_3 from "../assets/IntelliCodeAI_3.png";
+import NewIA from "../assets/NewIA.png";
 import { FaBriefcase } from "react-icons/fa";
 import { IoFolderOpenOutline } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -190,9 +189,9 @@ const Header = () => {
     onClick={(e) => e.preventDefault()}
   >
     <img
-      src={IntelliCodeAI_3}
+      src={NewIA}
       alt="IntelliCodeAI"
-      className="h-10 w-12 sm:h-12 sm:w-16 transform transition-transform duration-200 hover:scale-105"
+      className="w-10 h-10 sm:w-12 sm:h-12 transform transition-transform duration-200 hover:scale-105"
     />
     <div className="hidden sm:flex">{renderDynamicPath()}</div>
   </div>
