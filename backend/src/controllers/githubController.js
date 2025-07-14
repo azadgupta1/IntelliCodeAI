@@ -1349,6 +1349,9 @@ export const fetchPullRequests = async (req, res) => {
       html_url: pr.html_url,
     }));
 
+
+    console.log("Pull Request Details : ",pullRequests);
+
     res.status(200).json({
       message: "Pull requests fetched successfully",
       pullRequests,
@@ -1357,6 +1360,49 @@ export const fetchPullRequests = async (req, res) => {
     console.error("Error fetching pull requests:", error);
     res.status(500).json({
       message: "Failed to fetch pull requests",
+      error: error.response?.data?.message || error.message,
+    });
+  }
+};
+
+
+
+
+export const fetchChangedFiles = async (req, res) => {
+  try {
+    const { owner, repo, pull_number } = req.params;
+    const githubToken = req.user?.accessToken; // Or hardcode temporarily for Postman testing
+
+    if (!githubToken) {
+      return res.status(401).json({ message: "GitHub access token is missing" });
+    }
+
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${pull_number}/files`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${githubToken}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+    });
+
+    const changedFiles = response.data.map(file => ({
+      filename: file.filename,
+      status: file.status,           // 'modified', 'added', 'removed'
+      additions: file.additions,
+      deletions: file.deletions,
+      changes: file.changes,
+      patch: file.patch              // The actual diff (if available)
+    }));
+
+    res.status(200).json({
+      message: 'Changed files fetched successfully',
+      changedFiles,
+    });
+  } catch (error) {
+    console.error("Error fetching changed files:", error.message);
+    res.status(500).json({
+      message: "Failed to fetch changed files",
       error: error.response?.data?.message || error.message,
     });
   }

@@ -2,7 +2,7 @@ import express from "express";
 import { fetchUserRepos, fetchCommitDetails, fetchFileContent, fetchRepoFiles, 
     githubFileAnalysis, enableAutoAnalysisController, getAutoAnalysisStatusController,
     getAutoAnalysisRepos, getRepoAnalysisHistory, disableAutoAnalysisController, getRepoById, fetchRepoCommits, 
-    fetchPullRequests, getRepoErrors, fetchAnalyzedRepos, syncRepoMetadata, getRepoSettings, deleteGithubRepo, deleteAccount} from "../controllers/githubController.js";
+    fetchPullRequests, getRepoErrors, fetchAnalyzedRepos, syncRepoMetadata, getRepoSettings, deleteGithubRepo, deleteAccount, fetchChangedFiles} from "../controllers/githubController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -60,5 +60,8 @@ router.delete("/delete-account", authenticate, deleteAccount);
 
 
 router.get("/:owner/:repo/pulls", authenticate, fetchPullRequests);
+
+
+router.get('/repos/:owner/:repo/pulls/:pull_number/files', authenticate, fetchChangedFiles);
 
 export default router;

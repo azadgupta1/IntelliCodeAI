@@ -28,7 +28,7 @@ const PullsPage = () => {
         });
 
         const activePRs = res.data.pullRequests.filter(
-          pr => pr.state === "open" && pr.merged_at === null
+          pr => pr.state === "open" && pr.merged_at === null && pr.state === "closed"
         );
 
         setPullRequests(activePRs);
