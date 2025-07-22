@@ -10,6 +10,8 @@ const PullsPage = () => {
   const [error, setError] = useState(null);
   const { owner, repo } = useParams();
 
+  const [message, setMessage] = useState('');
+
   useEffect(() => {
     const fetchPullRequests = async () => {
       try {
