@@ -6,7 +6,7 @@ import { FaHome, FaFolderOpen, FaShieldAlt, FaLock, FaCog } from "react-icons/fa
 
 const Dashboard = () => {
   const { username } = useParams(); // 👈 capture the dynamic username
-  const [message, setMessage] = useState('') // setted as
+  // const [message, setMessage] = useState('') // setted as
 
   const linkClasses = ({ isActive }) =>
     `p-4 hover:bg-gray-200 rounded-lg transition-all flex justify-center text-gray-800 ${
