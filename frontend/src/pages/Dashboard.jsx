@@ -5,7 +5,7 @@ import { FaHome, FaFolderOpen, FaShieldAlt, FaLock, FaCog } from "react-icons/fa
 
 
 const Dashboard = () => {
-  const { username } = useParams(); // 👈 capture the dynamic username
+  const { username } = useParams(); 
   
   
 
