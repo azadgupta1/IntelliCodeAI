@@ -6,7 +6,7 @@ IntelliCodeAI is an intelligent platform that automatically reviews your code us
 
 ---
 
-## 🔥 Features
+## 🔥 Feature
 
 - ⚙️ **AI-Powered Code Review**
   - Analyzes code for bugs, anti-patterns, performance issues, and code smells using LLMs (Gemini Flash).
@@ -88,3 +88,4 @@ npm install
 npx prisma generate
 npx prisma migrate dev
 npm run dev
+
