@@ -1,6 +1,9 @@
 import cron from 'node-cron';
 import prisma from '../config/db.js'; // Adjust path if needed
 
+
+// needs to be fixed
+
 // This runs every day at 23:59:59
 cron.schedule('59 59 23 * * *', async () => {
   console.log('📸 Taking daily errorCount snapshot...');
