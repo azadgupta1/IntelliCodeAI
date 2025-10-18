@@ -1,6 +1,6 @@
 import prisma from '../config/db.js'
 
-// Utility to get the date range
+// Utility to get the 
 const getStartDate = (filter) => {
   const now = new Date()
   if (filter === '7d') return new Date(now.setDate(now.getDate() - 7))

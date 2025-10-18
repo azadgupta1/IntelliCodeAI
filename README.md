@@ -1,12 +1,13 @@
 # IntelliCodeAI 
 
-**Your Personal AI Code Reviewer – Built for Developers, Loved by Repositories!**
+**Your Personal AI Code Reviewer – Built for Developers, Loved by Repositories!!**
 
 IntelliCodeAI is an intelligent platform that automatically reviews your code using powerful AI models like Google Gemini. It provides real-time feedback, highlights bugs, offers optimization suggestions, and even allows you to fix and commit code changes directly from the platform. Whether you upload files or connect GitHub repositories, IntelliCodeAI ensures your code is always clean, efficient, and production-ready.
 
 ---
 
 ## 🔥 Features
+
 
 - ⚙️ **AI-Powered Code Review**
   - Analyzes code for bugs, anti-patterns, performance issues, and code smells using LLMs (Gemini Flash).
@@ -88,3 +89,9 @@ npm install
 npx prisma generate
 npx prisma migrate dev
 npm run dev
+
+
+
+
+
+
