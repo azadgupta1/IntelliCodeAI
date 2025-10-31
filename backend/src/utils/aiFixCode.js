@@ -4,7 +4,9 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const fixCode = async (code, filePath, analysisResult) => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // const model = genAI.getGenerativeModel({ model: "gemini‑2.5‑flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
 
     const prompt = `
 You are an expert software engineer.
@@ -28,6 +30,9 @@ ${analysisResult}
 
     const result = await model.generateContent(prompt);
     const responseText = result?.response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    console.log("Gemini response:", responseText);
+
 
     const codeMatch = responseText.match(/```(?:[a-z]*\n)?([\s\S]*?)```/);
     const fixedCode = codeMatch ? codeMatch[1].trim() : "";
