@@ -106,7 +106,7 @@ export const analyzeGithubFile = async (req, res) => {
         const suggestionCount = analysisCount.suggestions ? analysisCount.suggestions.length : 0;
         const optimizationCount = analysisCount.optimizations ? analysisCount.optimizations.length : 0;
 
-        // You can store it in a variable if needed:
+        // You can store it in a variable if needed::
 
         console.log("Error Count IS HERE",errorCount);
         const analysisSummary = {
