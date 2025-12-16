@@ -16,6 +16,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@huggingface/transformers": "^3.2.4",
+    "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
@@ -29,7 +30,8 @@
     "node-cron": "^3.0.3",
     "octokit": "^4.1.2",
     "openai": "^4.77.3",
-    "p-limit": "^6.2.0"
+    "p-limit": "^6.2.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9",
