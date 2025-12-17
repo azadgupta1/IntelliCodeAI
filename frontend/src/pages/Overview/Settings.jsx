@@ -7,36 +7,34 @@ function Settings() {
   const [activeTab, setActiveTab] = useState('general');
 
   const tabs = [
-    { key: 'general', label: 'General Settings' },
+    { key: 'general', label: 'General' },
     { key: 'billing', label: 'Plan & Billing' },
-    { key: 'profile', label: 'Profile Information' },
+    { key: 'profile', label: 'Profile' },
   ];
 
   return (
-    <div className="w-full min-h-screen flex bg-gray-50 p-6">
-      {/* Sidebar */}
-      <div className="w-1/4 pr-6 border-r border-gray-200">
-        <h2 className="text-xl font-bold text-gray-700 mb-6">Settings</h2>
-        <nav className="flex flex-col space-y-4">
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              className={`text-left px-4 py-2 rounded-lg transition-all duration-200 ${
-                activeTab === tab.key
-                  ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+    <div className="w-screen h-screen bg-gray-50 flex flex-col">
+      
+      {/* Tabs */}
+      <div className="flex border-b bg-white overflow-x-auto">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={`px-5 py-3 font-medium border-b-2 transition whitespace-nowrap ${
+              activeTab === tab.key
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-blue-500'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Content */}
-      <div className="w-3/4 pl-6">
-        <div className="bg-white p-6 rounded-xl shadow-md">
+      <div className="flex-1 bg-gray-50 overflow-auto">
+        <div className="w-full h-full bg-white">
           {activeTab === 'general' && <General />}
           {activeTab === 'billing' && <PlanBillings />}
           {activeTab === 'profile' && <Profile />}
