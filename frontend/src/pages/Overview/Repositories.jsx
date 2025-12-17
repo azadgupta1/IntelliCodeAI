@@ -90,7 +90,12 @@ const Repositories = () => {
     navigate(`/repositories/${owner}/${repo}`);
   };
 
-  if (isLoading) return <div className="p-4">Loading repositories...</div>;
+  if (isLoading) return (
+    <div className="flex items-center justify-center w-screen h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  )
+  
   if (isError) return <div className="text-red-500 p-4">{error.message}</div>;
 
   return (

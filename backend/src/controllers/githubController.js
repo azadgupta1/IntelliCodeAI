@@ -593,7 +593,7 @@ export const githubFileAnalysis = async (req, res) => {
 
 import pLimit from "p-limit";
 
-const limit = pLimit(5); // only 5 parallel promises at a time
+const limit = pLimit(30); // only 5 parallel promises at a time
 
 export const fetchUserRepos = async (req, res) => {
   console.log("Incoming Headers:", req.headers);
