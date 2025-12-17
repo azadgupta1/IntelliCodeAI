@@ -285,6 +285,118 @@
 
 
 
+// import React from 'react';
+// import { useQuery } from '@tanstack/react-query';
+// import { useParams } from 'react-router-dom';
+// import { fetchRepos } from '../../components/Overview/fetchRepos';
+// import Filters from '../../components/Overview/Filters';
+// import ChartSection from '../../components/Overview/ChartSection';
+// import OnboardingSection from '../../components/Overview/OnboardingSection';
+// import ReposTable from '../../components/Overview/ReposTable';
+// import EmptyState from '../../components/Overview/EmptyState'; // Make sure this exists
+// import ChatBot from '../../components/Chatbot';
+
+// function Overview() {
+//   const { username } = useParams();
+
+//   const { data: repos = [], isLoading, isError, error } = useQuery({
+//     queryKey: ['githubRepos'],
+//     queryFn: fetchRepos,
+//     staleTime: 5 * 60 * 1000,
+//     retry: 1,
+//   });
+
+  
+//   console.log("Repos are : ",repos);
+
+//   // const chartData = repos.filter(r => r.errorCount > 0).map(r => ({
+//   //   id: r.id,
+//   //   Blogger: r.repoName,
+//   //   Errors: r.errorCount,
+//   //   ownerName: r.ownerName,
+//   //   repoName: r.repoName,
+//   // }));
+
+// const chartData = repos.map(r => ({
+//   id: r.id,
+//   Blogger: r.repoName,
+//   Errors: r.errorCount === 0 ? 0.02 : r.errorCount,
+//   ownerName: r.ownerName,
+//   repoName: r.repoName,
+// }));
+
+
+
+//   if (isLoading) return (
+//     <div className="flex items-center justify-center w-screen h-screen">
+//         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+//     </div>
+//   )
+
+
+//   if (isError) return <div>{error.message}</div>;
+
+//   const isEmpty = !repos || repos.length === 0;
+
+//   return (
+//     <div className="container mx-auto p-4">
+//       <h1 className="text-2xl m-5 font-bold mb-6">{username}</h1>
+
+//       <Filters />
+
+//       <div className="flex items-center p-4 shadow-sm space-x-5">
+//         {isEmpty ? (
+//           <EmptyState />
+//         ) : (
+//           <div>
+//             <ChartSection data={chartData} />
+//           </div>
+//         )}
+//         <OnboardingSection />
+//       </div>
+
+//       <ReposTable repos={repos} />
+
+//       <ChatBot />
+//     </div>
+//   );
+// }
+
+// export default Overview;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
@@ -293,7 +405,7 @@ import Filters from '../../components/Overview/Filters';
 import ChartSection from '../../components/Overview/ChartSection';
 import OnboardingSection from '../../components/Overview/OnboardingSection';
 import ReposTable from '../../components/Overview/ReposTable';
-import EmptyState from '../../components/Overview/EmptyState'; // Make sure this exists
+import EmptyState from '../../components/Overview/EmptyState';
 import ChatBot from '../../components/Chatbot';
 
 function Overview() {
@@ -306,57 +418,55 @@ function Overview() {
     retry: 1,
   });
 
-  
-  console.log("Repos are : ",repos);
+  const chartData = repos.map(r => ({
+    id: r.id,
+    Blogger: r.repoName,
+    Errors: r.errorCount === 0 ? 0.02 : r.errorCount,
+    ownerName: r.ownerName,
+    repoName: r.repoName,
+  }));
 
-  // const chartData = repos.filter(r => r.errorCount > 0).map(r => ({
-  //   id: r.id,
-  //   Blogger: r.repoName,
-  //   Errors: r.errorCount,
-  //   ownerName: r.ownerName,
-  //   repoName: r.repoName,
-  // }));
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center w-full h-full min-h-screen">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
 
-const chartData = repos.map(r => ({
-  id: r.id,
-  Blogger: r.repoName,
-  Errors: r.errorCount === 0 ? 0.02 : r.errorCount,
-  ownerName: r.ownerName,
-  repoName: r.repoName,
-}));
+  if (isError) return <div className="p-4">{error.message}</div>;
 
-
-
-  if (isLoading) return (
-    <div className="flex items-center justify-center w-screen h-screen">
-        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  )
-
-
-  if (isError) return <div>{error.message}</div>;
-
-  const isEmpty = !repos || repos.length === 0;
+  const isEmpty = repos.length === 0;
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl m-5 font-bold mb-6">{username}</h1>
+    <div className="w-full min-h-screen px-3 sm:px-6 py-4 bg-gray-50">
+      
+      {/* Header */}
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 truncate">
+        {username}
+      </h1>
 
-      <Filters />
-
-      <div className="flex items-center p-4 shadow-sm space-x-5">
-        {isEmpty ? (
-          <EmptyState />
-        ) : (
-          <div>
-            <ChartSection data={chartData} />
-          </div>
-        )}
-        <OnboardingSection />
+      {/* Filters */}
+      <div className="mb-4">
+        <Filters />
       </div>
 
-      <ReposTable repos={repos} />
+      {/* Chart + Onboarding */}
+      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+        <div className="flex-1 bg-white rounded-lg shadow-sm p-3 overflow-x-auto">
+          {isEmpty ? <EmptyState /> : <ChartSection data={chartData} />}
+        </div>
 
+        <div className="w-full lg:w-80 bg-white rounded-lg shadow-sm p-3">
+          <OnboardingSection />
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-lg shadow-sm overflow-x-auto mb-16">
+        <ReposTable repos={repos} />
+      </div>
+
+      {/* Chatbot */}
       <ChatBot />
     </div>
   );
