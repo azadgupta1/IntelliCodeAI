@@ -1,5 +1,4 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const fixCode = async (code, filePath, analysisResult) => {
@@ -31,6 +30,7 @@ ${analysisResult}
     const result = await model.generateContent(prompt);
     const responseText = result?.response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
+    console.log("Debugging, when this API called--------------------------------------------");
     console.log("Gemini response:", responseText);
 
 

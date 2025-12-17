@@ -15,7 +15,7 @@ const ManageRepositoriesModal = ({
   return (
     <>
       {/* Dimmed background */}
-      <div className="fixed inset-0 bg-white bg-opacity-30 backdrop-blur-sm z-40" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40" onClick={onClose} />
 
       {/* Modal content */}
       <div className="fixed top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-4xl bg-white rounded-lg shadow-lg p-6">
