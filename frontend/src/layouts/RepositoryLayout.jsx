@@ -162,6 +162,7 @@ import {
 const RepositoryLayout = () => {
   const { owner, repo } = useParams();
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_FRONTEND_URL;
 
   const menu = [
     { label: "RepoOverview", path: "repooverview", icon: <FaTachometerAlt size={20} /> },
@@ -181,9 +182,9 @@ const RepositoryLayout = () => {
     <div className="flex bg-gray-50 min-h-screen">
       
       {/* ===== Desktop Sidebar (UNCHANGED) ===== */}
-      <div className="fixed h-screen w-16 sm:w-22 bg-white border-r shadow-sm flex flex-col items-center py-6 space-y-6 hidden sm:flex">
+      <div className="fixed h-screen w-16 sm:w-22 bg-white border-r shadow-sm flex flex-col items-center py-6 space-y-6 sm:flex">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate(`/dashboard/${owner}`)}
           className="text-gray-600 hover:text-gray-900 cursor-pointer transition-all"
           title="Back"
         >
@@ -204,7 +205,7 @@ const RepositoryLayout = () => {
       </div>
 
       {/* ===== Main Content ===== */}
-      <div className="flex-1 ml-0 sm:ml-16 sm:ml-20 p-0 overflow-y-auto pb-16 sm:pb-0">
+      <div className="flex-1 ml-0 sm:ml-16 p-0 overflow-y-auto pb-16 sm:pb-0">
         <Outlet />
       </div>
 
