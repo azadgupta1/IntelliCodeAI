@@ -108,7 +108,7 @@ const ChatBot = () => {
       {isChatOpen && (
         <div className="fixed bottom-20 right-6 w-80 h-96 bg-white border border-gray-300 rounded-xl shadow-lg z-50 flex flex-col">
           <div className="p-4 border-b bg-gray-900 text-white font-semibold rounded-t-xl">
-            IntellicodeAI Assistant
+            IntelliCodeAI Assistant
           </div>
 
           {/* Messages */}
