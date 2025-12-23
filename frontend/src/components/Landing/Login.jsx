@@ -58,7 +58,7 @@ import { githubLogin } from '../../services/authServices';
 
 function Login() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 mt-20">
+    <div className="flex flex-col min-h-screen bg-gradient-to-tr from-sky-300 via-blue-500 to-violet-300 pt-20">
       {/* Main Content */}
       <div className="flex flex-col items-center justify-start flex-grow pt-16 px-4 sm:px-6 md:px-8 mb-10">
         

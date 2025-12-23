@@ -10,6 +10,7 @@ export const getUserProfile = async (req, res) => {
         select: { id: true, username: true, email: true, avatarUrl: true, bio: true },
       });
   
+      console.log("User Profile: ", user);
       if (!user) {
         return res.status(404).json({ success: false, message: "User not found" });
       }

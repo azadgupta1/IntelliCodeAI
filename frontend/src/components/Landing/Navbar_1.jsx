@@ -77,20 +77,7 @@ const Header = () => {
         >
           <div className="max-lg:relative max-lg:flex max-lg:flex-col max-lg:min-h-screen max-lg:p-6 max-lg:overflow-hidden max-md:px-4">
             {/* Blurred background circle */}
-            <div
-              style={{
-                position: 'absolute',
-                right: '-16rem',
-                top: '40%',
-                height: '440px',
-                width: '252px',
-                backgroundColor: '#3C52D9',
-                filter: 'blur(200px)',
-                zIndex: 0,
-                pointerEvents: 'none',
-              }}
-            />
-
+            
             <nav className="max-lg:relative max-lg:z-20 max-lg:my-auto space-x-0">
               <ul className="flex max-lg:block max-lg:px-12">
                 <li className="relative flex flex-1 items-center justify-between max-lg:flex-col max-lg:items-start">

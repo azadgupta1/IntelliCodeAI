@@ -1,7 +1,5 @@
-
 // import React, { useState } from 'react';
 // import { uploadFile, analyzeFile } from '../../services/api';
-// import Navbar from '../../components/Landing/Navbar';
 
 // const UploadFile = () => {
 //   const [selectedFile, setSelectedFile] = useState(null);
@@ -12,153 +10,132 @@
 //   const handleFileChange = (e) => {
 //     setSelectedFile(e.target.files[0]);
 //     setAnalysisResult(null);
+//     setError('');
 //   };
 
 //   const handleUpload = async () => {
 //     if (!selectedFile) return;
 //     setLoading(true);
 //     setError('');
-
 //     try {
 //       const uploadResponse = await uploadFile(selectedFile);
 //       const { file } = uploadResponse;
-
 //       const analysisResponse = await analyzeFile(file.id);
 //       setAnalysisResult(analysisResponse.result);
 //     } catch (err) {
-//       setError('Failed to analyze file. Please try again.');
+//       setError('❌ Failed to analyze file. Please try again.');
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-black text-white">
-//       {/* <Navbar /> */}
-//       <div className="flex flex-col lg:flex-row justify-center items-start gap-8 px-6 py-16 max-w-7xl mx-auto">
-//         {/* Analysis Results */}
-//         <div className="flex-1 w-full backdrop-blur-md bg-white/5 p-6 rounded-2xl border border-white/10 shadow-xl relative overflow-hidden">
-//           <div className="absolute inset-0 bg-gradient-to-tr from-[#00ffd1]/10 to-[#00e6b8]/5 rounded-2xl pointer-events-none blur-md" />
-//           <h2 className="text-3xl font-bold mb-4 relative z-10">🧠 Analysis Result</h2>
-//           {error && <p className="text-red-500 mb-4 relative z-10">{error}</p>}
+//     <div className="min-h-screen bg-[#0A0F2F] pt-[90px] px-4 text-white">
+//       <div className="max-w-7xl mx-auto py-16 flex flex-col lg:flex-row gap-10 items-start">
+        
+//         {/* Analysis Result Panel */}
+//         <div className="flex-1 w-full backdrop-blur-md bg-white/5 p-6 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden">
+//           <div className="absolute inset-0 bg-gradient-to-br from-[#00ffd1]/10 to-[#00e6b8]/5 blur-xl pointer-events-none rounded-2xl" />
+//           <h2 className="text-3xl font-extrabold mb-5 relative z-10">🧠 AI Analysis Results</h2>
+
+//           {error && <p className="text-red-500 relative z-10 mb-4">{error}</p>}
+
 //           {analysisResult ? (
-//   <div className="space-y-8 relative z-10 text-sm">
-//     {/* Errors */}
-//     {analysisResult.errors?.length > 0 && (
-//       <div>
-//         <h3 className="text-red-400 font-bold text-xl mb-3">🛑 Critical Errors</h3>
-//         <div className="space-y-3">
-//           {analysisResult.errors.map((err, index) => (
-//             <div key={index} className="p-4 bg-red-900/40 border-l-4 border-red-500 rounded-lg">
-//               <div className="flex items-center justify-between">
-//                 <p className="text-red-300 font-medium">{err.message}</p>
-//                 <span className="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">
-//                   {err.severity?.toUpperCase() || 'UNKNOWN'}
-//                 </span>
-//               </div>
-//               {err.line && (
-//                 <p className="text-xs text-red-200 mt-1">📍 Line: {err.line}</p>
+//             <div className="space-y-8 text-sm relative z-10">
+//               {/* Errors */}
+//               {analysisResult.errors?.length > 0 && (
+//                 <section>
+//                   <h3 className="text-red-400 font-bold text-xl mb-3">🛑 Critical Errors</h3>
+//                   <div className="space-y-3">
+//                     {analysisResult.errors.map((err, i) => (
+//                       <div key={i} className="bg-red-900/40 p-4 rounded-lg border-l-4 border-red-500">
+//                         <p className="text-red-300 font-medium">{err.message}</p>
+//                         {err.line && <p className="text-xs text-red-200 mt-1">📍 Line: {err.line}</p>}
+//                       </div>
+//                     ))}
+//                   </div>
+//                 </section>
+//               )}
+
+//               {/* Suggestions */}
+//               {analysisResult.suggestions?.length > 0 && (
+//                 <section>
+//                   <h3 className="text-yellow-300 font-bold text-xl mb-3">💡 Suggestions</h3>
+//                   <div className="space-y-3">
+//                     {analysisResult.suggestions.map((sugg, i) => (
+//                       <div key={i} className="bg-yellow-900/30 p-4 rounded-lg border-l-4 border-yellow-300">
+//                         <p className="text-yellow-100 font-medium">{sugg.message}</p>
+//                         {sugg.line && <p className="text-xs text-yellow-100 mt-1">📍 Line: {sugg.line}</p>}
+//                       </div>
+//                     ))}
+//                   </div>
+//                 </section>
+//               )}
+
+//               {/* Optimizations */}
+//               {analysisResult.optimizations?.length > 0 && (
+//                 <section>
+//                   <h3 className="text-green-400 font-bold text-xl mb-3">🚀 Optimizations</h3>
+//                   <div className="space-y-3">
+//                     {analysisResult.optimizations.map((opt, i) => (
+//                       <div key={i} className="bg-green-900/30 p-4 rounded-lg border-l-4 border-green-400">
+//                         <p className="text-green-100 font-medium">{opt.message}</p>
+//                         {opt.line && <p className="text-xs text-green-100 mt-1">📍 Line: {opt.line}</p>}
+//                       </div>
+//                     ))}
+//                   </div>
+//                 </section>
 //               )}
 //             </div>
-//           ))}
-//         </div>
-//       </div>
-//     )}
-
-//     {/* Suggestions */}
-//     {analysisResult.suggestions?.length > 0 && (
-//       <div>
-//         <h3 className="text-yellow-300 font-bold text-xl mb-3">💡 Suggestions</h3>
-//         <div className="space-y-3">
-//           {analysisResult.suggestions.map((sugg, index) => (
-//             <div key={index} className="p-4 bg-yellow-900/40 border-l-4 border-yellow-400 rounded-lg">
-//               <p className="text-yellow-200 font-medium">{sugg.message}</p>
-//               {sugg.line && (
-//                 <p className="text-xs text-yellow-100 mt-1">📍 Line: {sugg.line}</p>
-//               )}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     )}
-
-//     {/* Optimizations */}
-//     {analysisResult.optimizations?.length > 0 && (
-//       <div>
-//         <h3 className="text-green-400 font-bold text-xl mb-3">🚀 Optimizations</h3>
-//         <div className="space-y-3">
-//           {analysisResult.optimizations.map((opt, index) => (
-//             <div key={index} className="p-4 bg-green-900/40 border-l-4 border-green-500 rounded-lg">
-//               <p className="text-green-200 font-medium">{opt.message}</p>
-//               {opt.line && (
-//                 <p className="text-xs text-green-100 mt-1">📍 Line: {opt.line}</p>
-//               )}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     )}
-//   </div>
-// ) : (
-//   <p className="text-gray-400 relative z-10">Upload a file to see the analysis.</p>
-// )}
-
+//           ) : (
+//             <p className="text-gray-400 relative z-10">Upload a code file to see results.</p>
+//           )}
 //         </div>
 
-//         {/* Upload Form */}
-//         <div className="w-full max-w-sm min-h-[380px] bg-white/5 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl p-8 relative overflow-hidden">
-//           {/* Decorative Gradient Blur */}
-//           <div className="absolute inset-0 bg-gradient-to-br from-[#00ffd1]/10 to-[#00e6b8]/5 blur-xl rounded-2xl z-0" />
-
-//           <div className="relative z-10 space-y-6 h-full flex flex-col justify-between">
-//             {/* Title */}
+//         {/* Upload Panel */}
+//         <div className="w-full max-w-sm bg-white/5 p-8 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden">
+//           <div className="absolute inset-0 bg-gradient-to-tr from-[#00ffd1]/10 to-[#00e6b8]/5 blur-2xl pointer-events-none rounded-2xl" />
+//           <div className="relative z-10 flex flex-col h-full justify-between space-y-6">
 //             <div>
-//               <h2 className="text-3xl font-bold text-center mb-4">Upload Your Code</h2>
+//               <h2 className="text-2xl font-bold text-center mb-3">Upload Your Code</h2>
 //             </div>
 
-//             {/* File Upload Box */}
-//             <div className="border-2 border-dashed border-white/20 rounded-xl p-5 flex flex-col justify-center items-center bg-white/10 hover:bg-white/20 transition">
-//               <label htmlFor="fileUpload" className="text-sm text-gray-300 mb-3 cursor-pointer">
-//                 {selectedFile ? (
-//                   <span className="text-white">{selectedFile.name}</span>
-//                 ) : (
-//                   <>Click to select your code file</>
-//                 )}
-//               </label>
+//             <label
+//               htmlFor="fileUpload"
+//               className="cursor-pointer text-center border-2 border-dashed border-white/20 rounded-xl p-5 bg-white/10 hover:bg-white/20 transition"
+//             >
+//               {selectedFile ? (
+//                 <span className="text-white font-medium">{selectedFile.name}</span>
+//               ) : (
+//                 <span className="text-gray-300">Click here to select a code file</span>
+//               )}
 //               <input
 //                 id="fileUpload"
 //                 type="file"
-//                 accept=".js,.py,.java,.cpp,.ts,.jsx,.json,.cs,.rb"
+//                 accept=".js,.ts,.py,.cpp,.java,.cs,.json,.rb,.jsx"
 //                 onChange={handleFileChange}
 //                 className="hidden"
 //               />
-//               <span className="text-xs text-gray-400">Max size: 75MB</span>
+//               <p className="text-xs mt-2 text-gray-400">Max size: 75MB</p>
+//             </label>
 
-//               {/* Analyze Button */}
-//               <button
-//                 onClick={handleUpload}
-//                 disabled={!selectedFile || loading}
-//                 className={`w-full py-3 px-4 rounded-lg font-semibold transition ${
-//                   loading
-//                     ? 'bg-gray-600 cursor-not-allowed'
-//                     : 'bg-[#00ffd1] text-black hover:bg-[#00e6b8]'
-//                 }`}
-//               >
-//                 {loading ? 'Analyzing...' : '📎 Analyze Code'}
-//               </button>
-//             </div>
+//             <button
+//               onClick={handleUpload}
+//               disabled={!selectedFile || loading}
+//               className={`w-full py-3 px-4 rounded-lg font-semibold text-black transition ${
+//                 loading
+//                   ? 'bg-gray-600 cursor-not-allowed'
+//                   : 'bg-[#A5FF90] hover:bg-[#8FFF73]'
+//               }`}
+//             >
+//               {loading ? 'Analyzing...' : '📎 Analyze Code'}
+//             </button>
 
-            
-
-//             {/* Supported Formats */}
-//             <div className="text-xs text-gray-400 text-center mt-2">
-//               Supported Formats: <span className="text-white font-medium">.js, .py, .java, .cpp, .ts, .jsx, .json, .cs, .rb</span>
-//             </div>
+//             <p className="text-xs text-center text-gray-400 mt-4">
+//               Supported: <span className="text-white font-medium">.js, .ts, .py, .java, .cpp, .json, .cs, .rb</span>
+//             </p>
 //           </div>
 //         </div>
-
-
-
 //       </div>
 //     </div>
 //   );
@@ -167,89 +144,158 @@
 // export default UploadFile;
 
 
-import React, { useState } from 'react';
-import { uploadFile, analyzeFile } from '../../services/api';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import { uploadFile, analyzeFile } from "../../services/api";
 
 const UploadFile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
     setAnalysisResult(null);
-    setError('');
+    setError("");
   };
 
   const handleUpload = async () => {
     if (!selectedFile) return;
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const uploadResponse = await uploadFile(selectedFile);
       const { file } = uploadResponse;
       const analysisResponse = await analyzeFile(file.id);
       setAnalysisResult(analysisResponse.result);
     } catch (err) {
-      setError('❌ Failed to analyze file. Please try again.');
+      setError("Failed to analyze file. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0F2F] pt-[90px] px-4 text-white">
+    <div className="min-h-screen bg-gradient-to-tr from-sky-300 via-blue-600 to-violet-300 pt-[90px] px-4 text-gray-800">
       <div className="max-w-7xl mx-auto py-16 flex flex-col lg:flex-row gap-10 items-start">
-        
-        {/* Analysis Result Panel */}
-        <div className="flex-1 w-full backdrop-blur-md bg-white/5 p-6 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#00ffd1]/10 to-[#00e6b8]/5 blur-xl pointer-events-none rounded-2xl" />
-          <h2 className="text-3xl font-extrabold mb-5 relative z-10">🧠 AI Analysis Results</h2>
 
-          {error && <p className="text-red-500 relative z-10 mb-4">{error}</p>}
+        {/* Analysis Result Panel */}
+        <div className="flex-1 w-full bg-white p-8 rounded-2xl border border-gray-200 shadow-sm relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-violet-50 to-transparent pointer-events-none rounded-2xl" />
+
+          <h2 className="text-3xl font-bold mb-6 relative z-10 text-gray-900">
+            AI Analysis Results
+          </h2>
+
+          {error && (
+            <p className="text-red-600 mb-4 relative z-10">{error}</p>
+          )}
 
           {analysisResult ? (
             <div className="space-y-8 text-sm relative z-10">
-              {/* Errors */}
+
               {analysisResult.errors?.length > 0 && (
                 <section>
-                  <h3 className="text-red-400 font-bold text-xl mb-3">🛑 Critical Errors</h3>
+                  <h3 className="text-red-600 font-semibold text-xl mb-3">
+                    Critical Errors
+                  </h3>
                   <div className="space-y-3">
                     {analysisResult.errors.map((err, i) => (
-                      <div key={i} className="bg-red-900/40 p-4 rounded-lg border-l-4 border-red-500">
-                        <p className="text-red-300 font-medium">{err.message}</p>
-                        {err.line && <p className="text-xs text-red-200 mt-1">📍 Line: {err.line}</p>}
+                      <div
+                        key={i}
+                        className="bg-red-50 p-4 rounded-lg border-l-4 border-red-500"
+                      >
+                        <p className="text-red-700 font-medium">
+                          {err.message}
+                        </p>
+                        {err.line && (
+                          <p className="text-xs text-red-500 mt-1">
+                            Line: {err.line}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
                 </section>
               )}
 
-              {/* Suggestions */}
               {analysisResult.suggestions?.length > 0 && (
                 <section>
-                  <h3 className="text-yellow-300 font-bold text-xl mb-3">💡 Suggestions</h3>
+                  <h3 className="text-yellow-600 font-semibold text-xl mb-3">
+                    Suggestions
+                  </h3>
                   <div className="space-y-3">
                     {analysisResult.suggestions.map((sugg, i) => (
-                      <div key={i} className="bg-yellow-900/30 p-4 rounded-lg border-l-4 border-yellow-300">
-                        <p className="text-yellow-100 font-medium">{sugg.message}</p>
-                        {sugg.line && <p className="text-xs text-yellow-100 mt-1">📍 Line: {sugg.line}</p>}
+                      <div
+                        key={i}
+                        className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400"
+                      >
+                        <p className="text-yellow-800 font-medium">
+                          {sugg.message}
+                        </p>
+                        {sugg.line && (
+                          <p className="text-xs text-yellow-600 mt-1">
+                            Line: {sugg.line}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
                 </section>
               )}
 
-              {/* Optimizations */}
               {analysisResult.optimizations?.length > 0 && (
                 <section>
-                  <h3 className="text-green-400 font-bold text-xl mb-3">🚀 Optimizations</h3>
+                  <h3 className="text-green-600 font-semibold text-xl mb-3">
+                    Optimizations
+                  </h3>
                   <div className="space-y-3">
                     {analysisResult.optimizations.map((opt, i) => (
-                      <div key={i} className="bg-green-900/30 p-4 rounded-lg border-l-4 border-green-400">
-                        <p className="text-green-100 font-medium">{opt.message}</p>
-                        {opt.line && <p className="text-xs text-green-100 mt-1">📍 Line: {opt.line}</p>}
+                      <div
+                        key={i}
+                        className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+                      >
+                        <p className="text-green-800 font-medium">
+                          {opt.message}
+                        </p>
+                        {opt.line && (
+                          <p className="text-xs text-green-600 mt-1">
+                            Line: {opt.line}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -257,26 +303,33 @@ const UploadFile = () => {
               )}
             </div>
           ) : (
-            <p className="text-gray-400 relative z-10">Upload a code file to see results.</p>
+            <p className="text-gray-500 relative z-10">
+              Upload a code file to see AI-powered insights.
+            </p>
           )}
         </div>
 
         {/* Upload Panel */}
-        <div className="w-full max-w-sm bg-white/5 p-8 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#00ffd1]/10 to-[#00e6b8]/5 blur-2xl pointer-events-none rounded-2xl" />
-          <div className="relative z-10 flex flex-col h-full justify-between space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-center mb-3">Upload Your Code</h2>
-            </div>
+        <div className="w-full max-w-sm bg-white p-8 rounded-2xl border border-gray-200 shadow-sm relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-tr from-blue-50 via-violet-50 to-transparent pointer-events-none rounded-2xl" />
+
+          <div className="relative z-10 flex flex-col space-y-6">
+            <h2 className="text-2xl font-semibold text-center text-gray-900">
+              Upload Your Code
+            </h2>
 
             <label
               htmlFor="fileUpload"
-              className="cursor-pointer text-center border-2 border-dashed border-white/20 rounded-xl p-5 bg-white/10 hover:bg-white/20 transition"
+              className="cursor-pointer text-center border-2 border-dashed border-gray-300 rounded-xl p-6 bg-gray-50 hover:bg-gray-100 transition"
             >
               {selectedFile ? (
-                <span className="text-white font-medium">{selectedFile.name}</span>
+                <span className="text-gray-900 font-medium">
+                  {selectedFile.name}
+                </span>
               ) : (
-                <span className="text-gray-300">Click here to select a code file</span>
+                <span className="text-gray-700 font-medium">
+                  Click to select a code file
+                </span>
               )}
               <input
                 id="fileUpload"
@@ -285,26 +338,31 @@ const UploadFile = () => {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <p className="text-xs mt-2 text-gray-400">Max size: 75MB</p>
+              <p className="text-xs mt-2 text-gray-400">
+                Max size: 75MB
+              </p>
             </label>
 
             <button
               onClick={handleUpload}
               disabled={!selectedFile || loading}
-              className={`w-full py-3 px-4 rounded-lg font-semibold text-black transition ${
-                loading
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-[#A5FF90] hover:bg-[#8FFF73]'
+              className={`w-full py-3 rounded-lg font-semibold transition ${
+                !selectedFile || loading
+                  ? "bg-black/30 text-white/60 cursor-not-allowed"
+                  : "bg-black text-white hover:bg-gray-900"
               }`}
             >
-              {loading ? 'Analyzing...' : '📎 Analyze Code'}
+              {loading ? "Analyzing..." : "Analyze Code"}
             </button>
 
-            <p className="text-xs text-center text-gray-400 mt-4">
-              Supported: <span className="text-white font-medium">.js, .ts, .py, .java, .cpp, .json, .cs, .rb</span>
+            <p className="text-xs text-center text-gray-400">
+              Supported: <span className="font-medium text-gray-700">
+                .js, .ts, .py, .java, .cpp, .json, .cs, .rb
+              </span>
             </p>
           </div>
         </div>
+
       </div>
     </div>
   );
