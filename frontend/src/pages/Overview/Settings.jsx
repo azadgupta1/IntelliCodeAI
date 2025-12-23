@@ -16,7 +16,7 @@ function Settings() {
     <div className="w-screen h-screen bg-gray-50 flex flex-col">
       
       {/* Tabs */}
-      <div className="flex border-b bg-white overflow-x-auto">
+      <div className="flex border-b bg-white overflow-x-auto mt-5">
         {tabs.map((tab) => (
           <button
             key={tab.key}
