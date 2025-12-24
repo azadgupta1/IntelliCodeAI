@@ -162,7 +162,7 @@ function RepoSettings() {
       </div>
 
       {/* Tab Content */}
-      {activeTab === "general" && (
+      {/* {activeTab === "general" && (
         <div className="space-y-6">
           <div className="bg-gray-50 p-6 rounded-xl shadow">
             <p className="text-sm">
@@ -191,7 +191,6 @@ function RepoSettings() {
             </button>
           </div>
 
-          {/* Danger Zone */}
       <div className="mt-10 p-6 border border-red-400 bg-red-100 rounded-2xl shadow-md">
         <h2 className="text-xl font-semibold text-red-700 mb-4">Danger Zone</h2>
         <p className="text-sm text-red-600 mb-4">
@@ -207,18 +206,91 @@ function RepoSettings() {
         </button>
       </div>
         </div>
-      )}
+      )} */}
 
-          {activeTab === "branches" && (
+          {activeTab === "general" && (
+  <div className="space-y-8">
+    {/* Repository Info */}
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <h3 className="text-lg font-semibold text-slate-800 mb-4">
+        Repository Information
+      </h3>
+
+      <div className="grid sm:grid-cols-2 gap-6 text-sm">
+        <div>
+          <p className="text-slate-500 mb-1">Repository</p>
+          <p className="font-medium text-slate-800">
+            {meta.repoName}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-slate-500 mb-1">Owner</p>
+          <p className="font-medium text-slate-800">
+            {meta.ownerName}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* Sync Status */}
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-1">
+          Sync Status
+        </h3>
+        <p className="text-sm text-slate-500">
+          Last synced
+        </p>
+        <p className="text-sm font-medium text-slate-700 mt-1">
+          {meta.lastSyncedAt
+            ? new Date(meta.lastSyncedAt).toLocaleString()
+            : "Never"}
+        </p>
+      </div>
+
+      <button
+        onClick={handleSync}
+        disabled={syncing}
+        className="inline-flex items-center justify-center rounded-xl
+                   bg-slate-900 px-6 py-2.5 text-sm font-medium text-white
+                   hover:bg-slate-800 transition
+                   disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        {syncing ? "Syncing repository…" : "Re-sync repository"}
+      </button>
+    </div>
+
+    {/* ⚠️ Danger Zone — untouched as requested */}
+    <div className="mt-10 p-6 border border-red-400 bg-red-100 rounded-2xl shadow-md">
+      <h2 className="text-xl font-semibold text-red-700 mb-4">Danger Zone</h2>
+      <p className="text-sm text-red-600 mb-4">
+        Deleting this repository will remove all associated analysis, files,
+        and data from our platform. This action is irreversible.
+      </p>
+      <button
+        onClick={handleDelete}
+        disabled={deleting}
+        className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg transition disabled:opacity-50"
+      >
+        {deleting ? "Deleting..." : "Delete Repository"}
+      </button>
+    </div>
+  </div>
+)}
+
+
+
+          {/* {activeTab === "branches" && (
             <div className="space-y-4">
 
             <div className="relative w-64">
-              {/* Icon positioned inside the input */}
+              
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <CiSearch className="text-gray-400 text-lg" />
               </div>
 
-              {/* Input with left padding to avoid overlapping the icon */}
+              
               <input
                 type="text"
                 placeholder="Search branches..."
@@ -301,11 +373,113 @@ function RepoSettings() {
 </div>
 
             </div>
+          )} */}
+
+
+      {activeTab === "branches" && (
+  <div className="space-y-6">
+    {/* Search */}
+    <div className="flex items-center justify-between">
+      <div className="relative w-72">
+        <input
+          type="text"
+          placeholder="Search branches"
+          value={branchSearch}
+          onChange={(e) => setBranchSearch(e.target.value)}
+          className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm
+                     placeholder:text-slate-400 shadow-sm
+                     focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+        />
+      </div>
+
+      <span className="text-sm text-slate-500">
+        {filteredBranches?.length || 0} branches
+      </span>
+    </div>
+
+    {/* Table */}
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <table className="min-w-full text-sm">
+        <thead className="bg-slate-50 text-slate-600">
+          <tr>
+            <th className="px-6 py-4 text-left font-medium">
+              Branch
+            </th>
+            <th className="px-6 py-4 text-left font-medium">
+              Analysis
+            </th>
+            <th className="px-6 py-4 text-left font-medium">
+              Last updated
+            </th>
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-slate-100">
+          {filteredBranches?.length ? (
+            filteredBranches.map((branch, idx) => {
+              const isDefault = meta?.defaultBranch === branch.name;
+
+              return (
+                <tr
+                  key={idx}
+                  className="hover:bg-slate-50 transition"
+                >
+                  {/* Branch */}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium text-slate-800">
+                        {branch.name}
+                      </span>
+
+                      {isDefault && (
+                        <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+                          Default
+                        </span>
+                      )}
+                    </div>
+                  </td>
+
+                  {/* Analysis */}
+                  <td className="px-6 py-4">
+                    {isDefault ? (
+                      <span className="inline-flex items-center gap-2 text-sm text-emerald-600">
+                        <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                        Enabled
+                      </span>
+                    ) : (
+                      <span className="text-slate-400">—</span>
+                    )}
+                  </td>
+
+                  {/* Last updated */}
+                  <td className="px-6 py-4 text-slate-500">
+                    {branch.lastUpdated
+                      ? getRelativeTime(branch.lastUpdated)
+                      : "Unknown"}
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td
+                colSpan={3}
+                className="px-6 py-16 text-center text-slate-500"
+              >
+                No branches match your search.
+              </td>
+            </tr>
           )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
 
 
 
-      {activeTab === "auto" && (
+
+      {/* {activeTab === "auto" && (
         <div className="bg-gray-50 p-6 rounded-xl shadow flex items-center justify-between">
           <span className="text-lg font-medium">Auto-Analysis</span>
           <button
@@ -324,7 +498,61 @@ function RepoSettings() {
               : "Disabled (Click to Enable)"}
           </button>
         </div>
-      )}
+      )} */}
+
+      {activeTab === "auto" && (
+  <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+    <div className="flex items-center justify-between gap-6">
+      {/* Left Content */}
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800">
+          Auto-Analysis
+        </h3>
+        <p className="text-sm text-slate-500 mt-1 max-w-md">
+          Automatically analyze new commits and code changes as they are uploaded
+          to IntelliCodeAI.
+        </p>
+      </div>
+
+      {/* Toggle */}
+      <button
+        onClick={handleToggle}
+        disabled={toggling}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition
+          ${meta.autoAnalyze ? "bg-emerald-600" : "bg-slate-300"}
+          ${toggling ? "opacity-60 cursor-not-allowed" : ""}
+        `}
+      >
+        <span
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition
+            ${meta.autoAnalyze ? "translate-x-6" : "translate-x-1"}
+          `}
+        />
+      </button>
+    </div>
+
+    {/* Status */}
+    <div className="mt-4 text-sm">
+      <span
+        className={`inline-flex items-center gap-2 font-medium
+          ${meta.autoAnalyze ? "text-emerald-600" : "text-slate-500"}
+        `}
+      >
+        <span
+          className={`h-2 w-2 rounded-full
+            ${meta.autoAnalyze ? "bg-emerald-500" : "bg-slate-400"}
+          `}
+        />
+        {toggling
+          ? "Updating preference…"
+          : meta.autoAnalyze
+          ? "Auto-Analysis is enabled"
+          : "Auto-Analysis is disabled"}
+      </span>
+    </div>
+  </div>
+)}
+
 
       
     </div>
