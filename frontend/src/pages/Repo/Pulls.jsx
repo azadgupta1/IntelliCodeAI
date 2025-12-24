@@ -46,7 +46,7 @@ const PullsPage = () => {
   }, [owner, repo]);
 
   return (
-    <div className="p-10 bg-white text-gray-900 dark:bg-gray-900 dark:text-white min-h-screen">
+    <div className="p-10 bg-gray-950 text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Pull Requests</h1>
 
       {loading ? (

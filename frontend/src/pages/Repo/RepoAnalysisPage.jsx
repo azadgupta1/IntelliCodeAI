@@ -59,7 +59,7 @@ const AutoAnalysisStatus = () => {
   console.log("IGNORED : ",ignoredAnalyses);
 
 return (
-  <div className="p-10 bg-white rounded-lg shadow-sm border border-gray-200 min-h-[300px]">
+  <div className="p-10 bg-gray-950 rounded-lg shadow-sm border border-gray-200 min-h-[300px]">
     <div className="mb-8">
       <h2 className="text-2xl font-semibold text-gray-800">Issues</h2>
       <p className="text-gray-500 mt-1 bg-gray-100 p-1 rounded-lg w-40">{owner}/{repo}</p>
