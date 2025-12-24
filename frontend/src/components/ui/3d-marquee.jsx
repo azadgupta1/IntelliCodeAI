@@ -647,57 +647,426 @@
 
 
 
+// "use client";
+
+// import { motion } from "motion/react";
+// import { cn } from "../../lib/utils";
+
+// export const ThreeDMarquee = ({ images, className }) => {
+//   const chunkSize = Math.ceil(images.length / 4);
+//   const chunks = Array.from({ length: 4 }, (_, i) =>
+//     images.slice(i * chunkSize, i * chunkSize + chunkSize)
+//   );
+
+//   return (
+//     <div
+//       className={cn(
+//         "mx-auto h-[600px] w-[1200px] overflow-hidden rounded-2xl flex items-center justify-center",
+//         className
+//       )}
+//       style={{ perspective: "1200px" }}
+//     >
+//       <div className="relative w-full max-w-[1720px] flex justify-center">
+//         <div
+//           style={{
+//             transformStyle: "preserve-3d",
+//             transform: "rotateX(65deg) rotateZ(-50deg)",
+//           }}
+//           className="relative grid grid-cols-4 gap-10"
+//         >
+//           {chunks.map((colImages, colIndex) => (
+//             <motion.div
+//               key={colIndex}
+//               animate={{ y: colIndex % 2 === 0 ? 80 : -80 }}
+//               transition={{
+//                 duration: colIndex % 2 === 0 ? 5 : 6,
+//                 repeat: Infinity,
+//                 repeatType: "reverse",
+//               }}
+//               className="flex flex-col gap-6 relative"
+//               style={{
+//                 transform: `translateZ(${colIndex * -80}px) rotateY(${colIndex * 5}deg)`,
+//               }}
+//             >
+//               <GridLineVertical className="-left-4" offset="80px" />
+//               {colImages.map((img, imgIndex) => (
+//                 <div key={imgIndex} className="relative">
+//                   <GridLineHorizontal className="-top-4" offset="20px" />
+//                   <motion.img
+//                     src={img}
+//                     alt={`Image ${imgIndex + 1}`}
+//                     className="w-[350px] h-[250px] md:w-[380px] md:h-[270px] object-cover rounded-lg ring ring-gray-950/5 hover:shadow-2xl"
+//                     whileHover={{ y: -10, scale: 1.05 }}
+//                     transition={{ duration: 0.3, ease: "easeInOut" }}
+//                   />
+//                 </div>
+//               ))}
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const GridLineHorizontal = ({ className, offset }) => (
+//   <div
+//     style={{
+//       "--offset": offset || "200px",
+//       height: "1px",
+//       width: "calc(100% + var(--offset))",
+//       background:
+//         "linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 50%, transparent 0, transparent)",
+//     }}
+//     className={cn("absolute left-[calc(var(--offset)/-2)] z-30", className)}
+//   ></div>
+// );
+
+// const GridLineVertical = ({ className, offset }) => (
+//   <div
+//     style={{
+//       "--offset": offset || "150px",
+//       width: "1px",
+//       height: "calc(100% + var(--offset))",
+//       background:
+//         "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 50%, transparent 0, transparent)",
+//     }}
+//     className={cn("absolute top-[calc(var(--offset)/-2)] z-30", className)}
+//   ></div>
+// );
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+
+// import { motion } from "motion/react";
+// import { cn } from "../../lib/utils";
+
+// export const ThreeDMarquee = ({ images, className }) => {
+//   const chunkSize = Math.ceil(images.length / 4);
+//   const chunks = Array.from({ length: 4 }, (_, i) =>
+//     images.slice(i * chunkSize, i * chunkSize + chunkSize)
+//   );
+
+//   return (
+//     <div
+//       className={cn(
+//         // ⬇️ smaller, squarish container
+//         "mx-auto h-[620px] w-[620px] overflow-hidden rounded-2xl flex items-center justify-center",
+//         className
+//       )}
+//       style={{ perspective: "1000px" }}
+//     >
+//       <div className="relative w-full flex justify-center">
+//         <div
+//           style={{
+//             transformStyle: "preserve-3d",
+//             transform: "rotateX(60deg) rotateZ(-45deg)",
+//           }}
+//           // ⬇️ tighter grid spacing
+//           className="relative grid grid-cols-3 gap-6"
+//         >
+//           {chunks.map((colImages, colIndex) => (
+//             <motion.div
+//               key={colIndex}
+//               animate={{ y: colIndex % 2 === 0 ? 60 : -60 }}
+//               transition={{
+//                 duration: colIndex % 2 === 0 ? 4.5 : 5.5,
+//                 repeat: Infinity,
+//                 repeatType: "reverse",
+//               }}
+//               className="flex flex-col gap-5 relative"
+//               style={{
+//                 transform: `translateZ(${colIndex * -70}px) rotateY(${colIndex * 4}deg)`,
+//               }}
+//             >
+//               <GridLineVertical className="-left-3" offset="60px" />
+
+//               {colImages.map((img, imgIndex) => (
+//                 <div key={imgIndex} className="relative">
+//                   <GridLineHorizontal className="-top-3" offset="16px" />
+//                   <motion.img
+//                     src={img}
+//                     alt={`Image ${imgIndex + 1}`}
+//                     // ⬆️ bigger images
+//                     className="w-[480px] h-[480px] object-cover rounded-lg ring ring-gray-950/5"
+//                     whileHover={{ y: -8, scale: 1.06 }}
+//                     transition={{ duration: 0.25, ease: "easeOut" }}
+//                   />
+//                 </div>
+//               ))}
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const GridLineHorizontal = ({ className, offset }) => (
+//   <div
+//     style={{
+//       "--offset": offset || "160px",
+//       height: "1px",
+//       width: "calc(100% + var(--offset))",
+//       background:
+//         "linear-gradient(to right, rgba(0,0,0,0.18), rgba(0,0,0,0.18) 50%, transparent 0, transparent)",
+//     }}
+//     className={cn("absolute left-[calc(var(--offset)/-2)] z-30", className)}
+//   />
+// );
+
+// const GridLineVertical = ({ className, offset }) => (
+//   <div
+//     style={{
+//       "--offset": offset || "120px",
+//       width: "1px",
+//       height: "calc(100% + var(--offset))",
+//       background:
+//         "linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.18) 50%, transparent 0, transparent)",
+//     }}
+//     className={cn("absolute top-[calc(var(--offset)/-2)] z-30", className)}
+//   />
+// );
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client";
+
+// import { motion } from "motion/react";
+// import { cn } from "../../lib/utils";
+
+// export const ThreeDMarquee = ({ images, className }) => {
+//   const chunkSize = Math.ceil(images.length / 3);
+//   const chunks = Array.from({ length: 3 }, (_, i) =>
+//     images.slice(i * chunkSize, i * chunkSize + chunkSize)
+//   );
+
+//   return (
+//     <div
+//       className={cn(
+//         "mx-auto h-[620px] w-[620px] overflow-hidden rounded-2xl flex items-center justify-center",
+//         className
+//       )}
+//       style={{ perspective: "1200px" }}
+//     >
+//       <div className="relative w-full h-full flex items-center justify-center">
+//         <div
+//           style={{
+//             transformStyle: "preserve-3d",
+//             transform: "rotateX(62deg) rotateZ(-45deg)",
+//           }}
+//           className="relative grid grid-cols-3 w-full gap-6 px-6"
+//         >
+//           {chunks.map((colImages, colIndex) => (
+//             <motion.div
+//               key={colIndex}
+//               animate={{ y: colIndex % 2 === 0 ? 60 : -60 }}
+//               transition={{
+//                 duration: 5 + colIndex,
+//                 repeat: Infinity,
+//                 repeatType: "reverse",
+//               }}
+//               className="flex flex-col gap-6 relative"
+//               style={{
+//                 transform: `translateZ(${-140 * colIndex}px) rotateY(${
+//                   colIndex * 6
+//                 }deg)`,
+//               }}
+//             >
+//               <GridLineVertical className="-left-3" offset="80px" />
+
+//               {colImages.map((img, imgIndex) => (
+//                 <div key={imgIndex} className="relative">
+//                   <GridLineHorizontal className="-top-3" offset="24px" />
+
+//                   {/* 🔑 KEY FIX */}
+//                   <motion.img
+//                     src={img}
+//                     alt={`Image ${imgIndex + 1}`}
+//                     className="w-full aspect-square object-cover rounded-xl ring ring-black/10"
+//                     whileHover={{ scale: 1.08, y: -10 }}
+//                     transition={{ duration: 0.3, ease: "easeOut" }}
+//                   />
+//                 </div>
+//               ))}
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// /* ---------------- GRID LINES ---------------- */
+
+// const GridLineHorizontal = ({ className, offset }) => (
+//   <div
+//     style={{
+//       "--offset": offset || "200px",
+//       height: "1px",
+//       width: "calc(100% + var(--offset))",
+//       background:
+//         "linear-gradient(to right, rgba(0,0,0,0.25), rgba(0,0,0,0.25) 50%, transparent 0)",
+//     }}
+//     className={cn("absolute left-[calc(var(--offset)/-2)] z-30", className)}
+//   />
+// );
+
+// const GridLineVertical = ({ className, offset }) => (
+//   <div
+//     style={{
+//       "--offset": offset || "160px",
+//       width: "1px",
+//       height: "calc(100% + var(--offset))",
+//       background:
+//         "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.25) 50%, transparent 0)",
+//     }}
+//     className={cn("absolute top-[calc(var(--offset)/-2)] z-30", className)}
+//   />
+// );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 "use client";
 
 import { motion } from "motion/react";
 import { cn } from "../../lib/utils";
 
+const IMAGE_SIZE = 560; // 🔥 GIANT IMAGE SIZE (change freely)
+const DEPTH_STEP = 220; // 🔥 how fast images disappear into depth
+
 export const ThreeDMarquee = ({ images, className }) => {
-  const chunkSize = Math.ceil(images.length / 4);
-  const chunks = Array.from({ length: 4 }, (_, i) =>
+  const columns = 3;
+  const chunkSize = Math.ceil(images.length / columns);
+  const chunks = Array.from({ length: columns }, (_, i) =>
     images.slice(i * chunkSize, i * chunkSize + chunkSize)
   );
 
   return (
     <div
       className={cn(
-        "mx-auto h-[600px] w-[1200px] overflow-hidden rounded-2xl flex items-center justify-center",
+        "mx-auto h-[920px] w-screen overflow-hidden rounded-2xl flex items-center justify-center bg-transparent",
         className
       )}
-      style={{ perspective: "1200px" }}
+      style={{ perspective: "1400px" }}
     >
-      <div className="relative w-full max-w-[1720px] flex justify-center">
+      <div className="relative w-full h-full flex items-center justify-center">
         <div
+          className="relative flex gap-[180px]"
           style={{
             transformStyle: "preserve-3d",
-            transform: "rotateX(65deg) rotateZ(-50deg)",
+            transform: "rotateX(65deg) rotateZ(-45deg)",
           }}
-          className="relative grid grid-cols-4 gap-10"
         >
           {chunks.map((colImages, colIndex) => (
             <motion.div
               key={colIndex}
-              animate={{ y: colIndex % 2 === 0 ? 80 : -80 }}
+              className="relative flex flex-col gap-[160px]"
+              animate={{ y: colIndex % 2 === 0 ? 90 : -90 }}
               transition={{
-                duration: colIndex % 2 === 0 ? 5 : 6,
+                duration: 5 + colIndex,
                 repeat: Infinity,
                 repeatType: "reverse",
+                ease: "easeInOut",
               }}
-              className="flex flex-col gap-6 relative"
               style={{
-                transform: `translateZ(${colIndex * -80}px) rotateY(${colIndex * 5}deg)`,
+                transform: `translateZ(${-DEPTH_STEP * colIndex}px) rotateY(${
+                  colIndex * 8
+                }deg)`,
               }}
             >
-              <GridLineVertical className="-left-4" offset="80px" />
               {colImages.map((img, imgIndex) => (
-                <div key={imgIndex} className="relative">
-                  <GridLineHorizontal className="-top-4" offset="20px" />
+                <div
+                  key={imgIndex}
+                  className="relative"
+                  style={{
+                    width: IMAGE_SIZE,
+                    height: IMAGE_SIZE,
+                  }}
+                >
                   <motion.img
                     src={img}
                     alt={`Image ${imgIndex + 1}`}
-                    className="w-[350px] h-[250px] md:w-[380px] md:h-[270px] object-cover rounded-lg ring ring-gray-950/5 hover:shadow-2xl"
-                    whileHover={{ y: -10, scale: 1.05 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="absolute inset-0 rounded-2xl object-cover ring ring-black/20 shadow-2xl"
+                    style={{
+                      width: IMAGE_SIZE,
+                      height: IMAGE_SIZE,
+                    }}
+                    whileHover={{
+                      scale: 1.1,
+                      y: -20,
+                    }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
                   />
                 </div>
               ))}
@@ -708,29 +1077,3 @@ export const ThreeDMarquee = ({ images, className }) => {
     </div>
   );
 };
-
-const GridLineHorizontal = ({ className, offset }) => (
-  <div
-    style={{
-      "--offset": offset || "200px",
-      height: "1px",
-      width: "calc(100% + var(--offset))",
-      background:
-        "linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 50%, transparent 0, transparent)",
-    }}
-    className={cn("absolute left-[calc(var(--offset)/-2)] z-30", className)}
-  ></div>
-);
-
-const GridLineVertical = ({ className, offset }) => (
-  <div
-    style={{
-      "--offset": offset || "150px",
-      width: "1px",
-      height: "calc(100% + var(--offset))",
-      background:
-        "linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.2) 50%, transparent 0, transparent)",
-    }}
-    className={cn("absolute top-[calc(var(--offset)/-2)] z-30", className)}
-  ></div>
-);

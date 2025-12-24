@@ -238,76 +238,83 @@ const Repositories = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-10 space-y-10">
+return (
+  <div className="min-h-screen bg-white">
+    <div className="max-w-7xl mx-auto px-6 py-10 space-y-10">
 
-        {/* -------- Header -------- */}
-        <header className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold text-slate-900">
-            Repositories
-          </h1>
-          <p className="text-sm text-slate-600 max-w-2xl">
-            Connect, manage, and control automatic code analysis across your
-            GitHub repositories.
+      {/* -------- Header -------- */}
+      <header className="flex flex-col gap-3">
+        <h1 className="text-3xl font-semibold text-slate-900">
+          Repositories
+        </h1>
+
+        <p className="text-sm text-slate-600 max-w-2xl">
+          Connect, manage, and control automatic code analysis across your
+          GitHub repositories.
+        </p>
+
+        {/* Accent divider */}
+        <div className="h-1 w-24 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500" />
+      </header>
+
+      {/* -------- Repo Management Card -------- */}
+      <section className="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 bg-white">
+          <h2 className="text-lg font-medium text-slate-900">
+            Repository Management
+          </h2>
+          <p className="text-sm text-slate-500">
+            Enable or disable auto-analysis for individual repositories
           </p>
-        </header>
+        </div>
 
-        {/* -------- Repo Management Card -------- */}
-        <section className="bg-white border border-slate-200 rounded-xl shadow-sm">
-          <div className="px-6 py-4 border-b border-slate-200">
+        <div className="p-6">
+          <RepoTable
+            {...{
+              filteredRepos,
+              navigate,
+              searchTerm,
+              setSearchTerm,
+              filter,
+              setFilter,
+              showManageBox,
+              setShowManageBox,
+              toggleAutoAnalysis,
+            }}
+          />
+        </div>
+      </section>
+
+      {/* -------- Enabled Repos Card -------- */}
+      <section className="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 bg-white flex items-center justify-between">
+          <div>
             <h2 className="text-lg font-medium text-slate-900">
-              Repository Management
+              Active Auto-Analysis
             </h2>
             <p className="text-sm text-slate-500">
-              Enable or disable auto-analysis for individual repositories
+              Repositories currently monitored by IntelliCodeAI
             </p>
           </div>
 
-          <div className="p-6">
-            <RepoTable
-              {...{
-                filteredRepos,
-                navigate,
-                searchTerm,
-                setSearchTerm,
-                filter,
-                setFilter,
-                showManageBox,
-                setShowManageBox,
-                toggleAutoAnalysis,
-              }}
-            />
-          </div>
-        </section>
+          {/* Status pill */}
+          <span className="text-xs font-medium px-3 py-1 rounded-full
+            bg-indigo-50 text-indigo-700 border border-indigo-200">
+            {enabledRepos.length} Active
+          </span>
+        </div>
 
-        {/* -------- Enabled Repos Card -------- */}
-        <section className="bg-white border border-slate-200 rounded-xl shadow-sm">
-          <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-medium text-slate-900">
-                Active Auto-Analysis
-              </h2>
-              <p className="text-sm text-slate-500">
-                Repositories currently monitored by IntelliCodeAI
-              </p>
-            </div>
-            <span className="text-xs font-medium px-2 py-1 rounded-full bg-slate-100 text-slate-700">
-              {enabledRepos.length} Active
-            </span>
-          </div>
+        <div className="p-6">
+          <EnabledRepoList
+            enabledRepos={enabledRepos}
+            onSelect={handleRepoClick}
+          />
+        </div>
+      </section>
 
-          <div className="p-6">
-            <EnabledRepoList
-              enabledRepos={enabledRepos}
-              onSelect={handleRepoClick}
-            />
-          </div>
-        </section>
-
-      </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Repositories;

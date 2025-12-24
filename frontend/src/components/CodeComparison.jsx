@@ -272,7 +272,7 @@ const CodeComparison = ({
       </div>
 
 
-      {!manuallyAnalyzed && (
+      {/* {!manuallyAnalyzed && (
         <div className="text-center mt-10">
           <SparkleButton
             onClick={handleCommitFix}
@@ -321,7 +321,26 @@ const CodeComparison = ({
             )}
           </SparkleButton>
         </div>
-      )}
+      )} */}
+
+      {!manuallyAnalyzed && (
+  <div className="mt-10 flex justify-center">
+    <SparkleButton
+      onClick={handleCommitFix}
+      disabled={fixLoading || isCommitted}
+      state={
+        fixLoading ? "loading" : isCommitted ? "success" : "default"
+      }
+    >
+      {fixLoading
+        ? "Applying Fix…"
+        : isCommitted
+        ? "Fix Applied"
+        : "Apply AI Fix"}
+    </SparkleButton>
+  </div>
+)}
+
 
       {/* Toast Container */}
       <ToastContainer />
