@@ -60,7 +60,7 @@ function Login() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-tr from-sky-300 via-blue-500 to-violet-300 pt-20">
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-start flex-grow pt-16 px-4 sm:px-6 md:px-8 mb-10">
+      <div className="flex flex-col items-center justify-start flex-grow pt-16 px-4 sm:px-6 md:px-8 mb-100">
         
         {/* Heading */}
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-12 text-center">

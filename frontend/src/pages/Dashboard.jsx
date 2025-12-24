@@ -36,7 +36,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex min-h-screen bg-gray ml-16 sm:ml-20">
+      <div className="flex min-h-screen w-full bg-gray ml-16 sm:ml-20">
         <div className="flex-1 p-0">
           <Outlet />
         </div>
