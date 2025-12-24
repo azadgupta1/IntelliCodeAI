@@ -20,7 +20,7 @@ function RepoOverview() {
       setLoading(true);
       const data = await fetchRepoErrors(owner, repo);
 
-      console.log(data);
+      console.log("Error Data is : ",data);
       if (data.success) {
         setErrorCount(data.data.errorCount);
         setRepoId(data.data.id); // include repoId in response or fetch it
@@ -96,7 +96,7 @@ function RepoOverview() {
 
       <div className='flex justify-center'>
         <div>
-          <IssuesBreakdown owner={owner} repo={repo} />
+          <IssuesBreakdown owner={owner} repo={repo} errorCount={errorCount}/>
         </div>
 
         <div>
@@ -104,21 +104,11 @@ function RepoOverview() {
         </div>
 
         <div>
-          <IssuesBreakdown owner={owner} repo={repo} />
+          <IssuesBreakdown owner={owner} repo={repo} errorCount={errorCount}/>
         </div>
 
       </div>
 
-      {/* <div className="flex justify-end mb-4">
-        <div
-          onClick={handleClick}
-          className="flex items-center bg-red-100 text-red-600 border border-red-300 rounded-md px-4 py-2 shadow space-x-3 cursor-pointer hover:bg-red-200 transition-all"
-          title="Go to Issues"
-        >
-          <span className="text-xl">Total Number of Errors: {errorCount}</span>
-          <FaExclamationTriangle className="text-2xl" />
-        </div>
-      </div> */}
     </div>
     
   );
