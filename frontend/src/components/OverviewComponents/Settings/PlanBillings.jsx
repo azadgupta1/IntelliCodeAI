@@ -1,5 +1,5 @@
 import React from 'react'
-import Pricing from '../../pages/Landing/Pricing'
+import Pricing from './Pricing';
 
 function PlanBillings() {
   return (

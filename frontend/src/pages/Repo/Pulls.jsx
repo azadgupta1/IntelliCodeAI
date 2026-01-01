@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import PullRequestCard from "../../components/PullRequestCard";
+import PullRequestCard from "../../components/RepoComponents/Pulls/PullRequestCard";
 import { API_BASE_URL } from "../../services/githubServices";
 
 const PullsPage = () => {

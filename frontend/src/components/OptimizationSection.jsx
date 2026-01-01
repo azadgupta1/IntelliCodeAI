@@ -1,33 +1,3 @@
-// import React from "react";
-// import DiffViewer from "../components/DiffViewer";
-
-// const getLineContext = (code, line, context = 3) => {
-//   const lines = code.split("\n");
-//   const start = Math.max(0, line - context - 1);
-//   const end = Math.min(lines.length, line + context);
-//   return lines.slice(start, end).join("\n");
-// };
-
-// const OptimizationSection = ({ optimizations, originalCode, fixedCode }) => {
-//   if (!optimizations?.length) return null;
-
-//   return (
-//     <div>
-//       <h2 className="text-2xl text-green-400 font-semibold mb-4">🚀 Optimizations</h2>
-//       {optimizations.map((opt, idx) => (
-//         <DiffViewer
-//           key={idx}
-//           oldValue={getLineContext(originalCode, opt.line || 1)}
-//           newValue={getLineContext(fixedCode, opt.line || 1)}
-//           title={`🚀 ${opt.message} (Line ${opt.line || 1})`}
-//         />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default OptimizationSection;
-
 import React from "react";
 import DiffViewer from "../components/DiffViewer";
 import { IoRocketOutline, IoDocumentOutline } from "react-icons/io5";

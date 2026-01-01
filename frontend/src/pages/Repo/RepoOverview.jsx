@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchRepoErrors } from '../../services/githubServices';
-import RepoErrorChart from '../../components/RepoErrorChart'; // 👈 import chart
-import IssuesBreakdown from '../../components/IssuesBreakdown';
-import NoResults from '../../components/NoResult';
+import RepoErrorChart from '../../components/RepoComponents/RepoOverview/RepoErrorChart'; // 👈 import chart
+import IssuesBreakdown from '../../components/RepoComponents/RepoOverview/IssuesBreakdown';
+import NoResults from '../../components/RepoComponents/RepoOverview/NoResult';
 import { IoGitBranch } from 'react-icons/io5';
 
 function RepoOverview() {

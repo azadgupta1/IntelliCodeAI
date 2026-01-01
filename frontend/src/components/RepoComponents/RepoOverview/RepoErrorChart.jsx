@@ -4,7 +4,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import { Link } from 'react-router';
-import { API_BASE_URL } from '../services/githubServices';
+import { API_BASE_URL } from '../../../services/githubServices';
 
 const RepoErrorChart = ({ repoId, range, errorCount }) => {
   const [chartData, setChartData] = useState([]);

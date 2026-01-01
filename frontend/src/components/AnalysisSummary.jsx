@@ -1,40 +1,3 @@
-// import React from "react";
-// import { useParams } from "react-router";
-
-// const AnalysisSummary = ({ analysis, manuallyAnalyzed }) => {
-
-//   const { owner } = useParams();
-
-//   return (
-//     <div className="p-6 ">
-//       <h1 className="text-3xl font-bold mb-4 text-black">{analysis.commitMessage}</h1>
-
-//       <p>
-//         <span className="font-medium text-black"></span>{" "}
-//         <span className="bg-gray-200/50 text-black/70 p-1 rounded">
-//           {analysis.file?.filename || analysis.filePath || "N/A"}
-//         </span>
-
-//         <p><span className="font-medium text-black">Commit:</span> {analysis.commitHash}</p>
-//         <p><span className="font-medium text-black">Commit:</span> {analysis.createdAt}</p>
-//         <p><span className="font-medium text-black">Commit:</span> {owner}</p>
-
-
-
-//         {manuallyAnalyzed && (
-//           <span className="ml-2 px-2 py-1 text-xs rounded bg-yellow-500 text-black">
-//             Manually Analyzed
-//           </span>
-//         )}
-//       </p>
-
-      
-//     </div>
-//   );
-// };
-
-// export default AnalysisSummary;
-
 import React from "react";
 import { useParams } from "react-router";
 import { format, isToday, isYesterday } from "date-fns";
@@ -88,8 +51,6 @@ const AnalysisSummary = ({ analysis, manuallyAnalyzed }) => {
           </p>
         </div>
       </div>
-
-      
 
       {/* Optional Manual Flag */}
       {manuallyAnalyzed && (

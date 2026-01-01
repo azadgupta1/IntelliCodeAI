@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import General from '../../components/Settings/General';
-import PlanBillings from '../../components/Settings/PlanBillings';
-import Profile from '../Profile';
+import General from '../../components/OverviewComponents/Settings/General';
+import PlanBillings from '../../components/OverviewComponents/Settings/PlanBillings';
+import Profile from '../../components/OverviewComponents/Settings/Profile';
 
 function Settings() {
   const [activeTab, setActiveTab] = useState('general');

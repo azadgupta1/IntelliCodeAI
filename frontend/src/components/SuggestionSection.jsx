@@ -1,36 +1,3 @@
-// import React from "react";
-// import DiffViewer from "../components/DiffViewer";
-
-// const getLineContext = (code, line, context = 3) => {
-//   const lines = code.split("\n");
-//   const start = Math.max(0, line - context - 1);
-//   const end = Math.min(lines.length, line + context);
-//   return lines.slice(start, end).join("\n");
-// };
-
-// const SuggestionSection = ({ suggestions, originalCode, fixedCode }) => {
-//   if (!suggestions?.length) return null;
-
-//   console.log("Suggestions are : ",suggestions)
-
-//   return (
-//     <div>
-//       <h2 className="text-2xl text-yellow-300 font-semibold mb-4">💡 Suggestions</h2>
-//       {suggestions.map((sugg, idx) => (
-//         <DiffViewer
-//           key={idx}
-//           oldValue={getLineContext(originalCode, sugg.line || 1)}
-//           newValue={getLineContext(fixedCode, sugg.line || 1)}
-//           title={`💡 ${sugg.message} (Line ${sugg.line || 1})`}
-//         />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default SuggestionSection;
-
-
 import React from "react";
 import DiffViewer from "../components/DiffViewer";
 import { IoDocumentOutline, IoBarChart } from "react-icons/io5";

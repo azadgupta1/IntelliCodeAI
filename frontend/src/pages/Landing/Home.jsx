@@ -6,7 +6,7 @@ import FixCodeSection from '../../components/Landing/FixCodeSection';
 import PreFooterCTA from '../../components/Landing/PreFooterCTA';
 import TestimonialsSection from '../../components/Landing/TestimonialsSection';
 import { ThreeDMarquee } from '../../components/ui/3d-marquee'; // named export
-import { ThreeDMarqueeDemo } from '../ThreeD';
+import { ThreeDMarqueeDemo } from '../../components/ui/ThreeD';
 
 const HomePage = () => {
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchUserProfile, updateUserProfile } from "../services/userServices";
+import { fetchUserProfile, updateUserProfile } from "../../../services/userServices";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {

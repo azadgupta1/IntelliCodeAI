@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { CiSearch } from "react-icons/ci";
-import { IoTimeOutline } from "react-icons/io5";
-import { IoIosGitBranch } from "react-icons/io";
-import { IoAnalytics } from "react-icons/io5";
-import { CiBookmark } from "react-icons/ci";
-import Switch from "../../components/ui/Switch";
 import { API_BASE_URL } from "../../services/githubServices";
 
 
@@ -161,53 +155,6 @@ function RepoSettings() {
         ))}
       </div>
 
-      {/* Tab Content */}
-      {/* {activeTab === "general" && (
-        <div className="space-y-6">
-          <div className="bg-gray-50 p-6 rounded-xl shadow">
-            <p className="text-sm">
-              <span className="font-medium">Repository:</span> {meta.repoName}
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Owner:</span> {meta.ownerName}
-            </p>
-          </div>
-
-          <div className="bg-gray-50 p-6 rounded-xl shadow flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium mb-1">Last Synced:</p>
-              <p className="text-sm">
-                {meta.lastSyncedAt
-                  ? new Date(meta.lastSyncedAt).toLocaleString()
-                  : "Never"}
-              </p>
-            </div>
-            <button
-              onClick={handleSync}
-              disabled={syncing}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg disabled:opacity-50 transition"
-            >
-              {syncing ? "Syncing..." : "Re-Sync Repository"}
-            </button>
-          </div>
-
-      <div className="mt-10 p-6 border border-red-400 bg-red-100 rounded-2xl shadow-md">
-        <h2 className="text-xl font-semibold text-red-700 mb-4">Danger Zone</h2>
-        <p className="text-sm text-red-600 mb-4">
-          Deleting this repository will remove all associated analysis, files,
-          and data from our platform. This action is irreversible.
-        </p>
-        <button
-          onClick={handleDelete}
-          disabled={deleting}
-          className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg transition disabled:opacity-50"
-        >
-          {deleting ? "Deleting..." : "Delete Repository"}
-        </button>
-      </div>
-        </div>
-      )} */}
-
           {activeTab === "general" && (
   <div className="space-y-8">
     {/* Repository Info */}
@@ -281,99 +228,7 @@ function RepoSettings() {
 
 
 
-          {/* {activeTab === "branches" && (
-            <div className="space-y-4">
 
-            <div className="relative w-64">
-              
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <CiSearch className="text-gray-400 text-lg" />
-              </div>
-
-              
-              <input
-                type="text"
-                placeholder="Search branches..."
-                value={branchSearch}
-                onChange={(e) => setBranchSearch(e.target.value)}
-                className="pl-10 pr-3 py-1.5 border rounded-md w-full shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-              />
-            </div>
-
-
-<div className="overflow-x-auto rounded-lg shadow">
-  <table className="min-w-full text-sm text-left border border-gray-200">
-    <thead className="bg-gray-100 text-gray-700 uppercase">
-      <tr>
-        <th className="px-3 py-3 w-32">
-          <div className="flex items-center space-x-1">
-            <IoAnalytics />
-            <span>Analysis</span>
-          </div>
-        </th>
-        <th className="px-2 py-3 w-48">
-          <div className="flex items-center space-x-1">
-            <IoIosGitBranch />
-            <span>Branch</span>
-          </div>
-        </th>
-        <th className="px-4 py-3 text-center">
-          <div className="flex items-center justify-center space-x-1">
-            <CiBookmark />
-            <span>Default</span>
-          </div>
-        </th>
-        <th className="px-4 py-3">
-          <div className="flex items-center space-x-1">
-            <IoTimeOutline />
-            <span>Last Updated</span>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {filteredBranches?.length ? (
-        filteredBranches.map((branch, idx) => {
-          const isDefault = meta?.defaultBranch === branch.name;
-          return (
-            <tr
-              key={idx}
-              className="border-t hover:bg-gray-50 transition-colors"
-            >
-              <td className="px-3 py-2 text-center">
-                {isDefault ? <Switch initialChecked={true} disabled={true} /> : null}
-              </td>
-
-
-              <td className="px-2 py-2">{branch.name}</td>
-              <td className="px-4 py-2 text-center">
-                {isDefault && (
-                  <span className="inline-block text-xs font-semibold text-white bg-blue-500 px-2 py-0.5 rounded-full">
-                    Default
-                  </span>
-                )}
-              </td>
-              <td className="px-4 py-2">
-                {branch.lastUpdated
-                  ? getRelativeTime(branch.lastUpdated)
-                  : "Unknown"}
-              </td>
-            </tr>
-          );
-        })
-      ) : (
-        <tr>
-          <td colSpan={4} className="px-4 py-4 text-gray-500 text-center">
-            No branches found.
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-</div>
-
-            </div>
-          )} */}
 
 
       {activeTab === "branches" && (
@@ -477,28 +332,6 @@ function RepoSettings() {
 )}
 
 
-
-
-      {/* {activeTab === "auto" && (
-        <div className="bg-gray-50 p-6 rounded-xl shadow flex items-center justify-between">
-          <span className="text-lg font-medium">Auto-Analysis</span>
-          <button
-            onClick={handleToggle}
-            disabled={toggling}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-              meta.autoAnalyze
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-red-600 hover:bg-red-700"
-            } text-white`}
-          >
-            {toggling
-              ? "Updating..."
-              : meta.autoAnalyze
-              ? "Enabled (Click to Disable)"
-              : "Disabled (Click to Enable)"}
-          </button>
-        </div>
-      )} */}
 
       {activeTab === "auto" && (
   <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">

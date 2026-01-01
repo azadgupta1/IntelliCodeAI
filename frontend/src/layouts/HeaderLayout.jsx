@@ -20,7 +20,7 @@
 import React from "react";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
-import ChatBot from "../components/Chatbot";
+import ChatBot from "../pages/Organisations/Chatbot";
 
 const HeaderLayout = () => {
   return (

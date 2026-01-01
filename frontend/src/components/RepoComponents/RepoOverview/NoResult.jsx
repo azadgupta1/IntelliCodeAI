@@ -1,5 +1,6 @@
 import React from "react";
-import NoResultImg from "../assets/Empty.svg"
+import NoResultImg from "../../../assets/Empty.svg"
+
 
 const NoResults = () => {
   return (

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../services/githubServices';
+import { API_BASE_URL } from '../../../services/githubServices';
 
 export const fetchRepos = async () => {
   const token = localStorage.getItem('token');

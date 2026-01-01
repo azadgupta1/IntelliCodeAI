@@ -1,30 +1,3 @@
-// import React from "react";
-// import ReactDiffViewer from "react-diff-viewer";
-
-// const DiffViewer = ({ oldValue, newValue, title }) => {
-//   return (
-//     <div className="bg-zinc-900 border border-zinc-700 rounded-lg shadow-lg p-4 mb-6">
-//       <h4 className="text-lg font-semibold mb-3 text-white">{title}</h4>
-//       <ReactDiffViewer
-//         oldValue={oldValue}
-//         newValue={newValue}
-//         splitView={true}
-//         compareMethod="diffWords"
-//         styles={{
-//           variables: {
-//             light: {
-//               addedBackground: "#033a16",
-//               removedBackground: "#4a0e0e",
-//             },
-//           },
-//         }}
-//       />
-//     </div>
-//   );
-// };
-
-// export default DiffViewer;
-
 import React from "react";
 import ReactDiffViewer from "react-diff-viewer-continued";
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { FaGithub } from "react-icons/fa";
-import { fetchUserProfile } from "../services/userServices";
-import ChatBot from "../components/Chatbot";
+import { fetchUserProfile } from "../../services/userServices";
+import ChatBot from "./Chatbot";
 
 const Organisations = () => {
   const [profile, setProfile] = useState(null);
