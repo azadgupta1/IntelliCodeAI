@@ -1,6 +1,6 @@
 import React from 'react'
-import SideBarDocs from '../components/Docs/SideBarDocs'
-import HeaderDocs from '../components/Docs/HeaderDocs'
+import SideBarDocs from '../../components/Docs/SideBarDocs'
+import HeaderDocs from '../../components/Docs/HeaderDocs'
 import { Outlet } from 'react-router'
 
 function Docs() {

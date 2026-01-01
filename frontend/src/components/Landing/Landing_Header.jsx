@@ -11,7 +11,7 @@ const Header = () => {
 
 
   const loginpage = () =>{
-    navigate('/loginpage');
+    navigate('/login');
   }
 
   useEffect(() => {
