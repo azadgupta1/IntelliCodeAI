@@ -198,8 +198,19 @@
 
 
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+
 
 export default function HeroSection() {
+
+  const navigate = useNavigate();
+
+  const loginpage = () => {
+    navigate("/login");
+    setIsOpen(false);
+  };
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-tr from-sky-500 via-blue-800 to-violet-500">
       {/* Soft background accents */}
@@ -207,7 +218,7 @@ export default function HeroSection() {
       <div className="pointer-events-none absolute top-40 right-0 h-[400px] w-[400px] rounded-full bg-violet-300/30 blur-3xl" />
 
       {/* Main content */}
-      <div className="relative mx-auto max-w-5xl px-6 py-28 text-center">
+      <div className="relative mx-auto max-w-5xl px-6 py-30 text-center">
         <span className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm font-medium text-white backdrop-blur">
           AI-Powered Code Review Platform
         </span>
@@ -227,11 +238,11 @@ export default function HeroSection() {
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <button className="rounded-2xl bg-gray-950 px-8 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-gray-900">
+          <button onClick={loginpage} className="rounded-2xl bg-gray-950 px-8 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-gray-900">
             Analyze Code
           </button>
 
-          <button className="rounded-2xl border-2 border-white/60 bg-transparent px-8 py-3 text-base font-semibold text-white transition hover:bg-white/10">
+          <button onClick={loginpage} className="rounded-2xl border-2 border-white/60 bg-transparent px-8 py-3 text-base font-semibold text-white transition hover:bg-white/10">
             View Dashboard
           </button>
         </div>

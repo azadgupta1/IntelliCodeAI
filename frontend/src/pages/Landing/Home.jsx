@@ -13,7 +13,7 @@ const HomePage = () => {
   return (
     <div>
       <HeroSection />
-      {/* <FixCodeSection /> */}
+      <FixCodeSection />
       {/* <FeatureCard /> */}
       {/* <AIFixSection /> */}
 

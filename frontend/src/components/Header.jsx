@@ -5,7 +5,6 @@ import {
   getUnreadNotifications,
   markNotificationsRead,
 } from "../services/notificationServices";
-import IntelliCodeAI_3 from "../assets/IntelliCodeAI_3.png";
 import NewIA from "../assets/NewIA.png";
 import { FaBriefcase } from "react-icons/fa";
 import { IoFolderOpenOutline } from "react-icons/io5";
