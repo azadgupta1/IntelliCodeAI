@@ -231,4 +231,5 @@ VITE_FRONTEND_URL=http://localhost:5173
 ### Azad Gupta
 Full-Stack Developer | AI-Focused Systems
 
+
 - Built with a strong emphasis on real-world engineering practices, scalability, and developer productivity.
